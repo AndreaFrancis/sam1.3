@@ -1,0 +1,59 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="/">
+</head>
+
+<body layout="row" ng-app="sam-1" ng-controller="AppCtrl as ul">
+<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+            md-component-id="left"
+            md-is-locked-open="$mdMedia('gt-sm')" >
+    <md-toolbar class="md-whiteframe-z1" layout="row">
+
+            <meteor-include src="loginButtons" class="center center"></meteor-include>
+
+    </md-toolbar>
+
+    <div layout="column">
+            <md-button ui-sref="users" flex ng-click="showLeftMenu()">
+                <span class="ion-person-stalker"></span>&ensp;Usuarios
+            </md-button>
+            <md-button ui-sref="labs" flex ng-click="showLeftMenu()">
+                <span class="ion-erlenmeyer-flask"></span>&ensp;Laboratorios
+            </md-button>
+            <md-button ui-sref="measures" flex ng-click="showLeftMenu()">
+                <span class="ion-android-watch"></span>&ensp;Unidades de medida
+            </md-button>
+            <md-button ui-sref="areas" flex ng-click="showLeftMenu()">
+                <span class="ion-arrow-graph-up-right"></span>&ensp;Areas
+            </md-button>
+            <md-button ui-sref="kinds" flex ng-click="showLeftMenu()" >
+                <span class="ion-clipboard"></span>&ensp;Tipos de analisis
+            </md-button>
+            <md-button ui-sref="start" flex ng-click="showLeftMenu()">
+                <span class="ion-arrow-graph-up-right"></span>&ensp;Reportes
+            </md-button>
+    </div>
+
+</md-sidenav>
+
+<div layout="column" tabIndex="-1" role="main" flex>
+    <md-toolbar layout="row" class="md-whiteframe-z1" style="background-color:#f6f6f6;height:50px">
+        <md-button class="menu" hide-gt-sm ng-click="showLeftMenu()" aria-label="Mostrar menu">
+            <md-icon class="ion-navicon-round" ></md-icon>
+        </md-button>
+            <label style="color: black;"><h3>&ensp;&ensp;Laboratorio Clinico</h3></label>
+    </md-toolbar>
+    <div layout="row">
+        <div flex offset="1">
+        </div>
+        <div flex="90">
+            <md-content id="content">
+                <div ui-view class="container-fluid"></div>
+            </md-content>
+        </div>
+        <div flex offset="1">
+        </div>
+    </div>
+</div>
+
+</body>

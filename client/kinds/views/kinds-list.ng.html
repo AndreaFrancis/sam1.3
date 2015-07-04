@@ -1,0 +1,26 @@
+<div ng-controller="KindsListCtrl">
+    <div layout="column" layout-fill style="padding-bottom: 32px;">
+        <form name="newKindForm">
+            <md-input-container flex>
+                <label>Nombre de la evaluacion</label>
+                <input  >
+            </md-input-container>
+            <md-input-container flex>
+                <label>Precio</label>
+                <input  >
+            </md-input-container>
+            <md-select placeholder="Unidad de medida" ng-model="rank.measure">
+                <md-option ng-repeat="measure in measures" value="{{measure._id}}">{{measure.name}}</md-option>
+            </md-select>
+            <md-input-container flex>
+                <label>Valor Maximo</label>
+                <input  ng-model="rank.maxVal">
+            </md-input-container>
+            <md-input-container flex>
+                <label>Valor Minimo</label>
+                <input  ng-model="rank.minVal">
+            </md-input-container>
+            <md-button class="md-primary md-hue-1" ng-click="saveLab()" type="submit" ng-disabled="newLabForm.$invalid">Guardar</md-button>
+        </form>
+    </div>
+ </div>

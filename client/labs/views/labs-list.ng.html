@@ -1,0 +1,32 @@
+<div ng-controller="LabsListCtrl">
+    <div layout="column" layout-fill style="padding-bottom: 32px;" ng-show=collapse>
+        <form name="newLabForm">
+            <md-input-container flex>
+                <label>Nombre</label>
+                <input ng-model="newLab.name" required>
+            </md-input-container>
+            <md-input-container flex>
+                <label>Descripcion</label>
+                <input ng-model="newLab.description">
+            </md-input-container>
+            <md-button class="md-primary md-hue-1" ng-click="saveLab()" type="submit" ng-disabled="newLabForm.$invalid">Guardar</md-button>
+        </form>
+    </div>
+    <md-list>
+        <md-subheader class="md-no-sticky">
+            <md-button class="md-fab md-mini md-primary" ng-click="showAddNew()">
+                {{buttonStatus}}
+            </md-button>
+            Numero de laboratorios: {{labs.length}}
+        </md-subheader>
+        <md-list-item class="md-3-line" ng-repeat="lab in labs">
+            <div class="md-list-item-text">
+                <h3>{{ lab.name }}</h3>
+                <p>{{ lab.description }}</p>
+                <span flex></span>
+                <button ng-click="removeLab(lab)">X</button>
+            </div>
+            <md-divider ></md-divider>
+        </md-list-item>
+    </md-list>
+</div>
