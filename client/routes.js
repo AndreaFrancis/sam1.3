@@ -25,15 +25,15 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                 templateUrl: 'client/measures/measures.ng.html',
                 controller: 'MeasuresListCtrl'
             })
-            .state('kinds', {
-                url: '/kinds',
-                templateUrl: 'client/kinds/views/kinds-list.ng.html',
-                controller: 'KindsListCtrl'
+            .state('analisys', {
+                url: '/analisys',
+                templateUrl: 'client/analisys/views/analisys.ng.html',
+                controller: 'AnalisysListCtrl'
             })
             .state('areas', {
                 url: '/areas',
                 templateUrl: 'client/areas/views/areas.ng.html',
                 controller: 'AreasListCtrl'
-            });;
+            });
         $urlRouterProvider.otherwise("/start");
     }]);

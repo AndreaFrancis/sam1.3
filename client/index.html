@@ -6,7 +6,7 @@
 <body layout="row" ng-app="sam-1" ng-controller="AppCtrl as ul">
 <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
             md-component-id="left"
-            md-is-locked-open="$mdMedia('gt-sm')" >
+            md-is-locked-open="$mdMedia('gt-sm')" style="min-height: 100%">
     <md-toolbar class="md-whiteframe-z1" layout="row">
 
             <meteor-include src="loginButtons" class="center center"></meteor-include>
@@ -26,8 +26,8 @@
             <md-button ui-sref="areas" flex ng-click="showLeftMenu()">
                 <span class="ion-arrow-graph-up-right"></span>&ensp;Areas
             </md-button>
-            <md-button ui-sref="kinds" flex ng-click="showLeftMenu()" >
-                <span class="ion-clipboard"></span>&ensp;Tipos de analisis
+            <md-button ui-sref="analisys" flex ng-click="showLeftMenu()" >
+                <span class="ion-clipboard"></span>&ensp;Analisis Clinicos
             </md-button>
             <md-button ui-sref="start" flex ng-click="showLeftMenu()">
                 <span class="ion-arrow-graph-up-right"></span>&ensp;Reportes

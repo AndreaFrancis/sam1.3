@@ -1,0 +1,37 @@
+<div ng-controller="AnalisysListCtrl">
+    <div layout="column" layout-fill style="padding-bottom: 32px;" ng-show=collapse>
+        <form name="newAnalisysForm" layout="column">
+            <md-input-container flex>
+                <label>Nombre</label>
+                <input ng-model="newAnalisys.name" required>
+            </md-input-container>
+            <div layout="row" flex>
+                <md-select placeholder="Area" ng-model="newAnalisys.area">
+                    <md-option ng-repeat="area in areas" value="{{area._id}}">{{area.name}}</md-option>
+                </md-select>
+
+                <md-select placeholder="Laboratorio" ng-model="newAnalisys.lab">
+                    <md-option ng-repeat="lab in labs" value="{{lab._id}}">{{lab.name}}</md-option>
+                </md-select>
+            </div>
+            <md-button class="md-primary md-hue-1" ng-click="save()" type="submit" ng-disabled="newAnalisysForm.$invalid">Guardar</md-button>
+        </form>
+    </div>
+    <md-list>
+        <md-subheader class="md-no-sticky">
+            <md-button class="md-fab md-mini md-primary" ng-click="showAddNew()">
+              {{buttonStatus}}
+            </md-button>
+            Numero de Analisis: {{analisysList.length}}
+        </md-subheader>
+        <md-list-item class="md-3-line" ng-repeat="analisys in analisysList">
+            <div class="md-list-item-text">
+                <h3>{{ analisys.name }}</h3>
+                <p>{{ area.description }}</p>
+                <span flex></span>
+                <button ng-click="removeAnalosys(analisys)">X</button>
+            </div>
+            <md-divider ></md-divider>
+        </md-list-item>
+    </md-list>
+</div>
