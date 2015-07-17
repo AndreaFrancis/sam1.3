@@ -1,0 +1,32 @@
+<md-dialog aria-label="Nueva area" layout="column">
+    <md-dialog-content class="sticky-container">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Nueva area</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <form name="newAreaForm" novalidate>
+            <md-input-container flex>
+                <label>Nombre</label>
+                <input ng-model="newArea.name" required name="name">
+                <div ng-messages="newAreaForm.name.$error">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <md-input-container flex>
+                <label>Descripcion</label>
+                <textarea ng-model="newArea.description" name="description"></textarea>
+            </md-input-container>
+            <div class="md-actions" layout="row">
+                <md-button class="md-primary" ng-click="save()" ng-disabled="newAreaForm.$invalid" type="submit">
+                    Guardar
+                </md-button>
+                <span flex></span>
+                <md-button ng-click="cancel()">
+                    Cancelar
+                </md-button>
+            </div>
+        </form>
+    </md-dialog-content>
+</md-dialog>

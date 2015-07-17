@@ -4,17 +4,20 @@
 /**
  * Created by Andrea on 07/06/2015.
  */
-angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notificationService','$mdDialog',
-    function($scope, $meteor,notificationService,$mdDialog) {
+angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notificationService','$mdDialog','ModalService',
+    function($scope, $meteor,notificationService,$mdDialog, ModalService) {
         $scope.users = $meteor.collection(UsersData);
+        $scope.showTextSearch = true;
+
         $scope.showAddNew = function(ev) {
-            $mdDialog.show({
-                controller: AddUserController,
-                templateUrl: 'client/users/views/addUser.tmpl.ng.html',
-                targetEvent : ev
-            })
+            ModalService.showModal(AddUserController, 'client/users/views/addUser.tmpl.ng.html', ev);
         }
-    }]);
+
+        $scope.toggleSearch = function() {
+            $scope.showTextSearch = !$scope.showTextSearch;
+        }
+        $scope.headers = ['', 'Nombre', 'Apellido', 'Email'];
+}]);
 
 function AddUserController($scope,$mdDialog, $meteor, notificationService) {
     $scope.users = $meteor.collection(UsersData);

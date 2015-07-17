@@ -34,6 +34,11 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                 url: '/areas',
                 templateUrl: 'client/areas/views/areas.ng.html',
                 controller: 'AreasListCtrl'
+            })
+            .state('exams', {
+                url: '/exams',
+                templateUrl: 'client/exams/exams.ng.html',
+                controller: 'ExamsListCtrl'
             });
         $urlRouterProvider.otherwise("/start");
     }]);

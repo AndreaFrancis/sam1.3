@@ -1,0 +1,37 @@
+<md-dialog aria-label="Nuevo analisis" layout="column">
+    <md-dialog-content class="sticky-container">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Nueva Analisis</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <form name="newAnalisysForm" novalidate>
+            <md-input-container flex>
+                <label>Nombre</label>
+                <input ng-model="newAnalisys.name" required name="name">
+                <div ng-messages="newAnalisysForm.name.$error">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <div layout="row" flex>
+                <md-select placeholder="Area" ng-model="newAnalisys.area">
+                    <md-option ng-repeat="area in areas" value="{{area._id}}">{{area.name}}</md-option>
+                </md-select>
+
+                <md-select placeholder="Laboratorio" ng-model="newAnalisys.lab">
+                    <md-option ng-repeat="lab in labs" value="{{lab._id}}">{{lab.name}}</md-option>
+                </md-select>
+            </div>
+            <div class="md-actions" layout="row">
+                <md-button class="md-primary" ng-click="save()" ng-disabled="newUserForm.$invalid" type="submit">
+                    Guardar
+                </md-button>
+                <span flex></span>
+                <md-button ng-click="cancel()">
+                    Cancelar
+                </md-button>
+            </div>
+        </form>
+    </md-dialog-content>
+</md-dialog>

@@ -1,20 +1,16 @@
 /**
  * Created by Andrea on 06/06/2015.
  */
-var app = angular.module('sam-1',['angular-meteor','ui.router','ngMaterial']);
+var app = angular.module('sam-1',['angular-meteor','ui.router','ngMaterial', 'ngMessages']);
 app.config(function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('blue')
-            .accentPalette('cyan');
+            .primaryPalette('indigo')
+            .accentPalette('pink');
 });
 
 app.controller("AppCtrl",['$scope','$mdSidenav','$rootScope', function($scope,$mdSidenav,$rootScope) {
-    $scope.currentTab = 'Inicio';
     $scope.showLeftMenu = function() {
         $mdSidenav('left').toggle();
-    }
-    $scope.getCurrentTab = function() {
-        return $rootScope.currentTab;
     }
 }]);
 
@@ -31,6 +27,16 @@ app.service("notificationService", function($mdToast){
             template: '<md-toast class="md-toast success">' + msg + '</md-toast>',
             hideDelay: 6000,
             position: 'up right'
+        });
+    }
+});
+
+app.service("ModalService", function($mdDialog){
+    this.showModal = function(controller, urlTemplate, event) {
+        $mdDialog.show({
+            controller: controller,
+            templateUrl: urlTemplate,
+            targetEvent : event
         });
     }
 });

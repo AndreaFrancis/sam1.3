@@ -1,14 +1,14 @@
-<div ng-controller="LabsListCtrl">
+<div ng-controller="ExamsListCtrl">
     <div class="main-fab">
-        <md-button class="md-fab md-accent" ng-click="showAddNew($event)">
+        <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="add">
             <span class="ion-plus" fill="white"></span>
         </md-button>
     </div>
-    <md-toolbar layout="column" class="md-tall"><span flex="flex"></span>
+    <md-toolbar layout="column" class="md-tall md-whiteframe-z1"><span flex="flex"></span>
         <div class="md-toolbar-tools">
             <div layout="row" flex="flex" class="fill-height">
                 <div ng-hide="showTextSearch" class="md-toolbar-item md-breadcrumb">
-                    <span>Laboratorios</span>
+                    <span>Pruebas</span>
                 </div>
                 <span flex="flex" ng-hide="toggleSearch"></span>
                 <md-input-container class="input-search" flex="flex" style="padding-left:88px;" ng-show="showTextSearch">
@@ -29,14 +29,13 @@
                 <thead>
                 <tr class="md-table-headers-row">
                     <th ng-repeat="h in headers" class="md-table-header">
-                        {{h}}</th>
+                      {{h}}</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="lab in labs" class="md-table-content-row">
+                <tr ng-repeat="exam in exams" class="md-table-content-row">
                     <td class="md-table-thumbs"><span class="ion-ios-person"></span></td>
-                    <td class="md-table-content">{{ lab.name }}</td>
-                    <td class="md-table-content">{{ lab.description}}</td>
+                    <td class="md-table-content">{{ exam.name }}</td>
                 </tr>
                 </tbody>
             </table>

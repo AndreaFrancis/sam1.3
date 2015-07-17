@@ -1,0 +1,32 @@
+<md-dialog aria-label="Nueva unidad de medida" layout="column">
+    <md-dialog-content class="sticky-container">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Nueva prueba</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <form name="newExamForm" novalidate>
+            <md-input-container flex>
+                <label>Nombre</label>
+                <input ng-model="newExam.name" required name="name">
+                <div ng-messages="newExamForm.name.$error">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <md-select placeholder="Unidad de medida" ng-model="newExam.measure">
+                <md-option ng-repeat="measure in measures" value="{{measure._id}}">{{measure.name}}</md-option>
+            </md-select>
+            <md-button></md-button>
+            <div class="md-actions" layout="row">
+                <md-button class="md-primary" ng-click="save()" ng-disabled="newExamForm.$invalid" type="submit">
+                    Guardar
+                </md-button>
+                <span flex></span>
+                <md-button ng-click="cancel()">
+                    Cancelar
+                </md-button>
+            </div>
+        </form>
+    </md-dialog-content>
+</md-dialog>

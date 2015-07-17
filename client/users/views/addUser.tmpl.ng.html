@@ -1,36 +1,39 @@
-<md-dialog aria-label="Nuevo Producto">
+<md-dialog aria-label="Nuevo Usuario" layout="column">
+    <md-dialog-content class="sticky-container">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>Nuevo Usuario</h2>
             <span flex></span>
         </div>
     </md-toolbar>
-
-    <form name="newUserForm" style="padding: 3em 2em 2em 2em;">
-        <md-dialog-content class="sticky-container" layout="column">
-          <div layout="row">
+    <form name="newUserForm" novalidate>
               <md-input-container flex>
                   <label>Nombre</label>
                   <input name="name" ng-model="newUser.name" required>
+                  <div ng-messages="newUserForm.name.$error">
+                      <div ng-message="required">*Campo obligatorio</div>
+                  </div>
               </md-input-container>
               <md-input-container flex>
                   <label>Apellido</label>
                   <input ng-model="newUser.lastName" required>
               </md-input-container>
-          </div>
-          <md-input-container flex>
-            <label>Correo</label>
-            <input ng-model="newUser.email" required type="email">
-          </md-input-container>
-        </md-dialog-content>
+              <md-input-container flex>
+                    <label>Correo</label>
+                    <input ng-model="newUser.email" required type="email" name="email">
+                    <div ng-messages="newUserForm.email.$error">
+                      <div ng-message="required">*Campo obligatorio</div>
+                    </div>
+              </md-input-container>
         <div class="md-actions" layout="row">
-            <md-button md-no-ink class="md-primary" ng-click="save()" ng-disabled="newUserForm.$invalid" type="submit">
+            <md-button class="md-primary" ng-click="save()" ng-disabled="newUserForm.$invalid" type="submit">
                 Guardar
             </md-button>
             <span flex></span>
-            <md-button md-no-ink ng-click="cancel()">
+            <md-button ng-click="cancel()">
                 Cancelar
             </md-button>
         </div>
     </form>
+    </md-dialog-content>
 </md-dialog>
