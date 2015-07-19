@@ -1,12 +1,12 @@
 <md-dialog aria-label="Nueva unidad de medida" layout="column">
-    <md-dialog-content class="sticky-container">
+    <form name="newMeasureForm" novalidate layout="column">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Nueva unidad de medida</h2>
                 <span flex></span>
             </div>
         </md-toolbar>
-        <form name="newMeasureForm" novalidate>
+        <md-dialog-content class="sticky-container">
             <md-input-container flex>
                 <label>Nombre</label>
                 <input ng-model="newMeasure.name" required name="name">
@@ -21,15 +21,15 @@
                     <div ng-message="required">*Campo obligatorio</div>
                 </div>
             </md-input-container>
+        </md-dialog-content>
             <div class="md-actions" layout="row">
+                <span flex></span>
                 <md-button class="md-primary" ng-click="save()" ng-disabled="newUserForm.$invalid" type="submit">
                     Guardar
                 </md-button>
-                <span flex></span>
                 <md-button ng-click="cancel()">
                     Cancelar
                 </md-button>
             </div>
         </form>
-    </md-dialog-content>
 </md-dialog>

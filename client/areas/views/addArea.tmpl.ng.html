@@ -1,12 +1,12 @@
 <md-dialog aria-label="Nueva area" layout="column">
-    <md-dialog-content class="sticky-container">
+    <form name="newAreaForm" novalidate layout="column">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Nueva area</h2>
                 <span flex></span>
             </div>
         </md-toolbar>
-        <form name="newAreaForm" novalidate>
+        <md-dialog-content class="sticky-container">
             <md-input-container flex>
                 <label>Nombre</label>
                 <input ng-model="newArea.name" required name="name">
@@ -18,15 +18,15 @@
                 <label>Descripcion</label>
                 <textarea ng-model="newArea.description" name="description"></textarea>
             </md-input-container>
-            <div class="md-actions" layout="row">
-                <md-button class="md-primary" ng-click="save()" ng-disabled="newAreaForm.$invalid" type="submit">
-                    Guardar
-                </md-button>
-                <span flex></span>
-                <md-button ng-click="cancel()">
-                    Cancelar
-                </md-button>
-            </div>
-        </form>
-    </md-dialog-content>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="save()" ng-disabled="newAreaForm.$invalid" type="submit">
+                Guardar
+            </md-button>
+            <md-button ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </div>
+    </form>
 </md-dialog>

@@ -141,3 +141,7 @@ md-input-container.input-search .md-input {
 .background-table {
     background: lightgray;
 }
+
+md-dialog {
+    min-width: 70%;
+}
