@@ -21,8 +21,16 @@ function AddAnalisysController($scope, $meteor, notificationService, $mdDialog) 
     $scope.analisysList = $meteor.collection(Analisys);
     $scope.areas = $meteor.collection(Areas);
     $scope.labs = $meteor.collection(Labs);
+    $scope.exams = $meteor.collection(Exams);
+    $scope.selectedExam = {};
+    $scope.selectedExams = [];
+    $scope.selectedExamsIds = [];
 
     $scope.save = function() {
+        var examsToJson = angular.toJson($scope.selectedExamsIds);
+        var examsToArray = JSON.parse(examsToJson);
+        $scope.newAnalisys.exams = examsToArray;
+
         $scope.analisysList.save($scope.newAnalisys).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el Analisis clinico");
         }, function(error){
@@ -31,6 +39,11 @@ function AddAnalisysController($scope, $meteor, notificationService, $mdDialog) 
         });
         $scope.newAnalisys = '';
         $mdDialog.hide();
+    }
+
+    $scope.saveExam = function() {
+        $scope.selectedExams.push($scope.selectedExam);
+        $scope.selectedExamsIds.push($scope.selectedExam._id);
     }
 
     $scope.cancel = function() {

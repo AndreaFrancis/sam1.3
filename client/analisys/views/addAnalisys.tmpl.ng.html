@@ -23,11 +23,32 @@
                     <md-option ng-repeat="lab in labs" value="{{lab._id}}">{{lab.name}}</md-option>
                 </md-select>
             </div>
+            <fieldset class="standar" ng-disabled="newExamForm.targetName.$invalid">
+                <legend>Pruebas</legend>
+                <div layout="column">
+                    <div layout="row">
+                            <md-select placeholder="Prueba" ng-model="selectedExam">
+                                <md-option ng-repeat="exam in exams" ng-value="exam">{{exam.name}}</md-option>
+                            </md-select>
+                            <md-button class="md-primary" ng-click="saveExam()">
+                                &ensp;Agregar&ensp;&ensp;<span class="ion-chevron-right"></span>
+                            </md-button>
+                    </div>
+                    <md-list>
+                        <md-subheader class="md-no-sticky">Evaluaciones</md-subheader>
+                        <md-list-item ng-repeat="exam in selectedExams">
+                            <div class="md-list-item-text">
+                                {{exam.name}}
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </fieldset>
             <div class="md-actions" layout="row">
+                <span flex></span>
                 <md-button class="md-primary" ng-click="save()" ng-disabled="newUserForm.$invalid" type="submit">
                     Guardar
                 </md-button>
-                <span flex></span>
                 <md-button ng-click="cancel()">
                     Cancelar
                 </md-button>
