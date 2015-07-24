@@ -1,5 +1,4 @@
-<!--Ver en : http://codepen.io/jbltx/pen/WbdRRb-->
-<div ng-controller="UsersListCtrl">
+<div ng-controller="RolesListCtrl">
     <div class="main-fab">
         <md-button class="md-fab md-accent" ng-click="showAddNew($event)">
             <span class="ion-plus" fill="white"></span>
@@ -9,7 +8,7 @@
         <div class="md-toolbar-tools">
             <div layout="row" flex="flex" class="fill-height">
                 <div ng-hide="showTextSearch" class="md-toolbar-item md-breadcrumb">
-                    <span>Administracion de usuarios</span>
+                    <span>Roles</span>
                 </div>
                 <span flex="flex" ng-hide="toggleSearch"></span>
                 <md-input-container class="input-search" flex="flex" style="padding-left:88px;" ng-show="showTextSearch">
@@ -23,6 +22,7 @@
             </div>
         </div>
     </md-toolbar>
+
     <md-card>
         <md-card-content>
             <table class="md-table">
@@ -30,20 +30,12 @@
                 <tr class="md-table-headers-row">
                     <th ng-repeat="h in headers" class="md-table-header">
                         {{h}}</th>
-                    <th class="md-table-header"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="user in users" class="md-table-content-row">
+                <tr ng-repeat="rol in roles" class="md-table-content-row">
                     <td class="md-table-thumbs"><span class="ion-ios-person"></span></td>
-                    <td class="md-table-content">{{ user.username}}</td>
-                    <td class="md-table-content">{{ user.profile.name }}</td>
-                    <td class="md-table-content">{{ user.profile.lastName }}</td>
-                    <td class="md-table-content">
-                        <div ng-repeat="email in user.emails">
-                            {{ email.address }}
-                        </div>
-                    </td>
+                    <td class="md-table-content">{{ rol.name }}</td>
                 </tr>
                 </tbody>
             </table>

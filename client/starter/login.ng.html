@@ -1,0 +1,24 @@
+<form name="loginForm" novalidate>
+  <span>Login</span>
+    <md-input-container>
+        <label>Nombre de usuario</label>
+        <input ng-model="username" required name="username">
+        <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$dirty">
+            <div ng-message="required">*Campo obligatorio</div>
+        </div>
+    </md-input-container>
+    <md-input-container flex>
+        <label>Password</label>
+        <input ng-model="password" required name="password">
+        <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$dirty">
+            <div ng-message="required">*Campo obligatorio</div>
+        </div>
+    </md-input-container>
+    <div class="md-actions" layout="row">
+        <span flex></span>
+        <span flex></span>
+        <md-button class="md-primary" ng-click="save()" ng-disabled="newUserForm.$invalid" type="submit">
+            Sing in
+        </md-button>
+    </div>
+</form>

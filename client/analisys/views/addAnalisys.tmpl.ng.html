@@ -10,7 +10,7 @@
             <md-input-container flex>
                 <label>Nombre</label>
                 <input ng-model="newAnalisys.name" required name="name">
-                <div ng-messages="newAnalisysForm.name.$error">
+                <div ng-messages="newAnalisysForm.name.$error" ng-if="newAnalisysForm.name.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
                 </div>
             </md-input-container>
@@ -23,10 +23,31 @@
                     <md-option ng-repeat="lab in labs" value="{{lab._id}}">{{lab.name}}</md-option>
                 </md-select>
             </div>
-            <fieldset class="standar" ng-disabled="newExamForm.targetName.$invalid">
+            <fieldset class="standar" ng-disabled="newAnalisysForm.name.$invalid">
+                <legend>Sub Analisis</legend>
+                <div layout="row">
+                    <div layout="column">
+                        <md-select placeholder="Sub analisis" ng-model="selectedAnalisys">
+                            <md-option ng-repeat="subanalisys in subAnalisysList" ng-value="subanalisys">{{subanalisys.name}}</md-option>
+                        </md-select>
+                        <md-button class="md-primary" ng-click="saveSubAnalisis()">
+                            &ensp;Agregar&ensp;&ensp;<span class="ion-chevron-right"></span>
+                        </md-button>
+                    </div>
+                    <md-list>
+                        <md-subheader class="md-no-sticky">Sub Analisis</md-subheader>
+                        <md-list-item ng-repeat="subanalisys in selectedSubAnalisys">
+                            <div class="md-list-item-text">
+                                {{subanalisys.name}}
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </fieldset>
+            <fieldset class="standar" ng-disabled="newAnalisysForm.name.$invalid">
                 <legend>Pruebas</legend>
-                <div layout="column">
-                    <div layout="row">
+                <div layout="row">
+                    <div layout="column">
                             <md-select placeholder="Prueba" ng-model="selectedExam">
                                 <md-option ng-repeat="exam in exams" ng-value="exam">{{exam.name}}</md-option>
                             </md-select>

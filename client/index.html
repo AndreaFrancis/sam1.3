@@ -2,43 +2,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="/">
 </head>
+<body layout="row" ng-app="sam-1" ng-controller="AppCtrl">
+    <form name="loginForm" novalidate ng-hide="$root.currentUser" layout="column" class="form-center" flex>
+        <md-input-container>
+            <label>Nombre de usuario</label>
+            <input ng-model="username" required name="username">
+            <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$dirty">
+                <div ng-message="required">*Campo obligatorio</div>
+            </div>
+        </md-input-container>
+        <md-input-container>
+            <label>Password</label>
+            <input ng-model="password" required name="password" type="password">
+            <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$dirty">
+                <div ng-message="required">*Campo obligatorio</div>
+            </div>
+        </md-input-container>
+        <md-button class="md-raised md-primary" ng-click="login()" ng-disabled="loginForm.$invalid" type="submit">
+            Sing in
+        </md-button>
+    </form>
+    <div layout="column" flex>
+        <md-toolbar class="little-content md-primary" hide-gt-md flex="10"></md-toolbar>
 
-<body layout="row" ng-app="sam-1" ng-controller="AppCtrl as ul">
-<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
-            md-component-id="left"
-            md-is-locked-open="$mdMedia('gt-sm')" layout="column">
-    <md-toolbar flex="30">
-        <div class="md-toolbar-tools">
-            <span class="ion-ios-flask-outline larger"></span>
-        </div>
-    </md-toolbar>
+        <md-tabs class="secondary-sidenav md-primary" hide-sm hide-md flex="10">
+            <md-tab ng-repeat="module in allowed">
+                <div demo-directive ></div>
+            </md-tab>
+        </md-tabs>
 
-    <div layout="column" flex="70">
-            <md-button ui-sref="users" flex ng-click="showLeftMenu()">
-                <span class="ion-person-stalker"></span>&ensp;Usuarios
-            </md-button>
-            <md-button ui-sref="labs" flex ng-click="showLeftMenu()">
-                <span class="ion-erlenmeyer-flask"></span>&ensp;Laboratorios
-            </md-button>
-            <md-button ui-sref="measures" flex ng-click="showLeftMenu()">
-                <span class="ion-android-watch"></span>&ensp;Unidades de medida
-            </md-button>
-            <md-button ui-sref="areas" flex ng-click="showLeftMenu()">
-                <span class="ion-arrow-graph-up-right"></span>&ensp;Areas
-            </md-button>
-            <md-button ui-sref="analisys" flex ng-click="showLeftMenu()" >
-                <span class="ion-clipboard"></span>&ensp;Analisis Clinicos
-            </md-button>
-            <md-button ui-sref="exams" flex ng-click="showLeftMenu()" >
-                <span class="ion-clipboard"></span>&ensp;Pruebas
-            </md-button>
-            <md-button ui-sref="start" flex ng-click="showLeftMenu()">
-                <span class="ion-arrow-graph-up-right"></span>&ensp;Reportes
-            </md-button>
+        <div ui-view class="controller-content" flex="90"></div>
     </div>
-</md-sidenav>
 
-<div layout="column"  role="main" flex>
+
+
+    <!--md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+                md-component-id="left"
+                md-is-locked-open="$mdMedia('gt-sm')" layout="column" ng-show="$root.currentUser">
+        <md-toolbar flex="30">
+            <div class="md-toolbar-tools">
+                <span class="ion-ios-flask-outline larger"></span>
+            </div>
+        </md-toolbar>
+
+        <div layout="column" flex="70">
+            <md-button  flex ng-click="showLeftMenu(module)" ng-repeat="module in allowed" ui-sref="{{module.state}}">
+                <div demo-directive ></div>
+            </md-button>
+            <md-button flex ng-click="logOut()">
+                <span class="ion-arrow-graph-up-right"></span>&ensp;Salir
+            </md-button>
+        </div>
+    </md-sidenav>
+
+    <div layout="column"  role="main" flex ng-show="$root.currentUser">
         <md-toolbar column="row">
             <md-button class="menu" hide-gt-sm ng-click="showLeftMenu()" aria-label="Mostrar menu" offset="70">
                 <md-icon class="ion-navicon-round" ></md-icon>
@@ -47,6 +64,18 @@
         <md-content id="content" class="main-content">
             <div ui-view class="container-fluid"></div>
         </md-content>
-</div>
+    </div>
 
+    <div>
+        <md-content class="md-padding">
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="one">
+                    <md-content class="md-padding">
+                        <h1 class="md-display-2">Tab One</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </div-->
 </body>

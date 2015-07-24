@@ -25,11 +25,19 @@ function AddAnalisysController($scope, $meteor, notificationService, $mdDialog) 
     $scope.selectedExam = {};
     $scope.selectedExams = [];
     $scope.selectedExamsIds = [];
+    $scope.selectedSubAnalisysIds = [];
+    $scope.subAnalisysList = $meteor.collection(Analisys);
+    $scope.selectedSubAnalisys = [];
+    $scope.selectedAnalisys = {};
 
     $scope.save = function() {
         var examsToJson = angular.toJson($scope.selectedExamsIds);
         var examsToArray = JSON.parse(examsToJson);
         $scope.newAnalisys.exams = examsToArray;
+        var analisysToJson = angular.toJson($scope.selectedSubAnalisysIds);
+        var analisysToArray = JSON.parse(analisysToJson);
+        $scope.newAnalisys.analisys = analisysToArray;
+
 
         $scope.analisysList.save($scope.newAnalisys).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el Analisis clinico");
@@ -44,6 +52,11 @@ function AddAnalisysController($scope, $meteor, notificationService, $mdDialog) 
     $scope.saveExam = function() {
         $scope.selectedExams.push($scope.selectedExam);
         $scope.selectedExamsIds.push($scope.selectedExam._id);
+    }
+
+    $scope.saveSubAnalisis = function() {
+        $scope.selectedSubAnalisys.push($scope.selectedAnalisys);
+        $scope.selectedSubAnalisysIds.push($scope.selectedAnalisys._id);
     }
 
     $scope.cancel = function() {
