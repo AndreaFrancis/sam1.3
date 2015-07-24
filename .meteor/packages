@@ -11,8 +11,7 @@ appcache
 ground:db
 angularui:angular-ui-router
 accounts-password
-accounts-ui
 angular:angular-material
 insecure
-pagebakers:ionicons
 alanning:roles
+fortawesome:fontawesome

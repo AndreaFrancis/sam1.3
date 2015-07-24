@@ -4,7 +4,7 @@
 
 angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notificationService','ModalService',
     function($scope, $meteor,notificationService, ModalService) {
-        $scope.roles = $meteor.collection(RolesData);
+        $scope.roles = $meteor.collection(RolesData, false);
         $scope.headers = ['', 'Nombre'];
 
         $scope.showTextSearch = true;
@@ -17,7 +17,7 @@ angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notifica
     }]);
 
 function AddRolController($scope, notificationService, $mdDialog, $meteor) {
-    $scope.roles = $meteor.collection(RolesData);
+    $scope.roles = $meteor.collection(RolesData, false);
     $scope.save = function() {
         $scope.roles.save($scope.newRol).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el rol");

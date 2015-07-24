@@ -39,29 +39,9 @@
                     <div ng-message="required">*Campo obligatorio</div>
                 </div>
             </md-input-container>
-
-            <fieldset class="standar">
-                <legend>Roles</legend>
-                <div layout="row">
-                    <div layout="column">
-                        <md-select placeholder="Rol" ng-model="selectedRol">
-                            <md-option ng-repeat="rol in roles" ng-value="rol.name">{{rol.name}}</md-option>
-                        </md-select>
-                        <md-button class="md-primary" ng-click="saveRol()">
-                            &ensp;Agregar&ensp;&ensp;<span class="ion-chevron-right"></span>
-                        </md-button>
-                    </div>
-                    <md-list>
-                        <md-subheader class="md-no-sticky">Roles asignados</md-subheader>
-                        <md-list-item ng-repeat="rol in selectedRoles">
-                            <div class="md-list-item-text">
-                                {{rol}}
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </div>
-            </fieldset>
-
+            <md-select placeholder="Rol" ng-model="selectedRol">
+                <md-option ng-repeat="rol in roles" ng-value="rol.name">{{rol.name}}</md-option>
+            </md-select>
         </md-dialog-content>
         <div class="md-actions" layout="row">
             <span flex></span>

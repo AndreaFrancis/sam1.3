@@ -1,45 +1,44 @@
 <div ng-controller="LabsListCtrl">
     <div class="main-fab">
-        <md-button class="md-fab md-accent" ng-click="showAddNew($event)">
-            <span class="ion-plus" fill="white"></span>
+        <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="Agregar">
+            <i class="fa fa-plus"></i>
         </md-button>
     </div>
     <md-toolbar layout="column" class="md-tall"><span flex="flex"></span>
         <div class="md-toolbar-tools">
-            <div layout="row" flex="flex" class="fill-height">
-                <div ng-hide="showTextSearch" class="md-toolbar-item md-breadcrumb">
-                    <span>Laboratorios</span>
-                </div>
-                <span flex="flex" ng-hide="toggleSearch"></span>
-                <md-input-container class="input-search" flex="flex" style="padding-left:88px;" ng-show="showTextSearch">
-                    <input type="text" ng-model="search"/>
-                </md-input-container>
-                <div layout="row" class="md-toolbar-item md-tools" offset="30">
-                    <a href="#" ng-click="toggleSearch()" class="md-button md-default-theme">
-                        <i class="ion-android-search"></i>
-                    </a>
-                </div>
+            <div class="title">
+                <span>Administracion de Laboratorios</span>
             </div>
         </div>
     </md-toolbar>
-
-    <md-card>
-        <md-card-content>
-            <table class="md-table">
+    <div clas="floating-content">
+        <div class="table-responsive-vertical shadow-z-1 center-table">
+            <!-- Table starts here -->
+            <md-subheader class="md-primary" layou="row">
+                1 Item seleccionado
+                <md-button class="md-icon-button" flex  aria-label="Borrar">
+                    <i class="fa fa-trash"></i>
+                </md-button>
+            </md-subheader>
+            <table id="table" class="table table-hover table-mc-light-blue">
                 <thead>
-                <tr class="md-table-headers-row">
+                <tr>
                     <th ng-repeat="h in headers" class="md-table-header">
                         {{h}}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="lab in labs" class="md-table-content-row">
-                    <td class="md-table-thumbs"><span class="ion-ios-person"></span></td>
-                    <td class="md-table-content">{{ lab.name }}</td>
-                    <td class="md-table-content">{{ lab.description}}</td>
+                    <td data-title="">
+                        <md-checkbox ng-model="lab.selected" aria-label="Area">
+                        </md-checkbox>
+                    </td>
+                    <td data-title="Nombre">{{ lab.name }}</td>
+                    <td data-title="Descripcion">{{ lab.description}}</td>
+                    <md-divider ng-if="!$last"></md-divider>
                 </tr>
                 </tbody>
             </table>
-        </md-card-content>
-    </md-card>
+        </div>
+    </div>
 </div>

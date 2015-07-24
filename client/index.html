@@ -3,79 +3,59 @@
     <base href="/">
 </head>
 <body layout="row" ng-app="sam-1" ng-controller="AppCtrl">
-    <form name="loginForm" novalidate ng-hide="$root.currentUser" layout="column" class="form-center" flex>
-        <md-input-container>
-            <label>Nombre de usuario</label>
-            <input ng-model="username" required name="username">
-            <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$dirty">
-                <div ng-message="required">*Campo obligatorio</div>
-            </div>
-        </md-input-container>
-        <md-input-container>
-            <label>Password</label>
-            <input ng-model="password" required name="password" type="password">
-            <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$dirty">
-                <div ng-message="required">*Campo obligatorio</div>
-            </div>
-        </md-input-container>
-        <md-button class="md-raised md-primary" ng-click="login()" ng-disabled="loginForm.$invalid" type="submit">
-            Sing in
-        </md-button>
-    </form>
-    <div layout="column" flex>
-        <md-toolbar class="little-content md-primary" hide-gt-md flex="10"></md-toolbar>
-
-        <md-tabs class="secondary-sidenav md-primary" hide-sm hide-md flex="10">
-            <md-tab ng-repeat="module in allowed">
-                <div demo-directive ></div>
-            </md-tab>
-        </md-tabs>
-
-        <div ui-view class="controller-content" flex="90"></div>
-    </div>
-
-
-
-    <!--md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
-                md-component-id="left"
-                md-is-locked-open="$mdMedia('gt-sm')" layout="column" ng-show="$root.currentUser">
-        <md-toolbar flex="30">
-            <div class="md-toolbar-tools">
-                <span class="ion-ios-flask-outline larger"></span>
-            </div>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+        <md-toolbar class="md-theme-light">
+            <h1 class="md-toolbar-tools">Menu</h1>
         </md-toolbar>
-
-        <div layout="column" flex="70">
-            <md-button  flex ng-click="showLeftMenu(module)" ng-repeat="module in allowed" ui-sref="{{module.state}}">
-                <div demo-directive ></div>
+        <md-content  layout-padding layout="column">
+            <md-button ng-repeat="module in allowed" ng-click="showMenu(module)">
+                <div main-tex></div>
             </md-button>
-            <md-button flex ng-click="logOut()">
-                <span class="ion-arrow-graph-up-right"></span>&ensp;Salir
+            <md-button class="md-accent" flex ng-click="logOut()" aria-label="Menu">
+                Salir
             </md-button>
-        </div>
-    </md-sidenav>
-
-    <div layout="column"  role="main" flex ng-show="$root.currentUser">
-        <md-toolbar column="row">
-            <md-button class="menu" hide-gt-sm ng-click="showLeftMenu()" aria-label="Mostrar menu" offset="70">
-                <md-icon class="ion-navicon-round" ></md-icon>
-            </md-button>
-        </md-toolbar>
-        <md-content id="content" class="main-content">
-            <div ui-view class="container-fluid"></div>
         </md-content>
+    </md-sidenav>
+    <div layout="column" layout-align="center center" ng-hide="$root.currentUser">
+        <img src="client/lib/ambulance.png" class="logo" alt="Image"/>
+        <form layout="column" name="loginForm" class="form-center" novalidate>
+            <md-input-container>
+                <label>Nombre de usuario</label>
+                <input ng-model="username" required name="username">
+                <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$dirty">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label>Password</label>
+                <input ng-model="password" required name="password" type="password">
+                <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$dirty">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <label class="error">{{app.error}}</label>
+            <md-button class="md-raised md-primary" ng-click="login()" ng-disabled="loginForm.$invalid">Sign in</md-button>
+        </form>
     </div>
-
-    <div>
-        <md-content class="md-padding">
-            <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="one">
-                    <md-content class="md-padding">
-                        <h1 class="md-display-2">Tab One</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
-                    </md-content>
+    <div layout="column" flex ng-show="$root.currentUser">
+        <div layout="row" flex="10" hide-gt-md>
+                <md-toolbar class="little-content md-primary" layout="row">
+                    <md-button class="md-icon-button" flex ng-click="showLeftMenu()" aria-label="Menu">
+                        <i class="fa fa-bars"></i>
+                    </md-button>
+                    <span flex></span>
+                </md-toolbar>
+        </div>
+        <md-toolbar class="md-primary" hide-sm hide-md flex="10" layout="row">
+            <md-tabs class="secondary-sidenav md-primary" flex="90">
+                <md-tab ng-repeat="module in allowed">
+                    <div demo-directive ></div>
                 </md-tab>
             </md-tabs>
-        </md-content>
-    </div-->
+            <md-button flex="10" class="md-accent"  ng-click="logOut()" aria-label="Menu">
+                Salir
+            </md-button>
+        </md-toolbar>
+        <div ui-view class="controller-content" flex="90"></div>
+    </div>
 </body>

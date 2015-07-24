@@ -1,7 +1,7 @@
 angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor,ModalService) {
 
-        $scope.measures = $meteor.collection(Measures);
+        $scope.measures = $meteor.collection(Measures, false);
         $scope.headers = ['', 'Nombre', 'Simbolo'];
 
         $scope.showTextSearch = true;
@@ -14,7 +14,7 @@ angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','Modal
     }]);
 
 function AddMeasureController($scope,$mdDialog, $meteor, notificationService) {
-    $scope.measures = $meteor.collection(Measures);
+    $scope.measures = $meteor.collection(Measures, false);
     $scope.newMeasure = {};
 
     $scope.save = function() {

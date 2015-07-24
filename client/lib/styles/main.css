@@ -9,7 +9,6 @@ a {
     color: white;
     height:100%;
     width:100%;
-
 }
 
 .title {
@@ -37,6 +36,18 @@ i {
     color: grey;
 }
 
+.badge-letter
+{
+    width:50px;
+    height:50px;
+    border-radius:25px;
+    font-size:30px;
+    color:#fff;
+    line-height:50px;
+    text-align:center;
+    background:yellow
+}
+
 /**TOAST**/
 .md-toast.error {
     background-color: red;
@@ -45,6 +56,8 @@ i {
 .md-toast.success {
     background-color: #40c4ff;
 }
+
+
 
 /**BUTTONS**/
 .main-fab {
@@ -126,7 +139,9 @@ body{
 
 /**TABLE**/
 .center-table{
-    margin: 2%;
+    margin-right: 10%;
+    margin-left: 10%;
+    margin-top: 2%;
     background-color: #fafafa;
 }
 .shadow-z-1 {
@@ -249,7 +264,7 @@ body{
     .table-responsive-vertical > .table > tbody > tr > td {
         background-color: #ffffff;
         display: block;
-        vertical-align: middle;
+        vertical-align: top;
         text-align: right;
     }
     .table-responsive-vertical > .table > tbody > tr > td[data-title]:before {

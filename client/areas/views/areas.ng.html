@@ -1,7 +1,7 @@
 <div ng-controller="AreasListCtrl">
     <div class="main-fab">
-        <md-button class="md-fab md-accent" ng-click="showAddNew($event)">
-            <span class="ion-plus" fill="white"></span>
+        <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="Agregar">
+            <i class="fa fa-plus"></i>
         </md-button>
     </div>
     <md-toolbar layout="column" class="md-tall"><span flex="flex"></span>
@@ -11,151 +11,31 @@
                 </div>
         </div>
     </md-toolbar>
-        <!--table>
+    <div clas="floating-content">
+        <div class="table-responsive-vertical shadow-z-1 center-table">
+            <!-- Table starts here -->
+            <md-subheader class="md-primary" layou="row">
+                1 Item seleccionado
+                <md-button class="md-icon-button" flex  aria-label="Borrar">
+                    <i class="fa fa-trash"></i>
+                </md-button>
+            </md-subheader>
+            <table id="table" class="table table-hover table-mc-light-blue">
                 <thead>
-                <tr class="md-table-headers-row">
+                <tr>
                     <th ng-repeat="h in headers" class="md-table-header">
                         {{h}}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="area in areas" class="md-table-content-row">
-                    <td class="md-table-thumbs"><span class="ion-ios-person"></span></td>
-                    <td class="md-table-content">{{ area.name }}</td>
-                    <td class="md-table-content"><p>{{ area.description}}</p></td>
-                </tr>
-                </tbody>
-        </table-->
-    <div clas="controller-content">
-        <div class="table-responsive-vertical shadow-z-1 center-table">
-            <!-- Table starts here -->
-            <table id="table" class="table table-hover table-mc-light-blue">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Link</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td data-title="ID">1</td>
-                    <td data-title="Name">Material Design Sidebar</td>
-                    <td data-title="Link"><a href="http://codepen.io/zavoloklom/pen/dIgco" target="_blank">Link</a></td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">2</td>
-                    <td data-title="Name">Material Design Tiles</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/wtApI" target="_blank">Link</a>
+                    <td data-title="">
+                        <md-checkbox ng-model="area.selected" aria-label="Area">
+                        </md-checkbox>
                     </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">3</td>
-                    <td data-title="Name">Material Design Animation Timing</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/Jbrho" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">4</td>
-                    <td data-title="Name">Material Design Iconic Font</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/uqCsB" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">4</td>
-                    <td data-title="Name">Material Design Iconic Font</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/uqCsB" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">4</td>
-                    <td data-title="Name">Material Design Iconic Font</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/uqCsB" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">4</td>
-                    <td data-title="Name">Material Design Iconic Font</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/uqCsB" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">4</td>
-                    <td data-title="Name">Material Design Iconic Font</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/uqCsB" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">4</td>
-                    <td data-title="Name">Material Design Iconic Font</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/uqCsB" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">4</td>
-                    <td data-title="Name">Material Design Iconic Font</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/uqCsB" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">4</td>
-                    <td data-title="Name">Material Design Iconic Font</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/uqCsB" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">5</td>
-                    <td data-title="Name">Material Design Typography</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/IkaFL" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">Completed</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">6</td>
-                    <td data-title="Name">Material Design Buttons</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/Gubja" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">In progress</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">7</td>
-                    <td data-title="Name">Material Design Form Elements</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/yaozl" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">In progress</td>
-                </tr>
-                <tr>
-                    <td data-title="ID">8</td>
-                    <td data-title="Name">Material Design Email Template</td>
-                    <td data-title="Link">
-                        <a href="http://codepen.io/zavoloklom/pen/qEVqzx" target="_blank">Link</a>
-                    </td>
-                    <td data-title="Status">In progress</td>
+                    <td data-title="Nombre">{{ area.name }}</td>
+                    <td data-title="Descripcion"><p>{{ area.description}}</p></td>
+                    <md-divider ng-if="!$last"></md-divider>
                 </tr>
                 </tbody>
             </table>

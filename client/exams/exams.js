@@ -3,7 +3,7 @@
  */
 angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
-        $scope.exams = $meteor.collection(Exams);
+        $scope.exams = $meteor.collection(Exams, false);
         $scope.headers = ['', 'Nombre', 'Unidad de medida'];
 
         $scope.showTextSearch = true;
@@ -19,7 +19,7 @@ angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalSer
 function AddExamCtrl($scope, $meteor, notificationService, $mdDialog) {
     $scope.typeEvaluations = $meteor.collection(TypeEvaluation);
     $scope.measures = $meteor.collection(Measures);
-    $scope.exams = $meteor.collection(Exams);
+    $scope.exams = $meteor.collection(Exams, false);
     $scope.newExam = {};
     $scope.targets = new Array();
     $scope.evaluations = new Array();

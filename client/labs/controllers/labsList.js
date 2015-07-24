@@ -3,7 +3,7 @@
  */
 angular.module("sam-1").controller("LabsListCtrl",['$scope','$meteor','$rootScope','notificationService','ModalService',
     function($scope, $meteor,  $rootScope,notificationService, ModalService) {
-        $scope.labs = $meteor.collection(Labs);
+        $scope.labs = $meteor.collection(Labs, false);
 
         $scope.showTextSearch = true;
 
@@ -18,7 +18,7 @@ angular.module("sam-1").controller("LabsListCtrl",['$scope','$meteor','$rootScop
     }]);
 
 function AddLabController($scope,$mdDialog, $meteor, notificationService) {
-    $scope.labs = $meteor.collection(Labs);
+    $scope.labs = $meteor.collection(Labs, false);
     $scope.newLab = {};
     $scope.save = function() {
         $scope.labs.save($scope.newLab).then(function(number) {

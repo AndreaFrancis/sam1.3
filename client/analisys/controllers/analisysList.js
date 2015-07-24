@@ -3,7 +3,7 @@
  */
 angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
-        $scope.analisysList = $meteor.collection(Analisys);
+        $scope.analisysList = $meteor.collection(Analisys, false);
         $scope.headers = ['', 'Nombre'];
 
         $scope.showTextSearch = true;
@@ -18,7 +18,7 @@ angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','Modal
 
 function AddAnalisysController($scope, $meteor, notificationService, $mdDialog) {
 
-    $scope.analisysList = $meteor.collection(Analisys);
+    $scope.analisysList = $meteor.collection(Analisys, false);
     $scope.areas = $meteor.collection(Areas);
     $scope.labs = $meteor.collection(Labs);
     $scope.exams = $meteor.collection(Exams);

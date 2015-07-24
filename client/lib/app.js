@@ -13,28 +13,21 @@ app.controller("AppCtrl",['$scope','$mdSidenav','$rootScope','$state','$meteor',
     $scope.username = '';
     $scope.password = '';
     $scope.modules = $meteor.collection(Modules);
-    $scope.allowed = ['roles','users','areas','labs'];
     if($rootScope.currentUser) {
         $scope.username = $rootScope.currentUser.username;
         $scope.roles =   $rootScope.currentUser.roles;
-        //$scope.allowed = $meteor.collection(function(){
-            return Modules.find({roles: $scope.roles});
-        //});
+        $scope.allowed = $meteor.collection(function(){
+            return Modules.find({roles: {"$in":$scope.roles}});
+        });
     }
 
-    //$scope.showLeftMenu = function(target) {
-      //  $mdSidenav('left').toggle();
-        //$state.go(target.state);
-    //}
+    $scope.showMenu = function(target) {
+        $state.go(target.state);
+        $mdSidenav('left').toggle();
+    }
 
     $scope.showLeftMenu = function() {
-        //$mdSidenav('left').toggle();
-        alert("OJO DE UVA");
-        //$state.go(target.state);
-    }
-
-    $scope.showMenu = function() {
-        alert("OJOSOSS");
+        $mdSidenav('left').toggle();
     }
 
     $scope.logOut = function() {
@@ -52,7 +45,14 @@ app.controller("AppCtrl",['$scope','$mdSidenav','$rootScope','$state','$meteor',
 
 app.directive('demoDirective', function($compile) {
     return {
-        template: '<div><span class="ion-person-stalker"></span><a ng-href="{{module}}">&ensp;{{module}}</a></div>',
+        template: '<div><a ng-href="{{module.state}}">&ensp;{{module.name}}</a></div>',
+        replace: true
+    }
+});
+
+app.directive('mainTex', function($compile) {
+    return {
+        template: '<div>{{module.name}}</div>',
         replace: true
     }
 });

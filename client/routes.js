@@ -2,11 +2,6 @@
  * Created by Andrea on 07/06/2015.
  */
 
-if (Meteor.isClient) {
-    Accounts.ui.config({
-        passwordSignupFields: "USERNAME_ONLY"
-    });
-}
 angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locationProvider',
     function($urlRouterProvider, $stateProvider, $locationProvider){
         $locationProvider.html5Mode(true);
@@ -48,14 +43,16 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
             .state('roles', {
                 url: '/roles',
                 templateUrl: 'client/roles/roles.ng.html',
-                controller: 'RolesListCtrl',
+                controller: 'RolesListCtrl'
+                /*
+                ,
                 resolve: {
                     "currentUser": ["$meteor", function($meteor){
                         return $meteor.requireValidUser(function(user) {
                             return user.username==='maria';
                         });
                     }]
-                }
+                }*/
             });
         $urlRouterProvider.otherwise("/start");
     }]);
