@@ -1,20 +1,20 @@
 /**
  * Created by Andrea on 06/06/2015.
  */
-var app = angular.module('sam-1',['angular-meteor','ui.router','ngMaterial', 'ngMessages']);
+var app = angular.module('sam-1',['angular-meteor','ui.router','ngMaterial', 'ngMessages', 'mdDateTime']);
 app.config(function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('indigo')
             .accentPalette('pink');
 });
 
-app.controller("AppCtrl",['$scope','$mdSidenav','$rootScope','$state','$meteor', function($scope,$mdSidenav,$rootScope, $state, $meteor) {
+app.controller("AppCtrl",['$scope','$mdSidenav','$rootScope','$state','$meteor',
+    function($scope,$mdSidenav,$rootScope, $state, $meteor) {
 
     $scope.username = '';
     $scope.password = '';
     $scope.modules = $meteor.collection(Modules);
     if($rootScope.currentUser) {
-        $scope.username = $rootScope.currentUser.username;
         $scope.roles =   $rootScope.currentUser.roles;
         $scope.allowed = $meteor.collection(function(){
             return Modules.find({roles: {"$in":$scope.roles}});
@@ -74,6 +74,16 @@ app.service("notificationService", function($mdToast){
     }
 });
 
+app.service("ProfileService", function($rootScope) {
+
+    this.getRol = function() {
+        return $rootScope.currenUser.roles;
+    };
+    this.getModules = function() {
+
+    }
+});
+
 app.service("AuthorizationService", function(){
     this.showError = function(msg) {
         $mdToast.show({
@@ -100,3 +110,80 @@ app.service("ModalService", function($mdDialog){
         });
     }
 });
+
+
+/**Router config**/
+angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locationProvider',
+    function($urlRouterProvider, $stateProvider, $locationProvider){
+        $locationProvider.html5Mode(true);
+
+        $stateProvider
+            .state('labs', {
+                url: '/labs',
+                templateUrl: 'client/labs/views/labs-list.ng.html',
+                controller: 'LabsListCtrl'
+            })
+            .state('users', {
+                url: '/users',
+                templateUrl: 'client/users/views/users-list.ng.html',
+                controller: 'UsersListCtrl'
+            })
+            .state('start', {
+                url: '/start',
+                templateUrl: 'client/starter/start.ng.html'
+            })
+            .state('measures', {
+                url: '/measures',
+                templateUrl: 'client/measures/measures.ng.html',
+                controller: 'MeasuresListCtrl'
+            })
+            .state('analisys', {
+                url: '/analisys',
+                templateUrl: 'client/analisys/views/analisys.ng.html',
+                controller: 'AnalisysListCtrl'
+            })
+            .state('areas', {
+                url: '/areas',
+                templateUrl: 'client/areas/views/areas.ng.html',
+                controller: 'AreasListCtrl'
+            })
+            .state('exams', {
+                url: '/exams',
+                templateUrl: 'client/exams/exams.ng.html',
+                controller: 'ExamsListCtrl'
+            })
+            .state('roles', {
+                url: '/roles',
+                templateUrl: 'client/roles/roles.ng.html',
+                controller: 'RolesListCtrl'
+                /*
+                 ,
+                 resolve: {
+                 "currentUser": ["$meteor", function($meteor){
+                 return $meteor.requireValidUser(function(user) {
+                 return user.username==='maria';
+                 });
+                 }]
+                 }*/
+            })
+            .state('modules', {
+                url: '/modules',
+                templateUrl: 'client/modules/modules.ng.html',
+                controller: 'ModulesListCtrl'
+                /*
+                 ,
+                 resolve: {
+                 "currentUser": ["$meteor", function($meteor){
+                 return $meteor.requireValidUser(function(user) {
+                 return user.username==='maria';
+                 });
+                 }]
+                 }*/
+            })
+            .state('patients', {
+                url: '/patients',
+                templateUrl: 'client/patients/patients.ng.html',
+                controller: 'PatientsListCtrl'
+            });
+        $urlRouterProvider.otherwise("/start");
+    }]);

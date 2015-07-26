@@ -1,0 +1,67 @@
+<md-dialog aria-label="Nuevo Modulo" layout="column">
+    <form name="newModuleForm" novalidate layout="column">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Nuevo Modulo</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="sticky-container">
+            <md-input-container flex>
+                <label>Nombre</label>
+                <input ng-model="newModule.name" required name="name">
+                <div ng-messages="newModuleForm.name.$error" ng-if="newModuleForm.name.$dirty">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <md-input-container flex>
+                <label>Estado</label>
+                <input ng-model="newModule.state" required name="state">
+                <div ng-messages="newModuleForm.state.$error" ng-if="newModuleForm.state.$dirty">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <md-input-container flex>
+                <label>Nombre del icono</label>
+                <input ng-model="newModule.icon" required name="state">
+                <div ng-messages="newModuleForm.icon.$error" ng-if="newModuleForm.icon.$dirty">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+
+            <fieldset class="standar" ng-disabled="newModuleForm.$invalid">
+                <legend>Roles</legend>
+                <div layout="row">
+                    <div layout="column" flex="70">
+                        <div layout="row">
+                            <md-select placeholder="Roles" ng-model="selectedRol" ng-change="selectChanged()" name="rolName">
+                                <md-option ng-repeat="rol in roles" ng-value="rol.name">{{rol.name}}</md-option>
+                            </md-select>
+                            <md-button class="md-primary" ng-click="saveRol()" ng-disabled="newModuleForm.rolName.$invalid">
+                                &ensp;Agregar&ensp;&ensp;<span class="ion-chevron-right"></span>
+                            </md-button>
+                        </div>
+                    </div>
+                    <md-list flex="30">
+                        <md-subheader class="md-no-sticky">Roles permitidos</md-subheader>
+                        <md-list-item ng-repeat="rol in selectedRoles">
+                            <div class="md-list-item-text">
+                              {{rol}}
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </div>
+            </fieldset>
+
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="save()" ng-disabled="newModuleForm.$invalid" type="submit">
+                Guardar
+            </md-button>
+            <md-button ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </div>
+    </form>
+</md-dialog>

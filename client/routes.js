@@ -2,60 +2,6 @@
  * Created by Andrea on 07/06/2015.
  */
 
-angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locationProvider',
-    function($urlRouterProvider, $stateProvider, $locationProvider){
-        $locationProvider.html5Mode(true);
-        $stateProvider
-            .state('labs', {
-                url: '/labs',
-                templateUrl: 'client/labs/views/labs-list.ng.html',
-                controller: 'LabsListCtrl'
-            })
-            .state('users', {
-                url: '/users',
-                templateUrl: 'client/users/views/users-list.ng.html',
-                controller: 'UsersListCtrl'
-            })
-            .state('start', {
-                url: '/start',
-                templateUrl: 'client/starter/start.ng.html'
-            })
-            .state('measures', {
-                url: '/measures',
-                templateUrl: 'client/measures/measures.ng.html',
-                controller: 'MeasuresListCtrl'
-            })
-            .state('analisys', {
-                url: '/analisys',
-                templateUrl: 'client/analisys/views/analisys.ng.html',
-                controller: 'AnalisysListCtrl'
-            })
-            .state('areas', {
-                url: '/areas',
-                templateUrl: 'client/areas/views/areas.ng.html',
-                controller: 'AreasListCtrl'
-            })
-            .state('exams', {
-                url: '/exams',
-                templateUrl: 'client/exams/exams.ng.html',
-                controller: 'ExamsListCtrl'
-            })
-            .state('roles', {
-                url: '/roles',
-                templateUrl: 'client/roles/roles.ng.html',
-                controller: 'RolesListCtrl'
-                /*
-                ,
-                resolve: {
-                    "currentUser": ["$meteor", function($meteor){
-                        return $meteor.requireValidUser(function(user) {
-                            return user.username==='maria';
-                        });
-                    }]
-                }*/
-            });
-        $urlRouterProvider.otherwise("/start");
-    }]);
 
 $(document).ready(function() {
 

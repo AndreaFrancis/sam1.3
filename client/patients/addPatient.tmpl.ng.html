@@ -1,0 +1,36 @@
+<md-dialog aria-label="Nuevo Paciente" layout="column">
+    <form name="newPatientForm" novalidate layout="column">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Nuevo paciente</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="sticky-container">
+            <md-input-container flex>
+                <label>Nombre</label>
+                <input ng-model="newPatient.name" required name="name">
+                <div ng-messages="newPatientForm.name.$error" ng-if="newPatientForm.name.$dirty">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <md-input-container flex>
+                <label>Apellidos</label>
+                <input ng-model="newPatient.lastName" required name="lastName">
+                <div ng-messages="newPatientForm.lastName.$error" ng-if="newPatientForm.lastName.$dirty">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <time-date-picker ng-model="newPatient.birthDate" display-mode="date"></time-date-picker>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="save()" ng-disabled="newPatientForm.$invalid" type="submit">
+                Guardar
+            </md-button>
+            <md-button ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </div>
+    </form>
+</md-dialog>
