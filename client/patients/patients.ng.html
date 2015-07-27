@@ -1,25 +1,62 @@
 <div ng-controller="PatientsListCtrl">
-    <div class="main-fab">
+    <div class="main-fab" ng-show="showAllPatients">
         <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="Agregar">
             <i class="fa fa-plus"></i>
         </md-button>
     </div>
+    <div class="main-fab" ng-hide="showAllPatients">
+        <md-button class="md-fab md-accent" ng-click="addStudy($event)" aria-label="Agregar">
+            <i class="fa fa-flask"></i>
+        </md-button>
+    </div>
+
     <md-toolbar layout="column" class="md-tall"><span flex="flex"></span>
         <div class="md-toolbar-tools">
-            <div class="title">
-                <span>Administracion de Pacientes</span>
+            <div class="title" ng-show="showAllPatients">
+                <span>Administracion de Pacientes</span>  {{demo.isOpen}}
             </div>
+            <div class="title" ng-hide="showAllPatients">
+                <md-button class="md-icon-button" flex  aria-label="Atras" ng-click="showAllPatients=true">
+                    <i class="fa fa-arrow-left"></i>
+                </md-button>
+                {{currentPatient.name}} {{currentPatient.lastName}}
+            </div>
+
         </div>
     </md-toolbar>
+
+    <div ng-hide="showAllPatients" class="md-padding">
+        <md-card>
+            <md-card-content>
+                <h2 class="md-title">Codigo de paciente</h2>
+                <p>
+                    C3233-6
+                </p>
+                <h2 class="md-title">Nombre completo</h2>
+                <p>
+                    Andrea Soria Jimenez
+                </p>
+                <h2 class="md-title">Edad</h2>
+                <p>
+                    22
+                </p>
+                <h2 class="md-title">Grupo sanguineo</h2>
+                <p>
+                    ARH +
+                </p>
+            </md-card-content>
+        </md-card>
+        <br/>
+    </div>
     <div clas="floating-content">
-        <div class="table-responsive-vertical shadow-z-1 center-table">
-            <!-- Table starts here -->
-            <md-subheader class="md-primary" layou="row">
+        <div class="table-responsive-vertical shadow-z-1 center-table" ng-show="showAllPatients">
+            <md-subheader class="md-primary" layou="row" ng-show="showAllPatients">
                 1 Item seleccionado
                 <md-button class="md-icon-button" flex  aria-label="Borrar">
                     <i class="fa fa-trash"></i>
                 </md-button>
             </md-subheader>
+            <!-- Table starts here -->
             <table id="table" class="table table-hover table-mc-light-blue">
                 <thead>
                 <tr>
@@ -28,7 +65,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="patient in patients" class="md-table-content-row">
+                <tr ng-repeat="patient in patients" class="md-table-content-row" ng-click="showPatient(patient)">
                     <td data-title="">
                         <md-checkbox ng-model="patient.selected" aria-label="Paciente">
                         </md-checkbox>

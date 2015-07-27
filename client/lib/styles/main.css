@@ -105,8 +105,13 @@ i {
 }
 /**DIALOG**/
 
-md-dialog {
+.md-medium-dialog{
     min-width: 70%;
+}
+
+.md-big-dialog {
+    min-width: 95%;
+    min-height: 95%;
 }
 
 /**FORMS**/

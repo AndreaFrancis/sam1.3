@@ -1,0 +1,65 @@
+<md-dialog aria-label="Nuevo Estudio" layout="column" class="md-big-dialog">
+    <form name="newPatientForm" novalidate layout="column">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Nuevo Estudio</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="sticky-container">
+            <md-input-container flex>
+                <label>Nombre</label>
+                <input ng-model="newPatient.name" required name="name">
+                <div ng-messages="newPatientForm.name.$error" ng-if="newPatientForm.name.$dirty">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <div layout="row">
+                <div flex="50">
+                    <section>
+                        <md-toolbar md-scroll-shrink>
+                            <div class="md-toolbar-tools">
+                                <h3>
+                                    <span>Analisis disponibles</span>
+                                </h3>
+                            </div>
+                        </md-toolbar>
+                        <div ng-repeat="analisys in analisysList">
+                            <md-subheader class="md-primary">{{analisys.name}}</md-subheader>
+
+                            <md-list layout-padding>
+                                <md-list-item class="md-3-line" ng-repeat="exam in analisys.examsObj">
+                                    <div class="md-list-item-text">
+                                        <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1">
+                                            {{exam.name}}
+                                        </md-checkbox>
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                    </section>
+                </div>
+                <div flex="50">
+                    <section>
+                        <md-toolbar md-scroll-shrink>
+                            <div class="md-toolbar-tools">
+                                <h3>
+                                    <span>Analisis seleccionados</span>
+                                </h3>
+                            </div>
+                        </md-toolbar>
+                    </section>
+                </div>
+            </div>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button class="md-primary" ng-click="save()" ng-disabled="newPatientForm.$invalid" type="submit">
+                Guardar
+            </md-button>
+            <md-button ng-click="cancel()">
+                Cancelar
+            </md-button>
+        </div>
+    </form>
+</md-dialog>
