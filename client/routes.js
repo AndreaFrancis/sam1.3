@@ -1,6 +1,92 @@
 /**
  * Created by Andrea on 07/06/2015.
  */
+/**Router config**/
+angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locationProvider',
+    function($urlRouterProvider, $stateProvider, $locationProvider){
+        $locationProvider.html5Mode(true);
+
+        $stateProvider
+            .state('labs', {
+                url: '/labs',
+                templateUrl: 'client/labs/views/labs-list.ng.html',
+                controller: 'LabsListCtrl'
+            })
+            .state('users', {
+                url: '/users',
+                templateUrl: 'client/users/views/users-list.ng.html',
+                controller: 'UsersListCtrl'
+            })
+            .state('start', {
+                url: '/start',
+                templateUrl: 'client/starter/start.ng.html'
+            })
+            .state('measures', {
+                url: '/measures',
+                templateUrl: 'client/measures/measures.ng.html',
+                controller: 'MeasuresListCtrl'
+            })
+            .state('analisys', {
+                url: '/analisys',
+                templateUrl: 'client/analisys/views/analisys.ng.html',
+                controller: 'AnalisysListCtrl'
+            })
+            .state('areas', {
+                url: '/areas',
+                templateUrl: 'client/areas/views/areas.ng.html',
+                controller: 'AreasListCtrl'
+            })
+            .state('exams', {
+                url: '/exams',
+                templateUrl: 'client/exams/exams.ng.html',
+                controller: 'ExamsListCtrl'
+            })
+            .state('mtests', {
+                url: '/mtests',
+                templateUrl: 'client/mtests/mtests-list.ng.html',
+                controller: 'TestsListCtrl'
+            })
+            .state('roles', {
+                url: '/roles',
+                templateUrl: 'client/roles/roles.ng.html',
+                controller: 'RolesListCtrl'
+                /*
+                 ,
+                 resolve: {
+                 "currentUser": ["$meteor", function($meteor){
+                 return $meteor.requireValidUser(function(user) {
+                 return user.username==='maria';
+                 });
+                 }]
+                 }*/
+            })
+            .state('modules', {
+                url: '/modules',
+                templateUrl: 'client/modules/modules.ng.html',
+                controller: 'ModulesListCtrl'
+                /*
+                 ,
+                 resolve: {
+                 "currentUser": ["$meteor", function($meteor){
+                 return $meteor.requireValidUser(function(user) {
+                 return user.username==='maria';
+                 });
+                 }]
+                 }*/
+            })
+            .state('patients', {
+                url: '/patients',
+                templateUrl: 'client/patients/patients.ng.html',
+                controller: 'PatientsListCtrl'
+            })
+            .state('patient', {
+                url: '/patient/:patientId',
+                templateUrl: 'client/patients/patient-details.ng.html',
+                controller: 'PatientCtrl'
+            });
+        $urlRouterProvider.otherwise("/start");
+    }]);
+
 
 
 $(document).ready(function() {
