@@ -24,31 +24,31 @@
                 </md-select>
             </div>
             <fieldset class="standar" ng-disabled="newAnalisysForm.name.$invalid">
-                <legend>Sub Analisis</legend>
+                <legend>Pruebas</legend>
                 <div layout="row">
                     <div layout="column">
-                        <md-select placeholder="Sub analisis" ng-model="selectedAnalisys">
-                            <md-option ng-repeat="subanalisys in subAnalisysList" ng-value="subanalisys">{{subanalisys.name}}</md-option>
+                        <md-select placeholder="Pruebas" ng-model="selectedTest">
+                            <md-option ng-repeat="test in tests" ng-value="test">{{test.name}}</md-option>
                         </md-select>
-                        <md-button class="md-primary" ng-click="saveSubAnalisis()">
+                        <md-button class="md-primary" ng-click="saveTest()">
                             &ensp;Agregar&ensp;&ensp;<span class="ion-chevron-right"></span>
                         </md-button>
                     </div>
                     <md-list>
-                        <md-subheader class="md-no-sticky">Sub Analisis</md-subheader>
-                        <md-list-item ng-repeat="subanalisys in selectedSubAnalisys">
+                        <md-subheader class="md-no-sticky">Pruebas seleccionadas</md-subheader>
+                        <md-list-item ng-repeat="test in selectedTests">
                             <div class="md-list-item-text">
-                                {{subanalisys.name}}
+                                {{test.name}}
                             </div>
                         </md-list-item>
                     </md-list>
                 </div>
             </fieldset>
             <fieldset class="standar" ng-disabled="newAnalisysForm.name.$invalid">
-                <legend>Pruebas</legend>
+                <legend>Examenes</legend>
                 <div layout="row">
                     <div layout="column">
-                            <md-select placeholder="Prueba" ng-model="selectedExam">
+                            <md-select placeholder="Examen" ng-model="selectedExam">
                                 <md-option ng-repeat="exam in exams" ng-value="exam">{{exam.name}}</md-option>
                             </md-select>
                             <md-button class="md-primary" ng-click="saveExam()">
@@ -56,7 +56,7 @@
                             </md-button>
                     </div>
                     <md-list>
-                        <md-subheader class="md-no-sticky">Evaluaciones</md-subheader>
+                        <md-subheader class="md-no-sticky">Examenes seleccionados</md-subheader>
                         <md-list-item ng-repeat="exam in selectedExams">
                             <div class="md-list-item-text">
                                 {{exam.name}}

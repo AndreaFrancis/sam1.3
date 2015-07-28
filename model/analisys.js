@@ -3,3 +3,4 @@
  */
 Analisys = new Mongo.Collection("Analisys");
 Ground.Collection(Analisys,'analisys');
+

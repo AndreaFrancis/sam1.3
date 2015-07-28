@@ -1,0 +1,41 @@
+<div>
+    <div class="main-fab">
+        <md-button class="md-fab md-accent" ng-click="addStudy($event)" aria-label="Agregar">
+            <i class="fa fa-flask"></i>
+        </md-button>
+    </div>
+    <md-toolbar layout="column" class="md-tall"><span flex="flex"></span>
+        <div class="md-toolbar-tools">
+            <div class="title" >
+                <md-button class="md-icon-button" flex  aria-label="Atras" ng-click="goPatients()">
+                    <i class="fa fa-arrow-left"></i>
+                </md-button>
+              {{patient.name}} {{patient.lastName}}
+            </div>
+        </div>
+    </md-toolbar>
+
+    <div class="md-padding">
+        <md-card>
+            <md-card-content>
+                <h2 class="md-title">Codigo de paciente</h2>
+                <p>
+                    C3233-6
+                </p>
+                <h2 class="md-title">Nombre completo</h2>
+                <p>
+                    Andrea Soria Jimenez
+                </p>
+                <h2 class="md-title">Edad</h2>
+                <p>
+                    22
+                </p>
+                <h2 class="md-title">Grupo sanguineo</h2>
+                <p>
+                    ARH +
+                </p>
+            </md-card-content>
+        </md-card>
+        <br/>
+        </div>
+</div>

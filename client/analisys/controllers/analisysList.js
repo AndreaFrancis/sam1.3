@@ -22,21 +22,22 @@ function AddAnalisysController($scope, $meteor, notificationService, $mdDialog) 
     $scope.areas = $meteor.collection(Areas);
     $scope.labs = $meteor.collection(Labs);
     $scope.exams = $meteor.collection(Exams);
+    $scope.tests = $meteor.collection(Tests);
     $scope.selectedExam = {};
     $scope.selectedExams = [];
     $scope.selectedExamsIds = [];
-    $scope.selectedSubAnalisysIds = [];
+    $scope.selecetdTestsIds = [];
     $scope.subAnalisysList = $meteor.collection(Analisys);
-    $scope.selectedSubAnalisys = [];
-    $scope.selectedAnalisys = {};
+    $scope.selectedTests = [];
+    $scope.selectedTest = {};
 
     $scope.save = function() {
         var examsToJson = angular.toJson($scope.selectedExamsIds);
         var examsToArray = JSON.parse(examsToJson);
         $scope.newAnalisys.exams = examsToArray;
-        var analisysToJson = angular.toJson($scope.selectedSubAnalisysIds);
-        var analisysToArray = JSON.parse(analisysToJson);
-        $scope.newAnalisys.analisys = analisysToArray;
+        var testsToJson = angular.toJson($scope.selecetdTestsIds);
+        var testsToArray = JSON.parse(testsToJson);
+        $scope.newAnalisys.tests = testsToArray;
 
 
         $scope.analisysList.save($scope.newAnalisys).then(function(number) {
@@ -54,9 +55,9 @@ function AddAnalisysController($scope, $meteor, notificationService, $mdDialog) 
         $scope.selectedExamsIds.push($scope.selectedExam._id);
     }
 
-    $scope.saveSubAnalisis = function() {
-        $scope.selectedSubAnalisys.push($scope.selectedAnalisys);
-        $scope.selectedSubAnalisysIds.push($scope.selectedAnalisys._id);
+    $scope.saveTest = function() {
+        $scope.selectedTests.push($scope.selectedTest);
+        $scope.selecetdTestsIds.push($scope.selectedTest._id);
     }
 
     $scope.cancel = function() {

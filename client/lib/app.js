@@ -152,6 +152,11 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                 templateUrl: 'client/exams/exams.ng.html',
                 controller: 'ExamsListCtrl'
             })
+            .state('mtests', {
+                url: '/mtests',
+                templateUrl: 'client/mtests/mtests-list.ng.html',
+                controller: 'TestsListCtrl'
+            })
             .state('roles', {
                 url: '/roles',
                 templateUrl: 'client/roles/roles.ng.html',
@@ -184,6 +189,11 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                 url: '/patients',
                 templateUrl: 'client/patients/patients.ng.html',
                 controller: 'PatientsListCtrl'
+            })
+            .state('patient', {
+                url: '/patient/:patientId',
+                templateUrl: 'client/patients/patient-details.ng.html',
+                controller: 'PatientCtrl'
             });
         $urlRouterProvider.otherwise("/start");
     }]);
