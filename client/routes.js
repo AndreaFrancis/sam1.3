@@ -90,7 +90,6 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
 
 
 $(document).ready(function() {
-
     var table = $('#table');
 
     // Table bordered

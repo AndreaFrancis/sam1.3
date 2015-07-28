@@ -53,4 +53,13 @@ angular.module('sam-1').service("ModalService", function($mdDialog){
             targetEvent : event
         });
     }
+
+    this.showModalWithParams = function(controller, urlTemplate, event, params) {
+        $mdDialog.show({
+            controller: controller,
+            templateUrl: urlTemplate,
+            targetEvent : event,
+            locals: params
+        });
+    }
 });

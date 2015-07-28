@@ -10,7 +10,7 @@
                 <md-button class="md-icon-button" flex  aria-label="Atras" ng-click="goPatients()">
                     <i class="fa fa-arrow-left"></i>
                 </md-button>
-              {{patient.name}} {{patient.lastName}}
+              {{patient.name}} {{patient.lastName}} {{patient.lastNameMother}}
             </div>
         </div>
     </md-toolbar>
@@ -18,21 +18,25 @@
     <div class="md-padding">
         <md-card>
             <md-card-content>
-                <h2 class="md-title">Codigo de paciente</h2>
+                <h2 class="md-title">Codigo de paciente:</h2>
                 <p>
-                    C3233-6
+                    {{patient._id}}
                 </p>
-                <h2 class="md-title">Nombre completo</h2>
+                <h2 class="md-title">Direccion: </h2>
                 <p>
-                    Andrea Soria Jimenez
+                    {{patient.address}}
+                </p>
+                <h2 class="md-title">Telefono:</h2>
+                <p>
+                    {{patient.phone}}
+                </p>
+                <h2 class="md-title">Genero:</h2>
+                <p>
+                    {{patient.gender=='F'? 'Femenino': 'Masculino'}}
                 </p>
                 <h2 class="md-title">Edad</h2>
                 <p>
-                    22
-                </p>
-                <h2 class="md-title">Grupo sanguineo</h2>
-                <p>
-                    ARH +
+                    {{patient.birthdate}}
                 </p>
             </md-card-content>
         </md-card>

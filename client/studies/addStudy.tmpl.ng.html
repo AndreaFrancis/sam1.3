@@ -8,8 +8,8 @@
         </md-toolbar>
         <md-dialog-content class="sticky-container">
             <md-input-container flex>
-                <label>Nombre</label>
-                <input ng-model="newPatient.name" required name="name">
+                <label>Nombre del paciente</label>
+                <input ng-model="patient.name" required name="name">
                 <div ng-messages="newPatientForm.name.$error" ng-if="newPatientForm.name.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
                 </div>

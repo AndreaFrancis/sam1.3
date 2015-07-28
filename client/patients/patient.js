@@ -10,12 +10,15 @@ angular.module("sam-1").controller("PatientCtrl", ['$scope', '$stateParams','$me
         }
 
         $scope.addStudy = function($event) {
-            ModalService.showModal(AddStudyController, 'client/studies/addStudy.tmpl.ng.html', $event);
+            ModalService.showModalWithParams(AddStudyController, 'client/studies/addStudy.tmpl.ng.html', $event, {patient:$scope.patient});
         }
 
     }]);
 
-function AddStudyController($scope, $mdDialog, $meteor, notificationService) {
+function AddStudyController($scope, $mdDialog, $meteor, notificationService, patient) {
+    if(patient){
+        $scope.patient = patient;
+    }
     $scope.studies = $meteor.collection(Studies, false);
     $scope.analisysList = $meteor.collection(function() {
         return Analisys.find({}, {
@@ -123,7 +126,8 @@ function AddStudyController($scope, $mdDialog, $meteor, notificationService) {
                 study.analisys.push(component);
             }
         });
-
+        study.creationDate = new Date();
+        study.patient = $scope.patient._id;
         $scope.studies.save(study).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el estudio");
         }, function(error){
