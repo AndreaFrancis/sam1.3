@@ -4,7 +4,7 @@
 angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
         $scope.analisysList = $meteor.collection(Analisys, false);
-        $scope.headers = ['', 'Nombre'];
+        $scope.headers = ['', 'Nombre', 'Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
@@ -12,6 +12,14 @@ angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','Modal
         }
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
+        }
+
+        $scope.delete = function(analisys) {
+
+        }
+
+        $scope.show = function(analisys) {
+            alert(analisys);
         }
 
     }]);

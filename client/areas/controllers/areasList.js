@@ -7,7 +7,7 @@
 angular.module("sam-1").controller("AreasListCtrl",['$scope','$meteor','notificationService','ModalService',
     function($scope, $meteor,notificationService, ModalService) {
         $scope.areas = $meteor.collection(Areas, false);
-        $scope.headers = ['', 'Nombre', 'Descripcion'];
+        $scope.headers = ['', 'Nombre', 'Descripcion', 'Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
@@ -15,6 +15,14 @@ angular.module("sam-1").controller("AreasListCtrl",['$scope','$meteor','notifica
         }
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
+        }
+
+        $scope.delete = function(area) {
+
+        }
+
+        $scope.show = function(area) {
+            alert(area);
         }
     }]);
 

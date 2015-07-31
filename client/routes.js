@@ -83,6 +83,11 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                 url: '/patient/:patientId',
                 templateUrl: 'client/patients/patient-details.ng.html',
                 controller: 'PatientCtrl'
+            })
+            .state('studies', {
+                url: '/studies',
+                templateUrl: 'client/studies/studies.ng.html',
+                controller: 'StudiesListCtrl'
             });
         $urlRouterProvider.otherwise("/start");
     }]);

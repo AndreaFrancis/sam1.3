@@ -25,27 +25,39 @@
                       <div ng-message="required">*Campo obligatorio</div>
                     </div>
               </md-input-container>
-            <md-input-container flex>
-                <label>Nombre de usuario</label>
-                <input ng-model="newUser.username" required  name="username">
-                <div ng-messages="newUserForm.username.$error">
-                    <div ng-message="required">*Campo obligatorio</div>
+            <div layout="row">
+                <md-input-container flex>
+                    <label>Nombre de usuario</label>
+                    <input ng-model="newUser.username" required  name="username">
+                    <div ng-messages="newUserForm.username.$error">
+                        <div ng-message="required">*Campo obligatorio</div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Password</label>
+                    <input ng-model="newUser.password" required type="password" name="password">
+                    <div ng-messages="newUserForm.password.$error">
+                        <div ng-message="required">*Campo obligatorio</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <input type="file" custom-on-change="uploadFile" />
+            <div layout="row">
+                <div flex>
+                    <img src="{{image}}"  accept="image/*" required class="md-avatar"/>
                 </div>
-            </md-input-container>
-              <md-input-container flex>
-                <label>Password</label>
-                <input ng-model="newUser.password" required type="password" name="password">
-                <div ng-messages="newUserForm.password.$error">
-                    <div ng-message="required">*Campo obligatorio</div>
-                </div>
-            </md-input-container>
-            <md-select placeholder="Rol" ng-model="selectedRol">
-                <md-option ng-repeat="rol in roles" ng-value="rol.name">{{rol.name}}</md-option>
-            </md-select>
+
+
+                <md-select placeholder="Rol" ng-model="selectedRol" flex>
+                    <md-option ng-repeat="rol in roles" ng-value="rol.name">{{rol.name}}</md-option>
+                </md-select>
+
+            </div>
+
         </md-dialog-content>
         <div class="md-actions" layout="row">
             <span flex></span>
-            <md-button class="md-primary" ng-click="save()" ng-disabled="newUserForm.$invalid" type="submit">
+            <md-button class="md-primary" ng-click="save(newUser)" ng-disabled="newUserForm.$invalid" type="submit">
                 Guardar
             </md-button>
             <md-button ng-click="cancel()">

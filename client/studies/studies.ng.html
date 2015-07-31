@@ -1,0 +1,14 @@
+<div>
+    <div class="main-fab">
+        <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="Agregar">
+            <i class="fa fa-plus"></i>
+        </md-button>
+    </div>
+    <div layout="column" layout-fill style="padding-bottom: 32px;" class="sub-content">
+        <md-whiteframe class="md-whiteframe-z1" ng-repeat="study in studies | orderBy: '-creationDate'">
+            <h3>Paciente: {{study.patientObj.name}} {{study.patientObj.lastName}} {{study.patientObj.lastNameMother}}</h3>
+            <h4>Creado por: {{study.creatorName}}</h4>
+            <p>{{study.creationDate.toLocaleString()}}</p>
+        </md-whiteframe>
+    </div>
+</div>

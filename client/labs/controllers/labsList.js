@@ -14,7 +14,16 @@ angular.module("sam-1").controller("LabsListCtrl",['$scope','$meteor','$rootScop
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
         }
-        $scope.headers = ['', 'Nombre', 'Descripcion'];
+
+        $scope.delete = function(lab) {
+
+        }
+
+        $scope.show = function(lab) {
+            alert(lab);
+        }
+        $scope.headers = ['', 'Nombre', 'Descripcion', 'Acciones'];
+
     }]);
 
 function AddLabController($scope,$mdDialog, $meteor, notificationService) {

@@ -14,6 +14,40 @@
                     <div ng-message="required">*Campo obligatorio</div>
                 </div>
             </md-input-container>
+
+            <div>
+                <md-autocomplete
+                        ng-disabled="isDisabled"
+                        md-no-cache="noCache"
+                        md-selected-item="selectedItem"
+                        md-search-text-change="searchTextChange(searchText)"
+                        md-search-text="searchText"
+                        md-selected-item-change="selectedItemChange(item)"
+                        md-items="item in querySearch(searchText)"
+                        md-item-text="item.name"
+                        md-min-length="0"
+                        placeholder="Pick an Angular repository"
+                        md-menu-class="autocomplete-custom-template">
+                    <md-item-template>
+                        <span class="item-title">
+                            <span> {{item.name}} </span>
+                        </span>
+                        <span class="item-metadata">
+                            <span class="item-metastat">
+                                <strong>{{item.watchers}}</strong> watchers
+                            </span>
+                            <span class="item-metastat">
+                                <strong>{{item.forks}}</strong> forks
+                            </span>
+                        </span>
+                    </md-item-template>
+                </md-autocomplete>
+            </div>
+
+            <md-input-container flex ng-hide="isDoctor">
+                <label>Doctor</label>
+                <input ng-model="doctor" required name="doctor">
+            </md-input-container>
             <md-content layout-padding>
                     <ul>
                        <li ng-repeat="analisys in analisysList">

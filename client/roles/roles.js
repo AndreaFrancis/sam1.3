@@ -5,7 +5,7 @@
 angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notificationService','ModalService',
     function($scope, $meteor,notificationService, ModalService) {
         $scope.roles = $meteor.collection(RolesData, false);
-        $scope.headers = ['', 'Nombre'];
+        $scope.headers = ['', 'Nombre', 'Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
@@ -13,6 +13,14 @@ angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notifica
         }
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
+        }
+
+        $scope.delete = function(rol) {
+
+        }
+
+        $scope.show = function(rol) {
+            alert(user);
         }
     }]);
 

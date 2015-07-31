@@ -4,7 +4,7 @@
 angular.module("sam-1").controller("TestsListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
         $scope.tests = $meteor.collection(Tests, false);
-        $scope.headers = ['', 'Nombre', 'Unidad de medida'];
+        $scope.headers = ['', 'Nombre', 'Unidad de medida','Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
@@ -14,6 +14,13 @@ angular.module("sam-1").controller("TestsListCtrl",['$scope','$meteor','ModalSer
             $scope.showTextSearch = !$scope.showTextSearch;
         }
 
+        $scope.delete = function(test) {
+
+        }
+
+        $scope.show = function(test) {
+            alert(test);
+        }
     }]);
 
 function AddTestCtrl($scope, $meteor, notificationService, $mdDialog) {

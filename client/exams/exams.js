@@ -4,7 +4,7 @@
 angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
         $scope.exams = $meteor.collection(Exams, false);
-        $scope.headers = ['', 'Nombre'];
+        $scope.headers = ['', 'Nombre','Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
@@ -12,6 +12,14 @@ angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalSer
         }
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
+        }
+
+        $scope.delete = function(exam) {
+
+        }
+
+        $scope.show = function(exam) {
+            alert(exam);
         }
 
     }]);

@@ -5,22 +5,9 @@
             <i class="fa fa-plus"></i>
         </md-button>
     </div>
-    <md-toolbar layout="column" class="md-tall"><span flex="flex"></span>
-        <div class="md-toolbar-tools">
-            <div class="title">
-                <span>Administracion de usuarios</span>
-            </div>
-        </div>
-    </md-toolbar>
-    <div clas="floating-content">
+    <div class="sub-content">
         <div class="table-responsive-vertical shadow-z-1 center-table">
             <!-- Table starts here -->
-            <md-subheader class="md-primary" layou="row">
-                1 Item seleccionado
-                <md-button class="md-icon-button" flex  aria-label="Borrar">
-                    <i class="fa fa-trash"></i>
-                </md-button>
-            </md-subheader>
             <table id="table" class="table table-hover table-mc-light-blue">
                 <thead>
                 <tr>
@@ -29,20 +16,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="user in users" class="md-table-content-row">
+                <tr ng-repeat="user in users" class="md-table-content-row" ng-click="show(user)">
                     <td data-title="">
-                        <md-checkbox ng-model="user.selected" aria-label="Area">
-                        </md-checkbox>
+                        <img ng-src="{{user.profile.image}}" class="md-avatar" alt="{{user.username}}" />
+
                     </td>
                     <td data-title="Nick">{{ user.username}}</td>
                     <td data-title="Nombre">{{ user.profile.name}}</td>
                     <td data-title="Apellido">{{ user.profile.lastName}}</td>
-                    <td data-title="Email">
-                        <div ng-repeat="email in user.emails">
-                            {{ email.address }}
-                        </div>
+                    <td data-title="Rol">{{user.profile.mainRol}}</td>
+                    <td data-title="">
+                        <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(user)">
+                            <i class="fa fa-trash"></i>
+                        </md-button>
                     </td>
-                    <md-divider ng-if="!$last"></md-divider>
                 </tr>
                 </tbody>
             </table>

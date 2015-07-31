@@ -6,7 +6,7 @@ angular.module("sam-1").controller("ModulesListCtrl",['$scope','$meteor','notifi
     function($scope, $meteor,notificationService, ModalService) {
 
         $scope.modules = $meteor.collection(Modules, false);
-        $scope.headers = ['', 'Nombre'];
+        $scope.headers = ['', 'Nombre', 'Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
@@ -14,6 +14,14 @@ angular.module("sam-1").controller("ModulesListCtrl",['$scope','$meteor','notifi
         }
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
+        }
+
+        $scope.delete = function(module) {
+
+        }
+
+        $scope.show = function(module) {
+            alert(module);
         }
     }]);
 

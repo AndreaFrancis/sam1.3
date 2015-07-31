@@ -16,6 +16,8 @@ angular.module("sam-1").controller("PatientCtrl", ['$scope', '$stateParams','$me
     }]);
 
 function AddStudyController($scope, $mdDialog, $meteor, notificationService, patient) {
+    $scope.isDoctor = localStorage.getItem("rol") == "Doctor";
+
     if(patient){
         $scope.patient = patient;
     }
@@ -126,6 +128,11 @@ function AddStudyController($scope, $mdDialog, $meteor, notificationService, pat
                 study.analisys.push(component);
             }
         });
+        if(localStorage.getItem("rol") == "Doctor"){
+            study.doctorUser = localStorage.getItem("user");
+        }
+
+        study.creatorId = localStorage.getItem("user");
         study.creationDate = new Date();
         study.patient = $scope.patient._id;
         $scope.studies.save(study).then(function(number) {

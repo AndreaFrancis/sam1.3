@@ -4,7 +4,7 @@
 angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationService','ModalService','$rootScope','$state','$meteor',
     function($scope,notificationService, ModalService, $rootScope, $state, $meteor) {
         $scope.patients = $meteor.collection(Patients, false);
-        $scope.headers = ['', 'Nombre'];
+        $scope.headers = ['', 'Nombre', 'Acciones'];
         $scope.showTextSearch = true;
 
         $scope.showAddNew = function(ev) {
@@ -13,6 +13,10 @@ angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationSer
 
         $scope.showPatient = function(patient) {
             $state.go('patient',{patientId:patient._id});
+        }
+
+        $scope.delete = function(patient) {
+
         }
     }]);
 
