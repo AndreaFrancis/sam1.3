@@ -2,10 +2,22 @@
  * Created by Andrea on 26/07/2015.
  */
 
-angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notificationService','ModalService',
-    function($scope, $meteor,notificationService, ModalService) {
+angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notificationService','ModalService','$state',
+    function($scope, $meteor,notificationService, ModalService, $state) {
+
+        var query = {}
+
+
+        if(localStorage.getItem("rol") == "Bioquimico"){
+            query = {bioquimic: localStorage.getItem("user")};
+        }
+
+        if(localStorage.getItem("rol") == "Doctor"){
+            query = {creatorId: localStorage.getItem("user")};
+        }
+
         $scope.studies = $meteor.collection(function() {
-            return Studies.find({}, {
+            return Studies.find(query, {
                 transform: function(doc) {
                     doc.patientObj = {};
                     if(doc.patient) {
@@ -30,20 +42,48 @@ angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notifi
             });
         }, false);
 
+        $scope.show = function(study) {
+            $state.go('study',{studyId:study._id});
+        }
 
         $scope.showAddNew = function($event) {
             ModalService.showModalWithParams(AddStudyController, 'client/studies/addStudy.tmpl.ng.html', $event, {patient:null});
         }
     }]);
-
-
 function AddStudyController($scope, $mdDialog, $meteor, notificationService, patient, $timeout, $q, $log) {
     $scope.isDoctor = localStorage.getItem("rol") == "Doctor";
+    $scope.existingStudy = false;
+    $scope.newDoctor = {};
     if(patient){
         $scope.patient = patient;
+        $scope.existingStudy = true;
     }else{
-        $scope.patients = $meteor.collection(Patients,false);
+        $scope.patients = $meteor.collection(
+        function() {
+            return Patients.find({}, {
+                transform: function(doc) {
+                    doc.value = doc.name + " " + doc.lastName+ " "+ doc.lastNameMother;
+                    return doc;
+                }
+            });
+        }, false);
     }
+
+    if(!$scope.isDoctor) {
+        $scope.doctors = $meteor.collection(function(){
+            return Doctors.find({}, {
+                transform: function(doc) {
+                    if(doc.userId) {
+                        var user = Users.findOne({_id: doc.userId});
+                        doc.name = user.profile.name;
+                        doc.lastName = user.profile.lastName;
+                    }
+                    return doc;
+                }
+            });
+        }, false);
+    }
+
     $scope.studies = $meteor.collection(Studies, false);
     $scope.analisysList = $meteor.collection(function() {
         return Analisys.find({}, {
@@ -155,9 +195,17 @@ function AddStudyController($scope, $mdDialog, $meteor, notificationService, pat
             study.doctorUser = localStorage.getItem("user");
         }
 
+        if(!$scope.isDoctor){
+            study.doctor = $scope.selectedDoctor._id;
+        }
         study.creatorId = localStorage.getItem("user");
         study.creationDate = new Date();
-        study.patient = $scope.patient._id;
+        if($scope.patient) {
+            study.patient = $scope.patient._id;
+        }else {
+            study.patient = $scope.selectedItem._id;
+        }
+
         $scope.studies.save(study).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el estudio");
         }, function(error){
@@ -171,79 +219,43 @@ function AddStudyController($scope, $mdDialog, $meteor, notificationService, pat
         $mdDialog.cancel();
     }
 
-    /**TESTING AUTOCOMPLETE**/
+    $scope.saveNewDoctor = function(){
+        $scope.doctors.save($scope.newDoctor).then(function(number) {
+
+        }, function(error){
+            notificationService.showError("Error en el registro del rol");
+            console.log(error);
+        });
+        $scope.newDoctor = '';
+        $scope.createNewDoctor = false;
+    }
+
+    /**AUTOCOMPLETE**/
     $scope.isDisabled    = false;
-    $scope.repos         = loadAll();
-    $scope.querySearch   = querySearch;
-    $scope.selectedItemChange = selectedItemChange;
-    $scope.searchTextChange   = searchTextChange;
-    // ******************************
-    // Internal methods
-    // ******************************
-    /**
-     * Search for repos... use $timeout to simulate
-     * remote dataservice call.
-     */
-    function querySearch (query) {
-        //return query ? $scope.repos.filter( createFilterFor(query) ) : $scope.repos;
+
+    $scope.querySearch = function (query) {
         return query ? $scope.patients.filter( createFilterFor(query) ) : $scope.patients;
     }
-    function searchTextChange(text) {
-        $log.info('Text changed to ' + text);
-    }
-    function selectedItemChange(item) {
+    $scope.selectedItemChange = function(item) {
         $log.info('Item changed to ' + JSON.stringify(item));
     }
-    /**
-     * Build `components` list of key/value pairs
-     */
-    function loadAll() {
-        var repos = [
-            {
-                'name'      : 'Angular 1',
-                'url'       : 'https://github.com/angular/angular.js',
-                'watchers'  : '3,623',
-                'forks'     : '16,175'
-            },
-            {
-                'name'      : 'Angular 2',
-                'url'       : 'https://github.com/angular/angular',
-                'watchers'  : '469',
-                'forks'     : '760'
-            },
-            {
-                'name'      : 'Angular Material',
-                'url'       : 'https://github.com/angular/material',
-                'watchers'  : '727',
-                'forks'     : '1,241'
-            },
-            {
-                'name'      : 'Bower Material',
-                'url'       : 'https://github.com/angular/bower-material',
-                'watchers'  : '42',
-                'forks'     : '84'
-            },
-            {
-                'name'      : 'Material Start',
-                'url'       : 'https://github.com/angular/material-start',
-                'watchers'  : '81',
-                'forks'     : '303'
-            }
-        ];
-        return repos.map( function (repo) {
-            repo.value = repo.name.toLowerCase();
-            return repo;
-        });
-    }
-    /**
-     * Create filter function for a query string
-     */
+
     function createFilterFor(query) {
         var lowercaseQuery = angular.lowercase(query);
         return function filterFn(item) {
-            return (item.value.indexOf(lowercaseQuery) === 0);
+            return (item.value.toLowerCase().indexOf(lowercaseQuery) === 0);
         };
     }
 
+    $scope.queryDoctors = function(query) {
+        return query ? $scope.doctors.filter( createFilterForDoctor(query) ) : $scope.doctors;
+    }
+
+    function createFilterForDoctor(query) {
+        var lowercaseQuery = angular.lowercase(query);
+        return function filterFn(item) {
+            return (item.name.toLowerCase().indexOf(lowercaseQuery) === 0);
+        };
+    }
 
 }

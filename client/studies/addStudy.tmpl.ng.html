@@ -6,48 +6,77 @@
                 <span flex></span>
             </div>
         </md-toolbar>
-        <md-dialog-content class="sticky-container">
-            <md-input-container flex>
-                <label>Nombre del paciente</label>
-                <input ng-model="patient.name" required name="name">
-                <div ng-messages="newPatientForm.name.$error" ng-if="newPatientForm.name.$dirty">
-                    <div ng-message="required">*Campo obligatorio</div>
+        <md-dialog-content layout="column">
+            <div layout="row">
+                <div ng-show="existingStudy">
+                    Nombre del paciente: {{patient.name}}
                 </div>
-            </md-input-container>
-
-            <div>
-                <md-autocomplete
-                        ng-disabled="isDisabled"
-                        md-no-cache="noCache"
-                        md-selected-item="selectedItem"
-                        md-search-text-change="searchTextChange(searchText)"
-                        md-search-text="searchText"
-                        md-selected-item-change="selectedItemChange(item)"
-                        md-items="item in querySearch(searchText)"
-                        md-item-text="item.name"
-                        md-min-length="0"
-                        placeholder="Pick an Angular repository"
-                        md-menu-class="autocomplete-custom-template">
-                    <md-item-template>
+                <div layout="row" ng-hide="existingStudy">
+                    <md-autocomplete
+                            md-no-cache="noCache"
+                            md-selected-item="selectedItem"
+                            md-search-text="searchText"
+                            md-selected-item-change="selectedItemChange(item)"
+                            md-items="item in querySearch(searchText)"
+                            md-item-text="item.value"
+                            md-min-length="0"
+                            placeholder="Paciente"
+                            md-menu-class="autocomplete-custom-template">
+                        <md-item-template>
                         <span class="item-title">
-                            <span> {{item.name}} </span>
+                            <span> {{item.value}}</span>
                         </span>
                         <span class="item-metadata">
                             <span class="item-metastat">
-                                <strong>{{item.watchers}}</strong> watchers
-                            </span>
-                            <span class="item-metastat">
-                                <strong>{{item.forks}}</strong> forks
+                                <strong>{{item.ci}}</strong>
                             </span>
                         </span>
-                    </md-item-template>
-                </md-autocomplete>
+                        </md-item-template>
+                    </md-autocomplete>
+                </div>
+            </div>
+            <div layout="row">
+                <div ng-show="existingStudy && !isDoctor">
+                    Doctor: {{patient.doctor}}
+                </div>
+                <div layout="row" ng-hide="isDoctor">
+                    <md-autocomplete
+                            md-selected-item="selectedDoctor"
+                            md-search-text="searchDoctorText"
+                            md-items="item in queryDoctors(searchDoctorText)"
+                            md-item-text="item.name"
+                            md-min-length="0"
+                            placeholder="Doctor"
+                            md-menu-class="autocomplete-custom-template">
+                        <md-item-template>
+                        <span class="item-title">
+                            <span> {{item.value}}</span>
+                        </span>
+                        <span class="item-metadata">
+                            <span class="item-metastat">
+                                <strong>{{item.ci}}</strong>
+                            </span>
+                        </span>
+                        </md-item-template>
+                    </md-autocomplete>
+                    <div >
+                        <md-button class="md-primary" ng-init="newDoctor=false" ng-click="createNewDoctor=true">+ Nuevo Doctor</md-button>
+                        <div ng-show="createNewDoctor" layout="column">
+                            <md-input-container flex>
+                                <label>Nombre</label>
+                                <input ng-model="newDoctor.name" name="newDoctorName">
+                            </md-input-container>
+                            <md-input-container flex>
+                                <label>Apellido</label>
+                                <input ng-model="newDoctor.lastName" name="newDoctorLastName">
+                            </md-input-container>
+                            <md-button class="md-raised md-primary" ng-click="createNewDoctor=false">Cancelar</md-button>
+                            <md-button class="md-raised md-primary" ng-click="saveNewDoctor()">Guardar</md-button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <md-input-container flex ng-hide="isDoctor">
-                <label>Doctor</label>
-                <input ng-model="doctor" required name="doctor">
-            </md-input-container>
             <md-content layout-padding>
                     <ul>
                        <li ng-repeat="analisys in analisysList">

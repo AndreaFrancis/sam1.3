@@ -10,6 +10,9 @@ if(Meteor.isServer){
             id = Accounts.createUser(user);
             if (user.roles) {
                 Roles.addUsersToRoles(id, user.roles);
+                if(user.roles.indexOf("Doctor")){
+                    Doctors.insert({userId:id});
+                }
             }
         },
         deleteUser : function(id){       ///Some Delete Method (ignore if dont needed)

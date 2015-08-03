@@ -122,7 +122,6 @@ a {
 }
 
 
-
 .floating-content {
     position:absolute;
     z-index:20;
@@ -150,8 +149,8 @@ a {
 }
 
 .md-big-dialog {
-    min-width: 95%;
-    min-height: 95%;
+    min-width: 50%;
+    min-height: 70%;
 }
 
 /**FORMS**/

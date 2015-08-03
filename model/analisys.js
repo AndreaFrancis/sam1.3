@@ -3,6 +3,3 @@
  */
 Analisys = new Mongo.Collection("Analisys");
 Ground.Collection(Analisys,'analisys');
-
-Doctors = new Mongo.Collection("Doctors");
-Ground.Collection(Doctors,'doctors');

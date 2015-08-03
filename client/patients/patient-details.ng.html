@@ -4,42 +4,32 @@
             <i class="fa fa-flask"></i>
         </md-button>
     </div>
-    <md-toolbar layout="column" class="md-tall"><span flex="flex"></span>
-        <div class="md-toolbar-tools">
-            <div class="title" >
-                <md-button class="md-icon-button" flex  aria-label="Atras" ng-click="goPatients()">
-                    <i class="fa fa-arrow-left"></i>
-                </md-button>
-              {{patient.name}} {{patient.lastName}} {{patient.lastNameMother}}
-            </div>
-        </div>
-    </md-toolbar>
 
-    <div class="md-padding">
-        <md-card>
-            <md-card-content>
-                <h2 class="md-title">Codigo de paciente:</h2>
-                <p>
-                    {{patient._id}}
-                </p>
-                <h2 class="md-title">Direccion: </h2>
-                <p>
-                    {{patient.address}}
-                </p>
-                <h2 class="md-title">Telefono:</h2>
-                <p>
-                    {{patient.phone}}
-                </p>
-                <h2 class="md-title">Genero:</h2>
-                <p>
-                    {{patient.gender=='F'? 'Femenino': 'Masculino'}}
-                </p>
-                <h2 class="md-title">Edad</h2>
-                <p>
-                    {{patient.birthdate}}
-                </p>
-            </md-card-content>
-        </md-card>
-        <br/>
-        </div>
+    <div class="sub-content" layout="column">
+            <span flex="20"></span>
+            <div layout="column" flex="80">
+                <md-card flex>
+                    <md-card-content layout="column">
+                        <div layout="row" flex="">
+                            <md-button class="md-icon-button"  aria-label="Atras" ng-click="goPatients()">
+                                <i class="fa fa-arrow-left"></i>
+                            </md-button>
+                            <h2 class="md-title">{{patient.name}} {{patient.lastName}} {{patient.lastNameMother}}</h2>
+                        </div>
+                        <p>{{patient._id}}</p>
+                        <p><i class="fa fa-home"></i>&nbsp;{{ patient.address}}</p>
+                        <p><i class="fa fa-phone"></i>&nbsp;{{ patient.phone}}</p>
+                        <p><i class="fa fa-heart"></i>&nbsp;{{ patient.birthdate}}</p>
+                        <p ng-show="patient.gender=='F'"><i class="fa fa-female"></i>&nbsp;Mujer</p>
+                        <p ng-show="patient.gender=='M'"><i class="fa fa-male"></i>&nbsp;Varon</p>
+                    </md-card-content>
+                </md-card>
+                <md-content layout="column" flex>
+                    <md-whiteframe class="md-whiteframe-z1" ng-repeat="study in studies | orderBy: '-creationDate'">
+                        <h4>Creado por: {{study.creatorName}}</h4>
+                        <p>{{study.creationDate.toLocaleString()}}</p>
+                    </md-whiteframe>
+                </md-content>
+            </div>
+    </div>
 </div>

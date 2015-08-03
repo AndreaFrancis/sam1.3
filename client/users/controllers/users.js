@@ -57,7 +57,7 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, notificationSe
                         notificationService.showError("Error en el registro del usuario");
                         console.log(err);
                     }else{
-                        notificationService.showSuccess("Se ha registrado correctamente al usuario");
+                        notificationService.showSuccess("Se ha registrado correctamente al usuario"+ newUser._id);
                     }
                 });
             }

@@ -4,6 +4,22 @@
 angular.module("sam-1").controller("PatientCtrl", ['$scope', '$stateParams','$meteor','ModalService','$state',
     function($scope, $stateParams, $meteor, ModalService, $state){
         $scope.patient = $meteor.object(Patients, $stateParams.patientId);
+        $scope.studies = $meteor.collection(function(){
+            return Studies.find({patient:  $scope.patient._id}, {
+                transform: function(doc){
+                    doc.creatorName = {};
+                    if(doc.creatorId) {
+                        var creatorName = $meteor.collection(function(){
+                            return Users.find({_id: {"$in": [doc.creatorId]}});
+                        });
+                        if(creatorName[0]) {
+                            doc.creatorName = creatorName[0].profile.name + " "+ creatorName[0].profile.lastName;
+                        }
+                    }
+                    return doc;
+                }
+            });
+        }, false);
 
         $scope.goPatients = function(){
             $state.go('patients');
@@ -17,9 +33,10 @@ angular.module("sam-1").controller("PatientCtrl", ['$scope', '$stateParams','$me
 
 function AddStudyController($scope, $mdDialog, $meteor, notificationService, patient) {
     $scope.isDoctor = localStorage.getItem("rol") == "Doctor";
-
+    $scope.existingStudy = false;
     if(patient){
         $scope.patient = patient;
+        $scope.existingStudy = true;
     }
     $scope.studies = $meteor.collection(Studies, false);
     $scope.analisysList = $meteor.collection(function() {
@@ -93,7 +110,7 @@ function AddStudyController($scope, $mdDialog, $meteor, notificationService, pat
                     component.analisys = analisys._id;
                 };
                 if(test.selected) {
-                    component.tests.push(test._id);
+                    component.tests.push({test:test._id});
                 }
             });
             angular.forEach(analisys.examsObj, function(exam){
@@ -115,7 +132,7 @@ function AddStudyController($scope, $mdDialog, $meteor, notificationService, pat
                         examComponent.tests = [];
                     };
                     if(testEx.selected) {
-                        examComponent.tests.push(testEx._id);
+                        examComponent.tests.push({test:testEx._id});
                     }
                 });
 
