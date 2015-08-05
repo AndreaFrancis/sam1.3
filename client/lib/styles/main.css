@@ -1000,3 +1000,43 @@ md-sidenav.md-locked-open {
             right: auto;
         }
 }
+
+
+/**Image input**/
+.input-image {
+  height: 100px;
+  width: 100px;
+  /**background-image: url("select-image.png");
+  background-size: 100px 100px;
+  background-repeat: no-repeat;**/
+}
+
+.input-image-src{
+  min-height: inherit;
+  min-width: inherit;
+}
+
+
+label.filebutton {
+    width:120px;
+    height:40px;
+    overflow:hidden;
+    position:relative;
+    background-color:#ccc;
+}
+
+label span input {
+    z-index: 999;
+    line-height: 0;
+    font-size: 50px;
+    position: absolute;
+    top: -2px;
+    left: -700px;
+    opacity: 0;
+    filter: alpha(opacity = 0);
+    -ms-filter: "alpha(opacity=0)";
+    cursor: pointer;
+    _cursor: hand;
+    margin: 0;
+    padding:0;
+}

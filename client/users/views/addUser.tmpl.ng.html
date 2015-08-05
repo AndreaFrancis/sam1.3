@@ -6,54 +6,74 @@
                 <span flex></span>
             </div>
         </md-toolbar>
-        <md-dialog-content class="sticky-container">
+        <md-dialog-content class="sticky-container" layout="column">
+            <div layout="row">
                   <md-input-container flex>
-                  <label>Nombre</label>
-                  <input name="name" ng-model="newUser.profile.name" required>
-                  <div ng-messages="newUserForm.name.$error">
-                      <div ng-message="required">*Campo obligatorio</div>
+                    <label>Nombre</label>
+                    <input name="name" ng-model="newUser.profile.name" required input-text>
+                    <div ng-messages="newUserForm.name.$error" ng-if="newUserForm.name.$dirty">
+                        <div ng-message="required">*Campo obligatorio</div>
+                        <div ng-message="inputText">*Ingrese solo letras</div>
+                    </div>
+                  </md-input-container>
+            </div>
+            <div layout="row">
+                  <md-input-container flex>
+                    <label>Apellido paterno</label>
+                    <input ng-model="newUser.profile.lastName" required name="lastName" input-text>
+                    <div ng-messages="newUserForm.lastName.$error" ng-if="newUserForm.lastName.$dirty">
+                        <div ng-message="required">*Campo obligatorio</div>
+                        <div ng-message="inputText">*Ingrese solo letras</div>
+                    </div>
+                  </md-input-container>
+                  <md-input-container flex>
+                    <label>Apellido paterno</label>
+                    <input ng-model="newUser.profile.lastNameMother" required name="lastNameMother" input-text>
+                    <div ng-messages="newUserForm.lastNameMother.$error" ng-if="newUserForm.lastNameMother.$dirty">
+                        <div ng-message="required">*Campo obligatorio</div>
+                        <div ng-message="inputText">*Ingrese solo letras</div>
+                    </div>
+                  </md-input-container>
+              </div>
+              <div layout="row">
+                <md-input-container flex>
+                  <label>Correo</label>
+                  <input ng-model="newUser.email" required type="email" name="email">
+                  <div ng-messages="newUserForm.email.$error" ng-if="newUserForm.email.$dirty">
+                    <div ng-message="inputText">*Campo obligatorio</div>
                   </div>
-              </md-input-container>
-              <md-input-container flex>
-                  <label>Apellido</label>
-                  <input ng-model="newUser.profile.lastName" required>
-              </md-input-container>
-              <md-input-container flex>
-                    <label>Correo</label>
-                    <input ng-model="newUser.email" required type="email" name="email">
-                    <div ng-messages="newUserForm.email.$error">
-                      <div ng-message="required">*Campo obligatorio</div>
-                    </div>
-              </md-input-container>
-            <div layout="row">
-                <md-input-container flex>
+                </md-input-container>
+              </div>
+              <div layout="row">
+                <div layout="column">
+                  <md-input-container flex>
                     <label>Nombre de usuario</label>
-                    <input ng-model="newUser.username" required  name="username">
-                    <div ng-messages="newUserForm.username.$error">
+                    <input ng-model="newUser.username" required  name="username" input-text user>
+                    <div ng-messages="newUserForm.username.$error" ng-if="newUserForm.username.$dirty">
                         <div ng-message="required">*Campo obligatorio</div>
+                        <div ng-message="inputText">*Ingrese solo letras</div>
+                        <div ng-message="duplicated">*El usuario ya existe</div>
                     </div>
-                </md-input-container>
-                <md-input-container flex>
+                  </md-input-container>
+                  <md-input-container flex>
                     <label>Password</label>
-                    <input ng-model="newUser.password" required type="password" name="password">
-                    <div ng-messages="newUserForm.password.$error">
+                    <input ng-model="newUser.password" required type="password" name="password" password>
+                    <div ng-messages="newUserForm.password.$error" ng-if="newUserForm.password.$dirty">
                         <div ng-message="required">*Campo obligatorio</div>
+                        <div ng-message="password">*Debe contener al menos 1 letra 1 numero , 1 caracter especial y ser mayor a 6</div>
                     </div>
-                </md-input-container>
-            </div>
-            <input type="file" custom-on-change="uploadFile" />
-            <div layout="row">
-                <div flex>
-                    <img src="{{image}}"  accept="image/*" required class="md-avatar"/>
+                  </md-input-container>
+                  <md-select placeholder="Rol" ng-model="selectedRol" flex required>
+                      <md-option ng-repeat="rol in roles" ng-value="rol._id">{{rol.name}}</md-option>
+                  </md-select>
                 </div>
-
-
-                <md-select placeholder="Rol" ng-model="selectedRol" flex>
-                    <md-option ng-repeat="rol in roles" ng-value="rol.name">{{rol.name}}</md-option>
-                </md-select>
-
-            </div>
-
+                <label class="filebutton" flex>
+                      <span>
+                      <input type="file" custom-on-change="uploadFile" required accept="image/*"/>
+                      <img src="{{image}}"/>
+                      </span>
+                </label>
+              </div>
         </md-dialog-content>
         <div class="md-actions" layout="row">
             <span flex></span>

@@ -64,16 +64,12 @@ function AddModuleController($scope, notificationService, $mdDialog, module, $me
     $scope.itemChange = function(item){
       console.console.log(item);
     }
-    /**
-     * Search for vegetables.
-     */
+
     $scope.querySearch = function (query) {
       var results = query ? $scope.roles.filter(createFilterFor(query)) : [];
       return results;
     }
-    /**
-     * Create filter function for a query string
-     */
+    
     function createFilterFor(query) {
       var lowercaseQuery = angular.lowercase(query);
       return function filterFn(rol) {

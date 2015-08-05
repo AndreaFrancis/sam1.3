@@ -49,3 +49,40 @@ angular.module('sam-1').directive('customOnChange', function() {
         }
     };
 });
+
+
+angular.module('sam-1').directive('inputText', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, elem, attr, ctrl) {
+      var re = new RegExp("^([a-zA-Z]{0,})$");
+
+      ctrl.$parsers.unshift(function(value) {
+          var valid = re.test(value);
+          ctrl.$setValidity('inputText', valid);
+          return valid? value: undefined;
+      });
+
+      ctrl.$formatters.unshift(function(value) {
+          var valid = re.test(value);
+          ctrl.$setValidity('inputText', valid);
+          return value;
+      });
+    }
+  };
+});
+
+angular.module('sam-1').directive('password', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, elem, attr, ctrl) {
+      var re = new RegExp("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$");
+
+      ctrl.$parsers.unshift(function(value) {
+          var valid = re.test(value);
+          ctrl.$setValidity('password', valid);
+          return valid? value: undefined;
+      });
+    }
+  };
+});

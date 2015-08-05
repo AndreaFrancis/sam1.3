@@ -11,7 +11,14 @@ angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notifica
         $scope.showTextSearch = true;
 
         $scope.delete = function(user) {
-
+          Meteor.call("deleteUser", user._id, function(err) {
+              if(err) {
+                  notificationService.showError("No se pudo eliminar el usuario");
+                  console.log(err);
+              }else{
+                  notificationService.showSuccess("Se ha eliminado correctamente al usuario");
+              }
+          });
         }
 
         $scope.show = function(user) {
@@ -44,26 +51,54 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, notificationSe
     }
 
     $scope.save = function(newUser) {
-        Images.insert($scope.selectedFile, function (err, fileObj) {
-            if (err){
-                notificationService.showError("Error al subir la imagen");
-                console.log(err);
-            } else {
-                newUser.roles = [$scope.selectedRol];
-                newUser.profile.mainRol  = $scope.selectedRol;
-                newUser.profile.image = "/cfs/files/images/" + fileObj._id;
-                Meteor.call("createNewUser", newUser, function(err) {
-                    if(err) {
-                        notificationService.showError("Error en el registro del usuario");
-                        console.log(err);
-                    }else{
-                        notificationService.showSuccess("Se ha registrado correctamente al usuario"+ newUser._id);
-                    }
-                });
-            }
-        });
+        if($scope.selectedFile) {
+          Images.insert($scope.selectedFile, function (err, fileObj) {
+              if (err){
+                  notificationService.showError("Error al subir la imagen");
+                  console.log(err);
+              } else {
+                  newUser.profile.mainRol  = $scope.selectedRol;
+                  newUser.profile.image = "/cfs/files/images/" + fileObj._id;
+                  Meteor.call("createNewUser", newUser, function(err) {
+                      if(err) {
+                          notificationService.showError("Error en el registro del usuario");
+                          console.log(err);
+                      }else{
+                          notificationService.showSuccess("Se ha registrado correctamente al usuario");
+                      }
+                  });
+              }
+          });
+        }else{
+          newUser.profile.mainRol  = $scope.selectedRol;
+          Meteor.call("createNewUser", newUser, function(err) {
+              if(err) {
+                  notificationService.showError("Error en el registro del usuario");
+                  console.log(err);
+              }else{
+                  notificationService.showSuccess("Se ha registrado correctamente al usuario"+ newUser._id);
+              }
+          });
+        }
 
         $scope.newUser = '';
         $mdDialog.hide();
     }
 }
+
+angular.module("sam-1").directive('user',function() {
+  return {
+    require : 'ngModel',
+    link : function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(value) {
+        if(!value || value.length == 0) return;
+        if(Users.find({username: value}).count()>0){
+          ngModel.$setValidity('duplicated', false);
+        }else {
+          ngModel.$setValidity('duplicated', true);
+        }
+        return value;
+      })
+    }
+  }
+});
