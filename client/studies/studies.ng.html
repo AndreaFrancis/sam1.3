@@ -5,10 +5,22 @@
         </md-button>
     </div>
     <div layout="column" layout-fill style="padding-bottom: 32px;" class="sub-content">
-        <md-whiteframe class="md-whiteframe-z1" ng-repeat="study in studies | orderBy: '-creationDate'" ng-click="show(study)">
-            <h3>Paciente: {{study.patientObj.name}} {{study.patientObj.lastName}} {{study.patientObj.lastNameMother}}</h3>
-            <h4>Creado por: {{study.creatorName}}</h4>
-            <p>{{study.creationDate.toLocaleString()}}</p>
+        <md-whiteframe class="md-whiteframe-z1">
+          <md-list>
+            <md-toolbar class="md-theme-light">
+              <h2 class="md-toolbar-tools">
+                <span>Estudios</span>
+              </h2>
+            </md-toolbar>
+            <md-list-item class="md-3-line"   ng-repeat="study in studies | orderBy: '-creationDate'" ng-click="show(study)">
+              <div class="md-list-item-text">
+                <h3>Paciente</h3>
+                <h4>{{study.patientObj.name}} {{study.patientObj.lastName}} {{study.patientObj.lastNameMother}}</h4>
+                <p>{{study.creationDate.toLocaleString()}}</p>
+              </div>
+              <md-divider md-inset ng-if="!$last"></md-divider>
+            </md-list-item>
+          </md-list>
         </md-whiteframe>
     </div>
 </div>

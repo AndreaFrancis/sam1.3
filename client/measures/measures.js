@@ -2,7 +2,7 @@ angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','Modal
     function($scope, $meteor,ModalService) {
 
         $scope.measures = $meteor.collection(Measures, false);
-        $scope.headers = ['', 'Nombre', 'Simbolo','Acciones'];
+        $scope.headers = ['Nombre', 'Simbolo','Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {

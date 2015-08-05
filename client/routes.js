@@ -10,46 +10,73 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
             .state('labs', {
                 url: '/labs',
                 templateUrl: 'client/labs/views/labs-list.ng.html',
-                controller: 'LabsListCtrl'
+                controller: 'LabsListCtrl',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('users', {
                 url: '/users',
                 templateUrl: 'client/users/views/users-list.ng.html',
-                controller: 'UsersListCtrl'
+                controller: 'UsersListCtrl',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('start', {
                 url: '/start',
-                templateUrl: 'client/starter/start.ng.html'
+                templateUrl: 'client/starter/start.ng.html',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('measures', {
                 url: '/measures',
                 templateUrl: 'client/measures/measures.ng.html',
-                controller: 'MeasuresListCtrl'
+                controller: 'MeasuresListCtrl',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('analisys', {
                 url: '/analisys',
                 templateUrl: 'client/analisys/views/analisys.ng.html',
-                controller: 'AnalisysListCtrl'
+                controller: 'AnalisysListCtrl',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('areas', {
                 url: '/areas',
                 templateUrl: 'client/areas/views/areas.ng.html',
-                controller: 'AreasListCtrl'
+                controller: 'AreasListCtrl',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('exams', {
                 url: '/exams',
                 templateUrl: 'client/exams/exams.ng.html',
-                controller: 'ExamsListCtrl'
+                controller: 'ExamsListCtrl',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('mtests', {
                 url: '/mtests',
                 templateUrl: 'client/mtests/mtests-list.ng.html',
-                controller: 'TestsListCtrl'
+                controller: 'TestsListCtrl',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('roles', {
                 url: '/roles',
                 templateUrl: 'client/roles/roles.ng.html',
-                controller: 'RolesListCtrl'
+                controller: 'RolesListCtrl',
+                data: {
+                  requireLogin: true
+                }
                 /*
                  ,
                  resolve: {
@@ -63,7 +90,10 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
             .state('modules', {
                 url: '/modules',
                 templateUrl: 'client/modules/modules.ng.html',
-                controller: 'ModulesListCtrl'
+                controller: 'ModulesListCtrl',
+                data: {
+                  requireLogin: true
+                }
                 /*
                  ,
                  resolve: {
@@ -77,22 +107,50 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
             .state('patients', {
                 url: '/patients',
                 templateUrl: 'client/patients/patients.ng.html',
-                controller: 'PatientsListCtrl'
+                controller: 'PatientsListCtrl',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('patient', {
                 url: '/patient/:patientId',
                 templateUrl: 'client/patients/patient-details.ng.html',
-                controller: 'PatientCtrl'
+                controller: 'PatientCtrl',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('studies', {
                 url: '/studies',
                 templateUrl: 'client/studies/studies.ng.html',
-                controller: 'StudiesListCtrl'
+                controller: 'StudiesListCtrl',
+                data: {
+                  requireLogin: true
+                }
             })
             .state('study', {
                 url: '/study/:studyId',
                 templateUrl: 'client/studies/study-details.ng.html',
-                controller: 'StudyCtrl'
+                controller: 'StudyCtrl',
+                data: {
+                  requireLogin: true
+                }
+            })
+            .state('login',{
+              ulr: '/login',
+              templateUrl: 'client/starter/login.ng.html',
+              controller: 'AppCtrl',
+              data: {
+                requireLogin: false
+              }
+            })
+            .state('catalog',{
+              ulr: '/catalog',
+              templateUrl: 'client/catalog/catalog.ng.html',
+              controller: 'CatalogCtrl',
+              data: {
+                requireLogin: true
+              }
             });
         $urlRouterProvider.otherwise("/start");
     }]);
@@ -127,7 +185,7 @@ $(document).ready(function() {
     });
 });
 
-// jQuery’s hasClass and removeClass on steroids
+// jQueryï¿½s hasClass and removeClass on steroids
 // by Nikita Vasilyev
 // https://github.com/NV/jquery-regexp-classes
 (function(removeClass) {

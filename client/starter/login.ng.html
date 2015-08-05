@@ -1,24 +1,28 @@
-<form name="loginForm" novalidate>
-  <span>Login</span>
-    <md-input-container>
-        <label>Nombre de usuario</label>
-        <input ng-model="username" required name="username">
-        <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$dirty">
-            <div ng-message="required">*Campo obligatorio</div>
-        </div>
-    </md-input-container>
-    <md-input-container flex>
-        <label>Password</label>
-        <input ng-model="password" required name="password">
-        <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$dirty">
-            <div ng-message="required">*Campo obligatorio</div>
-        </div>
-    </md-input-container>
-    <div class="md-actions" layout="row">
-        <span flex></span>
-        <span flex></span>
-        <md-button class="md-primary" ng-click="save()" ng-disabled="newUserForm.$invalid" type="submit">
-            Sing in
-        </md-button>
-    </div>
-</form>
+<div layout="column" layout-align="center center">
+    <h1>Laboratorio Clinico</h1>
+    <h3>By Andrea Soria</h3>
+  <md-whiteframe class="md-whiteframe-z1" layout layout-align="center center">
+    <form layout="column" name="loginForm" novalidate>
+      <div class="group">
+        <md-input-container>
+            <label>Nombre de usuario</label>
+            <input ng-model="username" required name="username">
+            <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$dirty">
+                <div ng-message="required">*Campo obligatorio</div>
+            </div>
+        </md-input-container>
+      </div>
+      <div class="group">
+        <md-input-container>
+            <label>Password</label>
+            <input ng-model="password" required name="password" type="password">
+            <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$dirty">
+                <div ng-message="required">*Campo obligatorio</div>
+            </div>
+        </md-input-container>
+      </div>
+      <label class="error">{{app.error}}</label>
+      <md-button class="md-raised md-primary" ng-click="login()" ng-disabled="loginForm.$invalid">Acceder</md-button>
+    </form>
+  </md-whiteframe>
+</div>

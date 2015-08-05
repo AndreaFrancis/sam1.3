@@ -3,8 +3,21 @@
  */
 angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
-        $scope.exams = $meteor.collection(Exams, false);
-        $scope.headers = ['', 'Nombre','Acciones'];
+        $scope.exams = $meteor.collection(function(){
+          return Exams.find({}, {
+            transform: function(doc){
+
+              if(doc.tests){
+                doc.testsObj = [];
+                angular.forEach(doc.tests, function(test){
+                  doc.testsObj.push($meteor.object(Tests,test).name);
+                });
+              }
+              return doc;
+            }
+          });
+        }, false);
+        $scope.headers = ['Nombre','Pruebas','Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {

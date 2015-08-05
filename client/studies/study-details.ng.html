@@ -10,66 +10,45 @@
         <div layout="column" flex="80">
             <md-card flex>
                 <md-card-content layout="column">
-                    <md-card-content layout="column">
                         <div layout="row" flex="">
                             <md-button class="md-icon-button"  aria-label="Atras" ng-click="goStudies()">
                                 <i class="fa fa-arrow-left"></i>
                             </md-button>
                             <h2 class="md-title">{{patient.name}} {{patient.lastName}} {{patient.lastNameMother}}</h2>
+                            <md-fab-speed-dial md-open="false">
+                              <md-fab-actions>
+                                <md-button ng-show="isSecretary" class="md-fab md-raised md-mini"><i class="fa fa-calendar"></i></md-button>
+                                <md-button ng-show="isSecretary" class="md-fab md-raised md-mini"><i class="fa fa-stethoscope"></i></md-button>
+                                <md-button ng-show="isBioquimic" class="md-fab md-raised md-mini"><i class="fa fa-file"></i></md-button>
+                              </md-fab-actions>
+                            </md-fab-speed-dial>
                         </div>
-                    </md-card-content>
-                </md-card-content>
                 <div class="md-actions" layout="row" layout-align="end center">
 
                     <md-select ng-model="bioquimic"  style="min-width: 200px;" ng-show="isSecretary">
                         <md-select-label>{{ bioquimic ? bioquimic.profile.name : 'Bioquimico' }}</md-select-label>
                         <md-option ng-value="bio" ng-repeat="bio in bioquimics">{{bio.profile.name}}</md-option>
                     </md-select>
-                    <md-button ng-show="isSecretary">Agendar</md-button>
-                    <md-button ng-show="isSecretary">Toma de muestras</md-button>
-                    <md-button ng-show="isBioquimic">Resultados</md-button>
+
                 </div>
-                <!--Start study details-->
-                <md-content layout-padding ng-show="isBioquimic">
-                    <ul>
-                        <li ng-repeat="analisys in analisysList">
-                                {{analisys.name}}
-                            <ul>
-                                <li ng-repeat="test in analisys.tests">
-                                        <md-input-container>
-                                            <label>{{test.name}}</label>
-                                            <input ng-model="test.result">
-                                        </md-input-container>
-                                </li>
-                                <li ng-repeat="exam in analisys.exams">
-                                        {{exam.name}}
-                                    <ul>
-                                        <li ng-repeat="test in exam.tests">
-                                            <md-input-container>
-                                                <label>{{test.name}}</label>
-                                                <input ng-model="test.result">
-                                            </md-input-container>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </md-content>
                 <!--End study details-->
-                <md-content layout-padding ng-show="isDoctor">
+                <md-content layout-padding>
                     <ul>
                         <li ng-repeat="analisys in study.analisys">
-                            {{analisys.analisys}}
+                            {{analisys.name}}
                             <ul>
                                 <li ng-repeat="test in analisys.tests">
-                                        <label>{{test.test}}: {{test.result}}</label>
+                                        <label>{{test.name}}: {{test.result}}</label>
                                 </li>
                                 <li ng-repeat="exam in analisys.exams">
-                                    {{exam.exam}}
+                                    {{exam.name}}
                                     <ul>
                                         <li ng-repeat="test in exam.tests">
-                                                <label>{{test.test}} : {{test.result}}</label>
+                                                <label ng-hide="isBioquimic">{{test.name}} : {{test.result}}</label>
+                                                <md-input-container ng-show="isBioquimic">
+                                                    <label>{{test.name}}</label>
+                                                    <input ng-model="test.result">
+                                                </md-input-container>
                                         </li>
                                     </ul>
                                 </li>
@@ -77,6 +56,7 @@
                         </li>
                     </ul>
                 </md-content>
+                </md-card-content>
             </md-card>
         </div>
     </div>

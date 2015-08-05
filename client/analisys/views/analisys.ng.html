@@ -1,35 +1,37 @@
-<div ng-controller="AnalisysListCtrl">
+<div>
     <div class="main-fab">
         <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="Agregar">
             <i class="fa fa-plus"></i>
         </md-button>
     </div>
-    <div class="sub-content">
-        <div class="table-responsive-vertical shadow-z-1 center-table">
-            <!-- Table starts here -->
 
-            <table id="table" class="table table-hover table-mc-light-blue">
-                <thead>
-                <tr>
-                    <th ng-repeat="h in headers" class="md-table-header">
-                        {{h}}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="analisys in analisysList" class="md-table-content-row">
-                    <td data-title="">
-                        <md-checkbox ng-model="analisys.selected" aria-label="Area">
-                        </md-checkbox>
-                    </td>
-                    <td data-title="Nombre">{{ analisys.name }}</td>
-                    <td data-title="Acciones">
-                        <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(analisys)">
-                            <i class="fa fa-trash"></i>
-                        </md-button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <div layout="column"  style="padding-bottom: 32px;">
+        <md-whiteframe class="md-whiteframe-z1" ng-repeat="analisys in analisysList">
+            <h3>{{ analisys.name }}</h3>
+            <h4 ng-show="analisys.area">Area: {{ analisys.areaName}}</h4>
+            <h4 ng-show="analisys.lab">Laboratorio: {{ analisys.labName}}</h4>
+            <md-list>
+              <md-subheader class="md-no-sticky">Examenes</md-subheader>
+              <md-list-item class="md-3-line" ng-repeat="exam in analisys.exams">
+                <div class="md-list-item-text">
+                  <h3> {{analisys.examsObj[$index]}} </h3>
+                </div>
+                <md-divider ></md-divider>
+              </md-list-item>
+            </md-list>
+            <md-list>
+              <md-subheader class="md-no-sticky">Pruebas</md-subheader>
+              <md-list-item class="md-3-line" ng-repeat="test in analisys.tests">
+                <div class="md-list-item-text">
+                  <h3>{{analisys.testsObj[$index]}} </h3>
+                </div>
+                <md-divider ></md-divider>
+              </md-list-item>
+            </md-list>
+
+            <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(test)">
+                    <i class="fa fa-trash"></i>
+            </md-button>
+        </md-whiteframe>
     </div>
 </div>

@@ -6,30 +6,34 @@
     </div>
 
     <div class="sub-content" layout="column">
-            <span flex="20"></span>
-            <div layout="column" flex="80">
-                <md-card flex>
-                    <md-card-content layout="column">
-                        <div layout="row" flex="">
-                            <md-button class="md-icon-button"  aria-label="Atras" ng-click="goPatients()">
+          <md-button class="md-icon-button"  aria-label="Atras" ng-click="goPatients()">
                                 <i class="fa fa-arrow-left"></i>
-                            </md-button>
-                            <h2 class="md-title">{{patient.name}} {{patient.lastName}} {{patient.lastNameMother}}</h2>
-                        </div>
-                        <p>{{patient._id}}</p>
+          </md-button>
+          <md-whiteframe class="md-whiteframe-z1">
+          <h1 class="md-title">{{patient.name}} {{patient.lastName}} {{patient.lastNameMother}}</h1>
                         <p><i class="fa fa-home"></i>&nbsp;{{ patient.address}}</p>
                         <p><i class="fa fa-phone"></i>&nbsp;{{ patient.phone}}</p>
-                        <p><i class="fa fa-heart"></i>&nbsp;{{ patient.birthdate}}</p>
+                        <p><i class="fa fa-heart"></i>&nbsp;{{ calculateAge(patient.birthdate)}}</p>
                         <p ng-show="patient.gender=='F'"><i class="fa fa-female"></i>&nbsp;Mujer</p>
                         <p ng-show="patient.gender=='M'"><i class="fa fa-male"></i>&nbsp;Varon</p>
-                    </md-card-content>
-                </md-card>
-                <md-content layout="column" flex>
-                    <md-whiteframe class="md-whiteframe-z1" ng-repeat="study in studies | orderBy: '-creationDate'">
-                        <h4>Creado por: {{study.creatorName}}</h4>
-                        <p>{{study.creationDate.toLocaleString()}}</p>
-                    </md-whiteframe>
-                </md-content>
-            </div>
+
+
+  <md-list>
+    <md-toolbar class="md-theme-light">
+      <h2 class="md-toolbar-tools">
+        <span>Estudios</span>
+      </h2>
+    </md-toolbar>
+    <md-list-item class="md-3-line"  ng-repeat="study in studies | orderBy: '-creationDate'" ng-click="show(study)">
+      <div class="md-list-item-text">
+        <h3>Creado por</h3>
+        <h4>{{study.creatorName}}</h4>
+        <p>{{study.creationDate.toLocaleString()}}</p>
+      </div>
+      <md-divider md-inset ng-if="!$last"></md-divider>
+    </md-list-item>
+  </md-list>
+            </md-whiteframe>
+
     </div>
 </div>

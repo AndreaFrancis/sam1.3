@@ -2,12 +2,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="/">
 </head>
-<body layout="row" ng-app="sam-1" ng-controller="AppCtrl" layout="column">
-    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" >
-        <md-toolbar class="md-theme-light">
-            <h1 class="md-toolbar-tools">Menu</h1>
+<body  ng-app="sam-1" >
+  <div ng-controller="AppCtrl" layout="row">
+  <section layout="row" flex>
+    <header md-page-header ng-show="$root.currentUser" hide-gt-sm>
+        <md-toolbar layout="column"  flex="10" scroll>
+          <md-button class="md-icon-button" ng-click="showLeftMenu()" aria-label="Menu">
+              <i class="fa fa-bars"></i>
+          </md-button>
         </md-toolbar>
-        <md-content  layout-padding layout="column">
+    </header>
+    <md-sidenav layout="column" ng-show="$root.currentUser" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-sm md-is-locked-open="$mdMedia('gt-md')">
+      <md-toolbar class="profile md-tall" layout="column" layout-align="center center">
+        <avatar ng-model="{{user}}"></avatar>
+        <div layout="column">
+                  <simple-text ng-model="{{username}}"></simple-text>
+        </div>
+      </md-toolbar>
+      <div layout-padding layout="column" layout-align="center start" class="modules">
+        <span class="module" ng-repeat="module in allowed | orderBy: 'order'" ng-click="showMenu(module)">
+            <div main-tex></div>
+        </span>
+        <span class="module" flex ng-click="logOut()" aria-label="Menu">
+          <i  class="fa fa-power-off">&nbsp;&nbsp;</i>Salir
+        </span>
+      </div>
+    </md-sidenav>
+    <md-content flex layout-padding>
+      <div layout="column" layout-fill layout-align="top center">
+        <div ui-view></div>
+      </div>
+      <div flex></div>
+    </md-content>
+  </section>
+</div>
+    <!--md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" layout="column">
+        <md-toolbar class="md-theme-light" flex="3" layout="column" layout-align="center center">
+              <avatar ng-model="{{user}}"></avatar>
+              <simple-text ng-model="{{username}}"></simple-text>
+        </md-toolbar>
+        <md-content  layout-padding layout="column" flex="7">
             <md-button ng-repeat="module in allowed" ng-click="showMenu(module)">
                 <div main-tex></div>
             </md-button>
@@ -15,45 +49,22 @@
                 Salir
             </md-button>
         </md-content>
-    </md-sidenav>
-    <div layout="column" layout-align="center center" ng-hide="$root.currentUser">
-        <img src="client/lib/ambulance.png" class="logo" alt="Image"/>
-        <form layout="column" name="loginForm" class="form-center" novalidate>
-            <md-input-container>
-                <label>Nombre de usuario</label>
-                <input ng-model="username" required name="username">
-                <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$dirty">
-                    <div ng-message="required">*Campo obligatorio</div>
-                </div>
-            </md-input-container>
-            <md-input-container>
-                <label>Password</label>
-                <input ng-model="password" required name="password" type="password">
-                <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$dirty">
-                    <div ng-message="required">*Campo obligatorio</div>
-                </div>
-            </md-input-container>
-            <label class="error">{{app.error}}</label>
-            <md-button class="md-raised md-primary" ng-click="login()" ng-disabled="loginForm.$invalid">Sign in</md-button>
-        </form>
-    </div>
-    <header md-page-header ng-show="$root.currentUser">
-        <md-toolbar layout="column"  flex="10" scroll>
-            <div class="title md-tall" layout="row">
-                <md-button class="md-icon-button" ng-click="showLeftMenu()" aria-label="Menu">
-                    <i class="fa fa-bars"></i>
-                </md-button>
-                <div text ng-model="{{currentModule}}"></div>
-            </div>
-            <md-tabs class="secondary-sidenav">
-                <md-tab ng-repeat="module in allowed">
-                    <div demo-directive  ng-click="goToModule(module)"></div>
-                </md-tab>
-            </md-tabs>
-        </md-toolbar>
-    </header>
-    <br /><br />
-    <section class="controller-content">
-            <div ui-view class="controller-content" flex="90" ng-show="$root.currentUser"></div>
-    </section>
+    </md-sidenav-->
+    <!--md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
+      <md-toolbar class="md-theme-indigo" flex="3">
+        <avatar ng-model="{{user}}"></avatar>
+        <div layout="column">
+                  <simple-text ng-model="{{username}}"></simple-text>
+                  <simple-text ng-model="{{rol}}"></simple-text>
+        </div>
+      </md-toolbar>
+      <md-content layout-padding layout="column" flex="7">
+        <md-button ng-repeat="module in allowed" ng-click="showMenu(module)">
+            <div main-tex></div>
+        </md-button>
+        <md-button class="md-accent" flex ng-click="logOut()" aria-label="Menu">
+            Salir
+        </md-button>
+      </md-content>
+    </md-sidenav-->
 </body>

@@ -4,9 +4,35 @@
 angular.module("sam-1").controller("TestsListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
         $scope.tests = $meteor.collection(Tests, false);
-        $scope.headers = ['', 'Nombre', 'Unidad de medida','Acciones'];
+
+        $scope.tests = $meteor.collection(function() {
+            return Tests.find({}, {
+                transform: function(doc) {
+                    doc.measureSymbol = '';
+                    if(doc.measure) {
+                        var measureSymbol = $meteor.object(Measures,doc.measure);
+                        doc.measureSymbol = measureSymbol.name+" ("+measureSymbol.symbol+")";
+                    }
+                    if(doc.targets) {
+                      angular.forEach(doc.targets, function(target){
+                        angular.forEach(target.evaluations, function(eval){
+                            eval.evaluation = $meteor.object(TypeEvaluation,eval.type);
+                        });
+                      });
+                    }
+                    return doc;
+                }
+            });
+        }, false);
+
+
+        $scope.headers = ['Nombre', 'Unidad de medida','Acciones'];
 
         $scope.showTextSearch = true;
+
+        $scope.getField = function(field, owner){
+            return owner[field];
+        }
         $scope.showAddNew = function(ev) {
             ModalService.showModal(AddTestCtrl, 'client/mtests/addTest.tmpl.ng.html', ev);
         }

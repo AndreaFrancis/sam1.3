@@ -22,7 +22,7 @@ angular.module("sam-1").controller("LabsListCtrl",['$scope','$meteor','$rootScop
         $scope.show = function(lab) {
             alert(lab);
         }
-        $scope.headers = ['', 'Nombre', 'Descripcion', 'Acciones'];
+        $scope.headers = ['Nombre', 'Descripcion', 'Acciones'];
 
     }]);
 

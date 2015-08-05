@@ -7,10 +7,6 @@
     <div class="sub-content">
         <div class="table-responsive-vertical shadow-z-1 center-table">
             <!-- Table starts here -->
-                1 Item seleccionado
-                <md-button class="md-icon-button" flex  aria-label="Borrar">
-                    <i class="fa fa-trash"></i>
-                </md-button>
             <table id="table" class="table table-hover table-mc-light-blue">
                 <thead>
                 <tr>
@@ -21,11 +17,17 @@
                 <tbody>
                 <tr ng-repeat="module in modules" class="md-table-content-row">
                     <td data-title="">
-                        <md-checkbox ng-model="module.selected" aria-label="Modulo">
-                        </md-checkbox>
+                        <i class="{{module.icon}}"></i>
                     </td>
                     <td data-title="Nombre">{{ module.name }}</td>
-                    <td data-title="">
+                    <td data-title="Prioridad">{{ module.order }}</td>
+                    <td data-title="Url">{{ module.state }}</td>
+                    <td data-title="Roles">
+                      <ul>
+                        <li ng-repeat="rol in module.roles">{{rol}}</li>
+                      </ul>
+                    </td>
+                    <td data-title="Acciones">
                         <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(user)">
                             <i class="fa fa-trash"></i>
                         </md-button>

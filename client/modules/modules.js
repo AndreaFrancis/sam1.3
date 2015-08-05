@@ -6,7 +6,7 @@ angular.module("sam-1").controller("ModulesListCtrl",['$scope','$meteor','notifi
     function($scope, $meteor,notificationService, ModalService) {
 
         $scope.modules = $meteor.collection(Modules, false);
-        $scope.headers = ['', 'Nombre', 'Acciones'];
+        $scope.headers = ['', 'Nombre','Prioridad','Url','Roles', 'Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {

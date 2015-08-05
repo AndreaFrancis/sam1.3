@@ -5,7 +5,7 @@
 angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notificationService','ModalService',
     function($scope, $meteor,notificationService, ModalService) {
         $scope.roles = $meteor.collection(RolesData, false);
-        $scope.headers = ['', 'Nombre', 'Acciones'];
+        $scope.headers = ['Tema', 'Nombre', 'Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
@@ -22,6 +22,7 @@ angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notifica
         $scope.show = function(rol) {
             alert(user);
         }
+
     }]);
 
 function AddRolController($scope, notificationService, $mdDialog, $meteor) {
@@ -40,4 +41,26 @@ function AddRolController($scope, notificationService, $mdDialog, $meteor) {
     $scope.cancel = function() {
         $mdDialog.cancel();
     }
+
+    $scope.validate = function(){
+
+    }
 }
+
+
+angular.module("sam-1").directive('rol',function() {
+  return {
+    require : 'ngModel',
+    link : function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(value) {
+        if(!value || value.length == 0) return;
+        if(RolesData.find({name: value}).count()>0){
+          ngModel.$setValidity('duplicated', false);
+        }else {
+          ngModel.$setValidity('duplicated', true);
+        }
+        return value;
+      })
+    }
+  }
+});

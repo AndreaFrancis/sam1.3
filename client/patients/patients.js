@@ -4,7 +4,7 @@
 angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationService','ModalService','$rootScope','$state','$meteor',
     function($scope,notificationService, ModalService, $rootScope, $state, $meteor) {
         $scope.patients = $meteor.collection(Patients, false);
-        $scope.headers = ['', 'Nombre', 'Acciones'];
+        $scope.headers = ['Ci','Nombre','Apellidos', 'Acciones'];
         $scope.showTextSearch = true;
 
         $scope.showAddNew = function(ev) {

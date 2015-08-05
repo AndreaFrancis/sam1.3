@@ -7,10 +7,6 @@
 
     <div class="sub-content">
         <div class="table-responsive-vertical shadow-z-1 center-table">
-                1 Item seleccionado
-                <md-button class="md-icon-button" flex  aria-label="Borrar">
-                    <i class="fa fa-trash"></i>
-                </md-button>
             <!-- Table starts here -->
             <table id="table" class="table table-hover table-mc-light-blue">
                 <thead>
@@ -21,12 +17,10 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="patient in patients" class="md-table-content-row" ng-click="showPatient(patient)">
-                    <td data-title="">
-                        <md-checkbox ng-model="patient.selected" aria-label="Paciente">
-                        </md-checkbox>
-                    </td>
+                    <td data-title="Ci">{{ patient.ci }}</td>
                     <td data-title="Nombre">{{ patient.name }}</td>
-                    <td data-title="">
+                    <td data-title="Apellidos">{{ patient.lastName }} {{ patient.lastNameMother }}</td>
+                    <td data-title="Acciones">
                         <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(patient)">
                             <i class="fa fa-trash"></i>
                         </md-button>

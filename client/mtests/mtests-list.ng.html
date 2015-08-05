@@ -1,39 +1,39 @@
-<div ng-controller="TestsListCtrl">
+<div>
     <div class="main-fab">
         <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="Agregar">
             <i class="fa fa-plus"></i>
         </md-button>
     </div>
-    <div class="sub-content">
-        <div class="table-responsive-vertical shadow-z-1 center-table">
-            <!-- Table starts here -->
-                1 Item seleccionado
-                <md-button class="md-icon-button" flex  aria-label="Borrar">
+    <div layout="column" layout-fill style="padding-bottom: 32px;" class="sub-content">
+        <md-whiteframe class="md-whiteframe-z1" ng-repeat="test in tests">
+            <h3>{{ test.name }}</h3>
+            <h4 ng-show="test.measureSymbol">Unidad de medida: {{ test.measureSymbol}}</h4>
+
+              <md-list>
+                <md-subheader class="md-no-sticky">Destinos</md-subheader>
+                <md-list-item class="md-3-line" ng-repeat="target in test.targets">
+                  <div class="md-list-item-text">
+                    <h3> {{ target.name }} </h3>
+                    <p>
+                      <ul>
+                        <li ng-repeat="eval in target.evaluations">
+                          {{eval.name}}  {{eval.evaluation.name}}
+                          <span ng-repeat="field in eval.evaluation.fields">
+                            {{field}} {{getField(field, eval)}}
+                          </span>
+                        </li>
+                      </ul>
+                    </p>
+                  </div>
+                  <md-divider ></md-divider>
+                </md-list-item>
+              </md-list>
+
+
+
+            <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(test)">
                     <i class="fa fa-trash"></i>
-                </md-button>
-            <table id="table" class="table table-hover table-mc-light-blue">
-                <thead>
-                <tr>
-                    <th ng-repeat="h in headers" class="md-table-header">
-                      {{h}}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="test in tests" class="md-table-content-row">
-                    <td data-title="">
-                        <md-checkbox ng-model="test.selected" aria-label="Area">
-                        </md-checkbox>
-                    </td>
-                    <td data-title="Nombre">{{ test.name }}</td>
-                    <td data-title="Unidad de medida">{{ test.measure}}</td>
-                    <td data-title="">
-                        <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(test)">
-                            <i class="fa fa-trash"></i>
-                        </md-button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+            </md-button>
+        </md-whiteframe>
     </div>
-</div>
+  </div>

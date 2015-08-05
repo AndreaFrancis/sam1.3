@@ -9,7 +9,7 @@
         <md-dialog-content layout="column">
             <div layout="row">
                 <div ng-show="existingStudy">
-                    Nombre del paciente: {{patient.name}}
+                    Nombre del paciente: {{patient.name}} {{patient.lastName}} {{patient.lastNameMother}}
                 </div>
                 <div layout="row" ng-hide="existingStudy">
                     <md-autocomplete

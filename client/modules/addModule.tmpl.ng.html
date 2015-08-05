@@ -22,6 +22,13 @@
                 </div>
             </md-input-container>
             <md-input-container flex>
+                <label>Orden</label>
+                <input ng-model="newModule.order" required name="order">
+                <div ng-messages="newModuleForm.order.$error" ng-if="newModuleForm.order.$dirty">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
+            <md-input-container flex>
                 <label>Nombre del icono</label>
                 <input ng-model="newModule.icon" required name="state">
                 <div ng-messages="newModuleForm.icon.$error" ng-if="newModuleForm.icon.$dirty">

@@ -156,7 +156,7 @@ function AddStudyController($scope, $mdDialog, $meteor, notificationService, pat
                     component.analisys = analisys._id;
                 };
                 if(test.selected) {
-                    component.tests.push(test._id);
+                    component.tests.push({test:test._id});
                 }
             });
             angular.forEach(analisys.examsObj, function(exam){
@@ -178,7 +178,7 @@ function AddStudyController($scope, $mdDialog, $meteor, notificationService, pat
                         examComponent.tests = [];
                     };
                     if(testEx.selected) {
-                        examComponent.tests.push(testEx._id);
+                        examComponent.tests.push({test:testEx._id});
                     }
                 });
 

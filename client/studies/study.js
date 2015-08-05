@@ -9,36 +9,39 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
         $scope.study = $meteor.object(Studies, $stateParams.studyId);
         $scope.analisysList = [];
 
+
         angular.forEach($scope.study.analisys, function(analisys){
             var analisysName = $meteor.object(Analisys, analisys.analisys);
-            console.log(analisysName.name);
-            var analisysV = {};
+            /*var analisysV = {};
             analisysV.name = analisysName.name;
             analisysV.tests = [];
-            analisysV.exams = [];
+            analisysV.exams = [];**/
+            analisys.name = analisysName.name;
             angular.forEach(analisys.tests, function(test){
                 var testName = $meteor.object(Tests, test.test);
-                console.log("--"+testName.name);
+                /**
                 var testV = {};
                 testV.name = testName.name;
-                analisysV.tests.push(testV);
+                analisysV.tests.push(testV);**/
+                test.name = testName.name;
             });
             angular.forEach(analisys.exams, function(exam){
                 var examName = $meteor.object(Exams, exam.exam);
-                console.log("--"+examName.name);
+                /**
                 var examV = {};
                 examV.tests = [];
-                examV.name = examName.name;
+                examV.name = examName.name;**/
+                exam.name = examName.name;
                 angular.forEach(exam.tests, function(eTest){
                     var examTest = $meteor.object(Tests, eTest.test);
-                    console.log("----"+examTest.name);
-                    var testV = {};
+                    /**var testV = {};
                     testV.name = examTest.name;
-                    examV.tests.push(testV);
+                    examV.tests.push(testV);**/
+                    eTest.name = examTest.name;
                 });
-                analisysV.exams.push(examV);
+                //analisysV.exams.push(examV);
             });
-            $scope.analisysList.push(analisysV);
+            //$scope.analisysList.push(analisysV);
         });
 
         $scope.patient = $meteor.object(Patients, $scope.study.patient);
@@ -61,19 +64,19 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
             $state.go('studies');
         }
 
-
-        var i = 0, j = 0, k = 0, l = 0;
-        $scope.save = function() {
+        $scope.save = function($event) {
+          var i = 0, j = 0, k = 0, l = 0;
             if($scope.isBioquimic) {
                 angular.forEach($scope.analisysList, function(analisys){
                     console.log("--"+analisys.name);
                     j = 0;
-                    k = 0;
+
                     angular.forEach(analisys.tests, function(test){
                         console.log("--"+test.name+":"+ test.result);
                         $scope.study.analisys[i].tests[j].result = test.result;
                         j++;
                     });
+                    k = 0;
                     angular.forEach(analisys.exams, function(exam){
                         console.log("--"+exam.name);
                         l = 0;

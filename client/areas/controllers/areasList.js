@@ -7,7 +7,7 @@
 angular.module("sam-1").controller("AreasListCtrl",['$scope','$meteor','notificationService','ModalService',
     function($scope, $meteor,notificationService, ModalService) {
         $scope.areas = $meteor.collection(Areas, false);
-        $scope.headers = ['', 'Nombre', 'Descripcion', 'Acciones'];
+        $scope.headers = ['Nombre', 'Descripcion', 'Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
