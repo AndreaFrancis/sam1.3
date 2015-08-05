@@ -5,15 +5,15 @@ angular.module('sam-1').service("notificationService", function($mdToast){
     this.showError = function(msg) {
         $mdToast.show({
             template: '<md-toast class="md-toast error">' + msg + '</md-toast>',
-            hideDelay: 6000,
-            position: 'up right'
+            hideDelay: 3000,
+            position: 'bottom right'
         });
     }
     this.showSuccess = function(msg) {
         $mdToast.show({
             template: '<md-toast class="md-toast success">' + msg + '</md-toast>',
-            hideDelay: 6000,
-            position: 'up right'
+            hideDelay: 3000,
+            position: 'bottom right'
         });
     }
 });
