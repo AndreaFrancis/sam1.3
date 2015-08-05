@@ -24,11 +24,11 @@
                     <td data-title="Url">{{ module.state }}</td>
                     <td data-title="Roles">
                       <ul>
-                        <li ng-repeat="rol in module.roles">{{rol}}</li>
+                        <li ng-repeat="rol in module.rolesObj">{{rol}}</li>
                       </ul>
                     </td>
                     <td data-title="Acciones">
-                        <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(user)">
+                        <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(module)">
                             <i class="fa fa-trash"></i>
                         </md-button>
                     </td>

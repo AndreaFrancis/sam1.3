@@ -8,7 +8,6 @@ angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','Modal
             transform: function(doc) {
               doc.labName = $meteor.object(Labs, doc.lab).name;
               doc.areaName = $meteor.object(Areas, doc.area).name;
-
               if(doc.tests){
                 doc.testsObj = [];
                 angular.forEach(doc.tests, function(test){

@@ -136,7 +136,13 @@ a {
 /**DIALOG**/
 
 .md-medium-dialog{
+    max-width: 70%;
     min-width: 70%;
+}
+
+.md-thins-dialog{
+    min-width: 40%;
+    max-width: 40%;
 }
 
 .md-big-dialog {
