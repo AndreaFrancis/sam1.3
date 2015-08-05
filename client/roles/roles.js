@@ -9,7 +9,7 @@ angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notifica
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
-            ModalService.showModal(AddRolController, 'client/roles/addRol.tmpl.ng.html', ev);
+            ModalService.showModalWithParams(AddRolController, 'client/roles/addRol.tmpl.ng.html',ev,{rol:null});
         }
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
@@ -24,16 +24,21 @@ angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notifica
           });
         }
 
-        $scope.show = function(rol) {
-            alert(user);
+        $scope.show = function(selectedRol, ev) {
+            ModalService.showModalWithParams(AddRolController, 'client/roles/addRol.tmpl.ng.html',ev, {rol:selectedRol});
         }
 
     }]);
 
-function AddRolController($scope, notificationService, $mdDialog, $meteor) {
+function AddRolController($scope, notificationService, $mdDialog,rol, $meteor) {
+    if(rol) {
+      $scope.rol = rol;
+    }
     $scope.roles = $meteor.collection(RolesData, false);
     $scope.save = function() {
-        $scope.roles.save($scope.newRol).then(function(number) {
+        var rolToJson = angular.toJson($scope.rol);
+        var rolToArray = JSON.parse(rolToJson);
+        $scope.roles.save(rolToArray).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el rol");
         }, function(error){
             notificationService.showError("Error en el registro del rol");

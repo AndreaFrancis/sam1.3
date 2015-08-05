@@ -15,7 +15,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="rol in roles" class="md-table-content-row">
+                <tr ng-repeat="rol in roles" class="md-table-content-row" ng-click="show(rol, $event)">
                     <td data-title="Nombre">{{ rol.name }}</td>
                     <td data-title="Acciones">
                         <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(rol)">

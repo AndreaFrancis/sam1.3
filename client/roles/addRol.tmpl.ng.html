@@ -2,14 +2,14 @@
     <form name="newRolForm" novalidate layout="column">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Nuevo Rol</h2>
+                <h2>{{rol? '':'Nuevo'}} Rol</h2>
                 <span flex></span>
             </div>
         </md-toolbar>
         <md-dialog-content class="sticky-container">
             <md-input-container flex>
                 <label>Nombre</label>
-                <input ng-model="newRol.name" required name="name" ng-change="validate()" rol>
+                <input ng-model="rol.name" required name="name" ng-change="validate()" rol>
                 <div ng-messages="newRolForm.name.$error" ng-if="newRolForm.name.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
                     <div ng-message='duplicated'>*El rol ya existe</div>
