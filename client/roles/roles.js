@@ -5,7 +5,7 @@
 angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notificationService','ModalService',
     function($scope, $meteor,notificationService, ModalService) {
         $scope.roles = $meteor.collection(RolesData, false);
-        $scope.headers = ['Tema', 'Nombre', 'Acciones'];
+        $scope.headers = ['Nombre', 'Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
@@ -16,7 +16,12 @@ angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notifica
         }
 
         $scope.delete = function(rol) {
-
+          $scope.roles.remove(rol).then(function(number) {
+              notificationService.showSuccess("Se ha eliminado correctamente el rol");
+          }, function(error){
+              notificationService.showError("Error en la eliminacino del rol");
+              console.log(error);
+          });
         }
 
         $scope.show = function(rol) {
@@ -40,10 +45,6 @@ function AddRolController($scope, notificationService, $mdDialog, $meteor) {
 
     $scope.cancel = function() {
         $mdDialog.cancel();
-    }
-
-    $scope.validate = function(){
-
     }
 }
 
