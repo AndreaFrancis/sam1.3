@@ -10,7 +10,7 @@
             <div layout="row">
               <md-input-container flex>
                 <label>Nombre</label>
-                <input ng-model="newModule.name" required name="name" module>
+                <input ng-model="module.name" required name="name" module>
                 <div ng-messages="newModuleForm.name.$error" ng-if="newModuleForm.name.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
                     <div ng-message='duplicated'>*El rol ya existe</div>
@@ -18,7 +18,7 @@
               </md-input-container>
               <md-input-container flex>
                 <label>Estado</label>
-                <input ng-model="newModule.state" required name="state">
+                <input ng-model="module.state" required name="state">
                 <div ng-messages="newModuleForm.state.$error" ng-if="newModuleForm.state.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
                 </div>
@@ -27,23 +27,25 @@
             <div layout="row">
               <md-input-container flex>
                 <label>Orden</label>
-                <input ng-model="newModule.order" required name="order">
+                <input ng-model="module.order" required name="order">
                 <div ng-messages="newModuleForm.order.$error" ng-if="newModuleForm.order.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
                 </div>
               </md-input-container>
               <md-input-container flex>
                 <label>Nombre del icono</label>
-                <input ng-model="newModule.icon" required name="state">
+                <input ng-model="module.icon" required name="state">
                 <div ng-messages="newModuleForm.icon.$error" ng-if="newModuleForm.icon.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
                 </div>
               </md-input-container>
             </div>
             <div layout="column">
-              <md-chips ng-model="selectedVegetables" md-autocomplete-snap md-require-match>
+              <md-chips ng-model="selectedRoles" md-autocomplete-snap md-require-match="true">
                 <md-autocomplete
                   md-selected-item="selectedItem"
+                  md-search-text-change="null"
+                  md-selected-item-change="itemChange(item)"
                   md-search-text="searchText"
                   md-items="item in querySearch(searchText)"
                   md-item-text="item.name"

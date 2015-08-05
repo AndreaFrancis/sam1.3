@@ -4,27 +4,12 @@
 
 angular.module("sam-1").controller("ModulesListCtrl",['$scope','$meteor','notificationService','ModalService',
     function($scope, $meteor,notificationService, ModalService) {
-        $scope.modules = $meteor.collection(function(){
-          return Modules.find({},{
-            transform: function(doc){
-              if(doc.roles){
-                doc.rolesObj = [];
-                angular.forEach(doc.roles, function(rol){
-                  rol = $meteor.object(RolesData,rol);
-                  if(rol && rol!='undefined') {
-                    doc.rolesObj.push(rol.name);
-                  }
-                });
-              }
-              return doc;
-            }
-          });
-        }, false);
+        $scope.modules = $meteor.collection(Modules,false);
         $scope.headers = ['', 'Nombre','Prioridad','Url','Roles', 'Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
-            ModalService.showModal(AddModuleController, 'client/modules/addModule.tmpl.ng.html', ev);
+            ModalService.showModalWithParams(AddModuleController, 'client/modules/addModule.tmpl.ng.html', ev, {module:null});
         }
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
@@ -38,32 +23,34 @@ angular.module("sam-1").controller("ModulesListCtrl",['$scope','$meteor','notifi
                 console.log(error);
             });
         }
-        $scope.show = function(module) {
-            alert(module);
+        $scope.show = function(selectedModule, ev) {
+            ModalService.showModalWithParams(AddModuleController, 'client/modules/addModule.tmpl.ng.html', ev, {module:selectedModule});
         }
     }]);
 
-function AddModuleController($scope, notificationService, $mdDialog, $meteor) {
+function AddModuleController($scope, notificationService, $mdDialog, module, $meteor) {
+
+  $scope.readonly = false;
+  $scope.selectedItem = null;
+  $scope.selectedRoles = [];
+  if(module){
+      $scope.module = module;
+      $scope.selectedRoles = module.roles;
+  }
+
     $scope.roles = $meteor.collection(RolesData, false);
-    $scope.selectedRol = {};
-    $scope.selectedRoles = [];
     $scope.modules = $meteor.collection(Modules, false);
 
-    $scope.saveRol = function() {
-        $scope.selectedRoles.push($scope.selectedRol);
-    }
 
     $scope.save = function() {
-        var rolesToJson = angular.toJson($scope.selectedVegetables);
-        var rolesToArray = JSON.parse(rolesToJson);
-        $scope.newModule.roles = rolesToArray;
-        $scope.modules.save($scope.newModule).then(function(number) {
+        $scope.module.roles = $scope.selectedRoles;
+        $scope.modules.save($scope.module).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el modulo");
         }, function(error){
             notificationService.showError("Error en el registro del modulo");
             console.log(error);
         });
-        $scope.newModule = '';
+        $scope.module = '';
         $mdDialog.hide();
     }
 
@@ -71,19 +58,16 @@ function AddModuleController($scope, notificationService, $mdDialog, $meteor) {
         $mdDialog.cancel();
     }
 
+
     //Autocomplete:
 
-    $scope.readonly = false;
-    $scope.selectedItem = null;
-    $scope.querySearch = querySearch;
-    $scope.selectedVegetables = [];
-    $scope.numberChips = [];
-    $scope.numberChips2 = [];
-    $scope.numberBuffer = '';
+    $scope.itemChange = function(item){
+      console.console.log(item);
+    }
     /**
      * Search for vegetables.
      */
-    function querySearch (query) {
+    $scope.querySearch = function (query) {
       var results = query ? $scope.roles.filter(createFilterFor(query)) : [];
       return results;
     }
@@ -93,7 +77,8 @@ function AddModuleController($scope, notificationService, $mdDialog, $meteor) {
     function createFilterFor(query) {
       var lowercaseQuery = angular.lowercase(query);
       return function filterFn(rol) {
-        return (rol.name.toLowerCase().indexOf(lowercaseQuery) === 0);
+        var objDuplicated = _.find($scope.selectedRoles, function(obj) { return obj.name == rol.name })
+        return (rol.name.toLowerCase().indexOf(lowercaseQuery) === 0) && objDuplicated==null;
       };
     }
 }
