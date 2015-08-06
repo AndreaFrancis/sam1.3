@@ -47,7 +47,7 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
     }
     $scope.checkRoles = function() {
             if($rootScope.currentUser) {
-                $scope.roles =   $rootScope.currentUser.roles;
+                $scope.roles =   [$rootScope.currentUser.profile.mainRol];
                 $scope.allowed = $meteor.collection(function(){
                     return Modules.find({roles: {"$in":$scope.roles}});
                 });
@@ -90,7 +90,7 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
                 $rootScope.currentUser = Meteor.user();
                 localStorage.setItem("username", $rootScope.currentUser._id);
                 localStorage.setItem("user", $rootScope.currentUser._id);
-                localStorage.setItem("rol", $rootScope.currentUser.roles[0]);
+                localStorage.setItem("rol", $rootScope.currentUser.profile.mainRol);
                 $scope.checkRoles();
                 $state.go("start");
             }

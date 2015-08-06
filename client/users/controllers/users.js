@@ -21,26 +21,29 @@ angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notifica
           });
         }
 
-        $scope.show = function(user) {
-            alert(user);
+        $scope.show = function(selectedUser, ev) {
+            ModalService.showModalWithParams(AddUserController, 'client/users/views/addUser.tmpl.ng.html', ev, {user:selectedUser});
         }
 
         $scope.showAddNew = function(ev) {
-            ModalService.showModal(AddUserController, 'client/users/views/addUser.tmpl.ng.html', ev);
+            ModalService.showModalWithParams(AddUserController, 'client/users/views/addUser.tmpl.ng.html', ev, {user:null});
         }
 
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
         }
-        $scope.headers = ['', 'Nombre de usuario','Nombre', 'Apellido', 'Rol', 'Acciones'];
+        $scope.headers = ['Img', 'Nombre de usuario','Nombre', 'Apellido', 'Rol', 'Acciones'];
 }]);
 
-function AddUserController($rootScope, $scope,$mdDialog, $meteor, notificationService) {
+function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notificationService) {
+    if(user) {
+      $scope.user = user;
+    }else {
+      $scope.user = {};
+      $scope.user.profile = {};
+    }
     $scope.roles = $meteor.collection(RolesData);
-    $scope.newUser = {};
-    $scope.newUser.profile = {};
     $scope.selectedRol = {};
-    $scope.newUser.profile = {};
     $scope.cancel = function() {
         $mdDialog.cancel();
     }
@@ -50,16 +53,16 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, notificationSe
         $scope.image = URL.createObjectURL($scope.selectedFile);
     }
 
-    $scope.save = function(newUser) {
+    $scope.save = function(user) {
         if($scope.selectedFile) {
           Images.insert($scope.selectedFile, function (err, fileObj) {
               if (err){
                   notificationService.showError("Error al subir la imagen");
                   console.log(err);
               } else {
-                  newUser.profile.mainRol  = $scope.selectedRol;
-                  newUser.profile.image = "/cfs/files/images/" + fileObj._id;
-                  Meteor.call("createNewUser", newUser, function(err) {
+                  user.profile.mainRol  = $scope.selectedRol;
+                  user.profile.image = "/cfs/files/images/" + fileObj._id;
+                  Meteor.call("createNewUser", user, function(err) {
                       if(err) {
                           notificationService.showError("Error en el registro del usuario");
                           console.log(err);
@@ -70,18 +73,18 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, notificationSe
               }
           });
         }else{
-          newUser.profile.mainRol  = $scope.selectedRol;
-          Meteor.call("createNewUser", newUser, function(err) {
+          user.profile.mainRol  = $scope.selectedRol;
+          Meteor.call("createNewUser", user, function(err) {
               if(err) {
                   notificationService.showError("Error en el registro del usuario");
                   console.log(err);
               }else{
-                  notificationService.showSuccess("Se ha registrado correctamente al usuario"+ newUser._id);
+                  notificationService.showSuccess("Se ha registrado correctamente al usuario"+ user._id);
               }
           });
         }
 
-        $scope.newUser = '';
+        $scope.user = '';
         $mdDialog.hide();
     }
 }

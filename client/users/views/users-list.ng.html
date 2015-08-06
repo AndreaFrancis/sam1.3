@@ -16,7 +16,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="user in users" class="md-table-content-row" ng-click="show(user)">
+                <tr ng-repeat="user in users" class="md-table-content-row" ng-click="show(user, $event)">
                     <td data-title="">
                         <img ng-src="{{user.profile.image}}" class="md-avatar" alt="{{user.username}}" />
 
@@ -25,14 +25,14 @@
                     <td data-title="Nombre">{{ user.profile.name}}</td>
                     <td data-title="Apellido">{{ user.profile.lastName}}</td>
                     <td data-title="Rol">{{user.profile.mainRol}}</td>
-                    <td data-title="">
+                    <td data-title="Acciones">
                         <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(user)">
                             <i class="fa fa-trash"></i>
                         </md-button>
                     </td>
                 </tr>
                 </tbody>
-            </table>
+            </table>            
         </div>
     </div>
 </div>

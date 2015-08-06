@@ -4,7 +4,18 @@
 
 angular.module("sam-1").controller("ModulesListCtrl",['$scope','$meteor','notificationService','ModalService',
     function($scope, $meteor,notificationService, ModalService) {
-        $scope.modules = $meteor.collection(Modules,false);
+        $scope.modules = $meteor.collection(function(){
+          return Modules.find({},{
+            transform: function(doc){
+              if(doc.roles){
+                doc.rolesObj = $meteor.collection(function(){
+                  return RolesData.find({_id:{$in:doc.roles}});
+                },false);
+              }
+              return doc;
+            }
+          });
+        },false);
         $scope.headers = ['', 'Nombre','Prioridad','Url','Roles', 'Acciones'];
 
         $scope.showTextSearch = true;
@@ -35,7 +46,7 @@ function AddModuleController($scope, notificationService, $mdDialog, module, $me
   $scope.selectedRoles = [];
   if(module){
       $scope.module = module;
-      $scope.selectedRoles = module.roles;
+      $scope.selectedRoles = module.rolesObj;
   }
 
     $scope.roles = $meteor.collection(RolesData, false);
@@ -43,7 +54,11 @@ function AddModuleController($scope, notificationService, $mdDialog, module, $me
 
 
     $scope.save = function() {
-        $scope.module.roles = $scope.selectedRoles;
+        var keys = [];
+        angular.forEach($scope.selectedRoles, function(rol){
+          keys.push(rol._id);
+        });
+        $scope.module.roles = keys;
         $scope.modules.save($scope.module).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el modulo");
         }, function(error){
@@ -62,14 +77,14 @@ function AddModuleController($scope, notificationService, $mdDialog, module, $me
     //Autocomplete:
 
     $scope.itemChange = function(item){
-      console.console.log(item);
+      console.log(item);
     }
 
     $scope.querySearch = function (query) {
       var results = query ? $scope.roles.filter(createFilterFor(query)) : [];
       return results;
     }
-    
+
     function createFilterFor(query) {
       var lowercaseQuery = angular.lowercase(query);
       return function filterFn(rol) {
