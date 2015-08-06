@@ -7,10 +7,10 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
         $locationProvider.html5Mode(true);
 
         $stateProvider
-            .state('labs', {
-                url: '/labs',
-                templateUrl: 'client/labs/views/labs-list.ng.html',
-                controller: 'LabsListCtrl',
+            .state('services', {
+                url: '/services',
+                templateUrl: 'client/services/services.ng.html',
+                controller: 'ServicesListCtrl',
                 data: {
                   requireLogin: true
                 }

@@ -1,4 +1,4 @@
-<div ng-controller="LabsListCtrl">
+<div>
     <div class="main-fab">
         <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="Agregar">
             <i class="fa fa-plus"></i>
@@ -15,7 +15,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="lab in labs" class="md-table-content-row">
+                <tr ng-repeat="lab in services" class="md-table-content-row">
                     <td data-title="Nombre">{{ lab.name }}</td>
                     <td data-title="Descripcion">{{ lab.description}}</td>
                     <td data-title="">

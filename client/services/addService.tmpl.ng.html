@@ -1,27 +1,29 @@
 <md-dialog aria-label="Nuevo Usuario" layout="column">
-    <form name="newLabForm" novalidate layout="column">
+    <form name="newServiceForm" novalidate layout="column">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Nuevo Laboratorio</h2>
+                <h2>Servicio</h2>
                 <span flex></span>
             </div>
         </md-toolbar>
         <md-dialog-content class="sticky-container">
             <md-input-container flex>
                 <label>Nombre</label>
-                <input name="name" ng-model="newLab.name" required>
-                <div ng-messages="newLabForm.name.$error">
+                <input name="name" ng-model="service.name" required service input-text>
+                <div ng-messages="newServiceForm.name.$error">
                     <div ng-message="required">*Campo obligatorio</div>
+                    <div ng-message='duplicated'>*El servicio ya existe</div>
+                    <div ng-message="inputText">*Ingrese solo letras</div>
                 </div>
             </md-input-container>
             <md-input-container flex>
                 <label>Descripcion</label>
-                <textarea ng-model="newLab.description" columns="2"></textarea>
+                <textarea ng-model="service.description" columns="2"></textarea>
             </md-input-container>
         </md-dialog-content>
             <div class="md-actions" layout="row">
                 <span flex></span>
-                <md-button md-no-ink class="md-primary" ng-click="save()" ng-disabled="newLabForm.$invalid" type="submit">
+                <md-button md-no-ink class="md-primary" ng-click="save()" ng-disabled="newServiceForm.$invalid" type="submit">
                     Guardar
                 </md-button>
                 <md-button md-no-ink ng-click="cancel()">

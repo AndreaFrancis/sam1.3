@@ -9,10 +9,11 @@
         <md-dialog-content class="sticky-container">
             <md-input-container flex>
                 <label>Nombre</label>
-                <input ng-model="rol.name" required name="name" ng-change="validate()" rol>
+                <input ng-model="rol.name" required name="name" ng-change="validate()" rol input-text>
                 <div ng-messages="newRolForm.name.$error" ng-if="newRolForm.name.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
                     <div ng-message='duplicated'>*El rol ya existe</div>
+                    <div ng-message="inputText">*Ingrese solo letras</div>
                 </div>
             </md-input-container>
         </md-dialog-content>
