@@ -16,7 +16,12 @@ angular.module("sam-1").controller("ServicesListCtrl",['$scope','$meteor','$root
         }
 
         $scope.delete = function(service) {
-
+          $scope.services.remove(service).then(function(number) {
+              notificationService.showSuccess("Se ha eliminado correctamente el servicio");
+          }, function(error){
+              notificationService.showError("Error en la eliminacino del servicio");
+              console.log(error);
+          });
         }
 
         $scope.show = function(service) {
