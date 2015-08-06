@@ -38,7 +38,7 @@
               <div layout="row">
                 <md-input-container flex>
                   <label>Correo</label>
-                  <input ng-model="user.email" required type="email" name="email">
+                  <input ng-model="user.profile.email" required type="email" name="email">
                   <div ng-messages="newUserForm.email.$error" ng-if="newUserForm.email.$dirty">
                     <div ng-message="inputText">*Campo obligatorio</div>
                   </div>

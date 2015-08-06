@@ -6,7 +6,19 @@
  */
 angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notificationService','$mdDialog','ModalService',
     function($scope, $meteor,notificationService,$mdDialog, ModalService) {
-        $scope.users = $meteor.collection(Users, false);
+        $scope.users = $meteor.collection(function(){
+          return Users.find({},{
+            transform: function(doc){
+              if(doc.profile.mainRol){
+                var rol = $meteor.object(RolesData,doc.profile.mainRol);
+                if(rol){
+                  doc.rol = rol.name;
+                }
+              }
+              return doc;
+            }
+          });
+        }, false);
 
         $scope.showTextSearch = true;
 

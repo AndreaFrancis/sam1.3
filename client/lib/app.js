@@ -1,7 +1,7 @@
 /**
  * Created by Andrea on 06/06/2015.
  */
-var app = angular.module('sam-1',['angular-meteor','ui.router','ngMaterial', 'ngMessages', 'mdDateTime']);
+var app = angular.module('sam-1',['angular-meteor','ui.router','ngMaterial', 'ngMessages']);
 app.config(function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('blue')

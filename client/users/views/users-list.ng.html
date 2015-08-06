@@ -24,7 +24,7 @@
                     <td data-title="Nick">{{ user.username}}</td>
                     <td data-title="Nombre">{{ user.profile.name}}</td>
                     <td data-title="Apellido">{{ user.profile.lastName}}</td>
-                    <td data-title="Rol">{{user.profile.mainRol}}</td>
+                    <td data-title="Rol">{{user.rol}}</td>
                     <td data-title="Acciones">
                         <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(user)">
                             <i class="fa fa-trash"></i>
@@ -32,7 +32,7 @@
                     </td>
                 </tr>
                 </tbody>
-            </table>            
+            </table>
         </div>
     </div>
 </div>

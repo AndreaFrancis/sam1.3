@@ -2,7 +2,7 @@ angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','Modal
     function($scope, $meteor,ModalService) {
 
         $scope.measures = $meteor.collection(Measures, false);
-        $scope.headers = ['Nombre', 'Simbolo','Acciones'];
+        $scope.headers = ['Simbolo', 'Nombre','Acciones'];
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
@@ -41,3 +41,20 @@ function AddMeasureController($scope,$mdDialog, $meteor, notificationService) {
         $mdDialog.cancel();
     }
 }
+
+angular.module("sam-1").directive('measure',function() {
+  return {
+    require : 'ngModel',
+    link : function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(value) {
+        if(!value || value.length == 0) return;
+        if(Measures.find({symbol: value}).count()>0){
+          ngModel.$setValidity('duplicated', false);
+        }else {
+          ngModel.$setValidity('duplicated', true);
+        }
+        return value;
+      })
+    }
+  }
+});
