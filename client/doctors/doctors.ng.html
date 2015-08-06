@@ -15,11 +15,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="measure in measures" class="md-table-content-row" ng-click="show(measure, $event)">
-                    <td data-title="Simbolo">{{ measure.symbol}}</td>
-                    <td data-title="Nombre">{{ measure.name }}</td>
-                    <td data-title="">
-                        <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(measure)">
+                <tr ng-repeat="doctor in doctors" class="md-table-content-row" ng-click="show(doctor, $event)">
+                    <td data-title="Nombre">{{ doctor.name }}</td>
+                    <td data-title="Apellido">{{ doctor.lastName }}</td>
+                    <td data-title="Especialidad">{{ doctor.especialism }}</td>
+                    <td data-title="Matricula">{{ doctor.enrolment }}</td>
+                    <td data-title="Acciones">
+                        <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(doctor)">
                             <i class="fa fa-trash"></i>
                         </md-button>
                     </td>

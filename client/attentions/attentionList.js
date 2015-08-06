@@ -11,7 +11,7 @@ angular.module("sam-1").controller("AttentionsListCtrl",['$scope','$meteor','not
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
-            ModalService.showModal(AddAttentionController, 'client/attentions/addAttention.tmpl.ng.html', ev);
+            ModalService.showModalWithParams(AddAttentionController, 'client/attentions/addAttention.tmpl.ng.html', ev, {attention:null});
         }
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
@@ -26,12 +26,16 @@ angular.module("sam-1").controller("AttentionsListCtrl",['$scope','$meteor','not
           });
         }
 
-        $scope.show = function(attention) {
-            alert(attention);
+        $scope.show = function(selectedAtt, ev) {
+            ModalService.showModalWithParams(AddAttentionController, 'client/attentions/addAttention.tmpl.ng.html', ev, {attention:selectedAtt});
         }
     }]);
 
-function AddAttentionController($scope, notificationService, $mdDialog, $meteor) {
+function AddAttentionController($scope, notificationService, $mdDialog, attention, $meteor) {
+    if(attention){
+      $scope.attention = attention;
+    }
+
     $scope.attentions = $meteor.collection(Attentions);
     $scope.save = function() {
         $scope.attentions.save($scope.attention).then(function(number) {

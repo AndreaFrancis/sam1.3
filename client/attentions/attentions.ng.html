@@ -15,9 +15,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="attention in attentions" class="md-table-content-row">
+                    <tr ng-repeat="attention in attentions" class="md-table-content-row" ng-click="show(attention, $event)">
                         <td data-title="Nombre">{{ attention.name }}</td>
-                        <td data-title="Descripcion"><p>{{ attention.description}}</p></td>
+                        <td data-title="Descripcion"><p>{{ attention.description|truncate:30}}</p></td>
                         <td data-title="">
                             <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(attention)">
                                 <i class="fa fa-trash"></i>

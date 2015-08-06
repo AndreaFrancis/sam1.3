@@ -136,6 +136,14 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                   requireLogin: true
                 }
             })
+            .state('doctors', {
+                url: '/doctors',
+                templateUrl: 'client/doctors/doctors.ng.html',
+                controller: 'DoctorsListCtrl',
+                data: {
+                  requireLogin: true
+                }
+            })
             .state('login',{
               ulr: '/login',
               templateUrl: 'client/starter/login.ng.html',
