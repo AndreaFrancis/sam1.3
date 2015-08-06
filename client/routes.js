@@ -46,10 +46,10 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                   requireLogin: true
                 }
             })
-            .state('areas', {
-                url: '/areas',
-                templateUrl: 'client/areas/views/areas.ng.html',
-                controller: 'AreasListCtrl',
+            .state('attentions', {
+                url: '/attentions',
+                templateUrl: 'client/attentions/attentions.ng.html',
+                controller: 'AttentionsListCtrl',
                 data: {
                   requireLogin: true
                 }

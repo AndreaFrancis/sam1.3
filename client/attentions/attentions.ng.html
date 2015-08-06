@@ -1,4 +1,4 @@
-<div ng-controller="AreasListCtrl" layout="column">
+<div layout="column">
     <div class="main-fab">
         <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="Agregar">
             <i class="fa fa-plus"></i>
@@ -15,11 +15,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="area in areas" class="md-table-content-row">
-                        <td data-title="Nombre">{{ area.name }}</td>
-                        <td data-title="Descripcion"><p>{{ area.description}}</p></td>
+                    <tr ng-repeat="attention in attentions" class="md-table-content-row">
+                        <td data-title="Nombre">{{ attention.name }}</td>
+                        <td data-title="Descripcion"><p>{{ attention.description}}</p></td>
                         <td data-title="">
-                            <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(area)">
+                            <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(attention)">
                                 <i class="fa fa-trash"></i>
                             </md-button>
                         </td>
