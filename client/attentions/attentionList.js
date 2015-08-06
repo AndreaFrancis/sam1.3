@@ -18,7 +18,12 @@ angular.module("sam-1").controller("AttentionsListCtrl",['$scope','$meteor','not
         }
 
         $scope.delete = function(attention) {
-
+          $scope.attentions.remove(attention).then(function(number) {
+              notificationService.showSuccess("Se ha eliminado correctamente el tipo de atencion");
+          }, function(error){
+              notificationService.showError("Error en la eliminacino del tipo de atencion");
+              console.log(error);
+          });
         }
 
         $scope.show = function(attention) {
