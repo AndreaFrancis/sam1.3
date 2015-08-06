@@ -15,9 +15,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="service in services" class="md-table-content-row">
+                <tr ng-repeat="service in services" class="md-table-content-row" ng-click="show(service, $event)">
                     <td data-title="Nombre">{{ service.name }}</td>
-                    <td data-title="Descripcion">{{ service.description}}</td>
+                    <td data-title="Descripcion">{{ service.description|truncate:30}}</td>
                     <td data-title="">
                         <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(service)">
                             <i class="fa fa-trash"></i>

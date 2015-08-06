@@ -8,7 +8,7 @@ angular.module("sam-1").controller("ServicesListCtrl",['$scope','$meteor','$root
         $scope.showTextSearch = true;
 
         $scope.showAddNew = function(ev) {
-            ModalService.showModal(AddServiceController, 'client/services/addService.tmpl.ng.html', ev);
+            ModalService.showModalWithParams(AddServiceController, 'client/services/addService.tmpl.ng.html',ev,{service:null});
         }
 
         $scope.toggleSearch = function() {
@@ -24,21 +24,23 @@ angular.module("sam-1").controller("ServicesListCtrl",['$scope','$meteor','$root
           });
         }
 
-        $scope.show = function(service) {
-            alert(services);
+        $scope.show = function(selectedService, ev) {
+            ModalService.showModalWithParams(AddServiceController, 'client/services/addService.tmpl.ng.html',ev,{service:selectedService});
         }
         $scope.headers = ['Nombre', 'Descripcion', 'Acciones'];
 
     }]);
 
-function AddServiceController($scope,$mdDialog, $meteor, notificationService) {
+function AddServiceController($scope,$mdDialog, $meteor, service, notificationService) {
+    if(service){
+      $scope.service = service;
+    }
     $scope.services = $meteor.collection(Services, false);
-    $scope.service = {};
     $scope.save = function() {
         $scope.services.save($scope.service).then(function(number) {
-            notificationService.showSuccess("Se ha registrado correctamente el servicio");
+            notificationService.showSuccess("Se ha guardado correctamente el servicio");
         }, function(error){
-            notificationService.showError("Error en el registro del servicio");
+            notificationService.showError("Error al guardar el servicio");
             console.log(error);
         });
         $scope.service = '';
