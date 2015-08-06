@@ -1,5 +1,5 @@
-angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','ModalService',
-    function($scope, $meteor,ModalService) {
+angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','ModalService','notificationService',
+    function($scope, $meteor,ModalService,notificationService) {
 
         $scope.measures = $meteor.collection(Measures, false);
         $scope.headers = ['Simbolo', 'Nombre','Acciones'];
@@ -14,7 +14,12 @@ angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','Modal
 
 
         $scope.delete = function(measure) {
-
+          $scope.measures.remove(measure).then(function(number) {
+              notificationService.showSuccess("Se ha eliminado correctamente la unidad de medida");
+          }, function(error){
+              notificationService.showError("Error en la eliminacino de la unidad de medida");
+              console.log(error);
+          });
         }
 
         $scope.show = function(measure) {
