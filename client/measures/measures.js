@@ -6,7 +6,7 @@ angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','Modal
 
         $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
-            ModalService.showModal(AddMeasureController, 'client/measures/addMeasure.tmpl.ng.html', ev);
+            ModalService.showModalWithParams(AddMeasureController,  'client/measures/addMeasure.tmpl.ng.html',ev, {measure:null});
         }
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
@@ -22,23 +22,24 @@ angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','Modal
           });
         }
 
-        $scope.show = function(measure) {
-            alert(measure);
+        $scope.show = function(selectedMeasure, ev) {
+          ModalService.showModalWithParams(AddMeasureController,  'client/measures/addMeasure.tmpl.ng.html',ev, {measure:selectedMeasure});
         }
     }]);
 
-function AddMeasureController($scope,$mdDialog, $meteor, notificationService) {
+function AddMeasureController($scope,$mdDialog, $meteor, measure ,notificationService) {
+    if(measure) {
+      $scope.measure = measure;
+    }
     $scope.measures = $meteor.collection(Measures, false);
-    $scope.newMeasure = {};
-
     $scope.save = function() {
-        $scope.measures.save($scope.newMeasure).then(function(number) {
+        $scope.measures.save($scope.measure).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente la unidad de medida");
         }, function(error){
             notificationService.showError("Error en el registro de unidad de medida");
             console.log(error);
         });
-        $scope.newMeasure = '';
+        $scope.measure = '';
         $mdDialog.hide();
     }
 

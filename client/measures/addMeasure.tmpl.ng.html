@@ -9,7 +9,7 @@
         <md-dialog-content class="sticky-container">
           <md-input-container flex>
               <label>Simbolo</label>
-              <input ng-model="newMeasure.symbol" required  name="symbol" measure>
+              <input ng-model="measure.symbol" required  name="symbol" measure>
               <div ng-messages="newMeasureForm.symbol.$error" ng-if="newMeasureForm.symbol.$dirty">
                   <div ng-message="required">*Campo obligatorio</div>
                   <div ng-message="duplicated">*El usuario ya existe</div>
@@ -17,7 +17,7 @@
           </md-input-container>
             <md-input-container flex>
                 <label>Nombre</label>
-                <input ng-model="newMeasure.name" required name="name" input-text>
+                <input ng-model="measure.name" required name="name" input-text>
                 <div ng-messages="newMeasureForm.name.$error" ng-if="newMeasureForm.name.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
                     <div ng-message="inputText">*Ingrese solo texto</div>
