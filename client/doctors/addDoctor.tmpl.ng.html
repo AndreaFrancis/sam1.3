@@ -28,7 +28,6 @@
                   </div>
               </md-input-container>
             </div>
-          </div>
             <div layout="row">
             <md-input-container flex>
                 <label>Nombre</label>
@@ -46,6 +45,15 @@
                 <div ng-message="inputText">*Ingrese solo texto</div>
             </div>
             </md-input-container>
+          </div>
+          <div layout="row">
+            <md-checkbox ng-model="isUser" aria-label="Id de usuario">
+              Es interno
+            </md-checkbox>
+            <md-select placeholder="Usuario" ng-model="selectedUser" flex required ng-show="isUser">
+                <md-option ng-repeat="us in users" ng-value="us">{{us.username}}</md-option>
+            </md-select>
+          </div>
           </div>
         </md-dialog-content>
             <div class="md-actions" layout="row">

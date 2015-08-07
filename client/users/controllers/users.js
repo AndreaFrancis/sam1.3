@@ -54,7 +54,7 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notifica
       $scope.user = {};
       $scope.user.profile = {};
     }
-    $scope.roles = $meteor.collection(RolesData);
+    $scope.roles = $meteor.collection(RolesData, false);
     $scope.selectedRol = {};
     $scope.cancel = function() {
         $mdDialog.cancel();

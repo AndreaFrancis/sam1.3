@@ -29,9 +29,29 @@ angular.module("sam-1").controller("DoctorsListCtrl",['$scope','$meteor','ModalS
 function AddDoctorController($scope,$mdDialog, $meteor, doctor ,notificationService) {
     if(doctor) {
       $scope.doctor = doctor;
+      if($scope.doctor.userId){
+        $scope.selectedUser = $meteor.object(Users,$scope.doctor.userId);
+        $scope.isUser = true;
+      }
     }
-    $scope.doctors = $meteor.collection(Doctors, false);
+
+    $scope.doctors = $meteor.collection(Doctors,false);
+    $scope.users = $meteor.collection(function(){
+      var ids = $meteor.collection(function(){
+        return RolesData.find({name:'Doctor'});
+      },false);
+      if(ids){
+        return Users.find({'profile.mainRol':ids[0]._id});
+      }else{
+          return [];
+      }
+    }, false);
+    $scope.selectedUser = {};
+
     $scope.save = function() {
+        if($scope.isUser && $scope.selectedUser){
+          $scope.doctor.userId  = $scope.selectedUser._id;
+        }
         $scope.doctors.save($scope.doctor).then(function(number) {
             notificationService.showSuccess("Se ha guardado correctamente el doctor");
         }, function(error){
