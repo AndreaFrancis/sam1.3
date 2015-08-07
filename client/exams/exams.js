@@ -6,7 +6,7 @@ angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalSer
         $scope.titles = $meteor.collection(Exams, false);
 
         $scope.exams = $meteor.collection(function() {
-            return Exams.find({}, {
+            return Exams.find({active:true}, {
                 transform: function(doc) {
                     doc.measureSymbol = '';
                     if(doc.measure) {
@@ -40,10 +40,24 @@ function AddExamCtrl($scope, $meteor, notificationService, exam,$mdDialog) {
       $scope.exam = {};
       $scope.exam.ranges = [];
     }
+
+    $scope.exams = $meteor.collection(Exams, false);
     $scope.ranges = $meteor.collection(Ranges, false);
     $scope.typeEvaluations = $meteor.collection(TypeEvaluation,false);
-    $scope.measures = $meteor.collection(Measures);
-    $scope.exams = $meteor.collection(Exams, false);
+    $scope.measures = $meteor.collection(Measures,false);
+    $scope.titles = $meteor.collection(function(){
+      return Titles.find({},{
+        transform: function(doc){
+            if(doc.analisys){
+              var analisys = $meteor.object(Analisys, doc.analisys);
+              if(analisys){
+                doc.analisysName = analisys.name;
+              }
+            }
+          return doc;
+        }
+      });
+    },false);
     $scope.fields = [];
 
 
@@ -55,7 +69,6 @@ function AddExamCtrl($scope, $meteor, notificationService, exam,$mdDialog) {
             fields : []
         }
         for(var i= 0; i<$scope.selectedType.fields.length; i++) {
-
             var fieldName = $scope.selectedType.fields[i];
             var fieldValue = $scope.fields[i];
             var field = {name: fieldName, value: fieldValue};
@@ -71,6 +84,7 @@ function AddExamCtrl($scope, $meteor, notificationService, exam,$mdDialog) {
     }
 
     $scope.save = function() {
+        $scope.exam.active = true;
         $scope.exams.save($scope.exam).then(
             function(number){
                 notificationService.showSuccess("Se ha registrado correctamente el examen");
