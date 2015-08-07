@@ -54,18 +54,18 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                   requireLogin: true
                 }
             })
-            .state('exams', {
-                url: '/exams',
-                templateUrl: 'client/exams/exams.ng.html',
-                controller: 'ExamsListCtrl',
+            .state('titles', {
+                url: '/titles',
+                templateUrl: 'client/titles/titles.ng.html',
+                controller: 'TitlesListCtrl',
                 data: {
                   requireLogin: true
                 }
             })
-            .state('mtests', {
-                url: '/mtests',
-                templateUrl: 'client/mtests/mtests-list.ng.html',
-                controller: 'TestsListCtrl',
+            .state('exams', {
+                url: '/exams',
+                templateUrl: 'client/exams/exams.ng.html',
+                controller: 'ExamsListCtrl',
                 data: {
                   requireLogin: true
                 }

@@ -150,6 +150,13 @@ a {
     min-height: 70%;
 }
 
+.md-large-thin-dialog {
+  min-height: 80%;
+  max-height: 80%;
+  min-width: 35%;
+  max-width: 35%;
+}
+
 /**TOOLBAR**/
 .long-toolbar {
     height: 200px;

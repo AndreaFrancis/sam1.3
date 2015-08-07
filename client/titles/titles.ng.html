@@ -4,20 +4,20 @@
             <i class="fa fa-plus"></i>
         </md-button>
     </div>
-
     <div layout="column">
-      <md-card ng-repeat="analisys in analisysList">
+      <md-card ng-repeat="title in titles">
         <md-card-content>
-          <h2 class="md-title">{{ analisys.name }}</h2>
+          <h2 class="md-title">{{ title.name }}</h2>
+          <h3>{{title.analisysObj}}</h3>
           <p>
-            {{ analisys.description }}
+            Aca iran los examens
           </p>
         </md-card-content>
         <div class="md-actions" layout="row" layout-align="end center">
-          <md-button class="md-icon-button" flex  aria-label="Ver" ng-click="show(analisys, $event)">
+          <md-button class="md-icon-button" flex  aria-label="Ver" ng-click="show(title, $event)">
                   <i class="fa fa-eye"></i>
           </md-button>
-          <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(analisys)">
+          <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(title)">
                   <i class="fa fa-trash"></i>
           </md-button>
         </div>
