@@ -4,6 +4,9 @@
 angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
         $scope.analisysList = $meteor.collection(function(){
+          return Analisys.find({active:true});
+        }, false);
+        /**$scope.analisysList = $meteor.collection(function(){
           return Analisys.find({},{
             transform: function(doc) {
               doc.labName = $meteor.object(Labs, doc.lab).name;
@@ -25,75 +28,62 @@ angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','Modal
               return doc;
             }
           });
-        }, false);
+        }, false);**/
 
+        $scope.headers = ['Nombre','Acciones'];
 
-
-        $scope.headers = ['Nombre','Area','Laboratorio','Examenes','Pruebas', 'Acciones'];
-
-        $scope.showTextSearch = true;
         $scope.showAddNew = function(ev) {
-            ModalService.showModal(AddAnalisysController, 'client/analisys/views/addAnalisys.tmpl.ng.html', ev);
-        }
-        $scope.toggleSearch = function() {
-            $scope.showTextSearch = !$scope.showTextSearch;
+            ModalService.showModalWithParams(AddAnalisysController, 'client/analisys/views/addAnalisys.tmpl.ng.html', ev, {analisys:null});
         }
 
         $scope.delete = function(analisys) {
-
+          Analisys.update(analisys._id, {
+            $set: {active: false}
+          });
         }
 
-        $scope.show = function(analisys) {
-            alert(analisys);
+        $scope.show = function(selectedAnal, ev) {
+            ModalService.showModalWithParams(AddAnalisysController, 'client/analisys/views/addAnalisys.tmpl.ng.html', ev, {analisys:selectedAnal});
         }
-
     }]);
 
-function AddAnalisysController($scope, $meteor, notificationService, $mdDialog) {
+function AddAnalisysController($scope, $meteor, notificationService, analisys,$mdDialog) {
+    if(analisys){
+      $scope.analisys = analisys;
+    }
 
     $scope.analisysList = $meteor.collection(Analisys, false);
-    $scope.areas = $meteor.collection(Areas);
-    $scope.labs = $meteor.collection(Labs);
-    $scope.exams = $meteor.collection(Exams);
-    $scope.tests = $meteor.collection(Tests);
-    $scope.selectedExam = {};
-    $scope.selectedExams = [];
-    $scope.selectedExamsIds = [];
-    $scope.selecetdTestsIds = [];
-    $scope.subAnalisysList = $meteor.collection(Analisys);
-    $scope.selectedTests = [];
-    $scope.selectedTest = {};
 
     $scope.save = function() {
-        var examsToJson = angular.toJson($scope.selectedExamsIds);
-        var examsToArray = JSON.parse(examsToJson);
-        $scope.newAnalisys.exams = examsToArray;
-        var testsToJson = angular.toJson($scope.selecetdTestsIds);
-        var testsToArray = JSON.parse(testsToJson);
-        $scope.newAnalisys.tests = testsToArray;
-
-
-        $scope.analisysList.save($scope.newAnalisys).then(function(number) {
+        $scope.analisys.active = true;
+        $scope.analisysList.save($scope.analisys).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el Analisis clinico");
         }, function(error){
-            notificationService.showError("Error en el registro del area");
+            notificationService.showError("Error en el registro del analisis");
             console.log(error);
         });
-        $scope.newAnalisys = '';
+        $scope.analisys = '';
         $mdDialog.hide();
-    }
-
-    $scope.saveExam = function() {
-        $scope.selectedExams.push($scope.selectedExam);
-        $scope.selectedExamsIds.push($scope.selectedExam._id);
-    }
-
-    $scope.saveTest = function() {
-        $scope.selectedTests.push($scope.selectedTest);
-        $scope.selecetdTestsIds.push($scope.selectedTest._id);
     }
 
     $scope.cancel = function() {
         $mdDialog.cancel();
     }
 }
+
+angular.module("sam-1").directive('analisys',function() {
+  return {
+    require : 'ngModel',
+    link : function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(value) {
+        if(!value || value.length == 0) return;
+        if(Analisys.find({name: value}).count()>0){
+          ngModel.$setValidity('duplicated', false);
+        }else {
+          ngModel.$setValidity('duplicated', true);
+        }
+        return value;
+      })
+    }
+  }
+});

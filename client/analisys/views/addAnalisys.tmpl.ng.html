@@ -2,72 +2,29 @@
     <md-dialog-content class="sticky-container">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Nueva Analisis</h2>
+                <h2>Analisis</h2>
                 <span flex></span>
             </div>
         </md-toolbar>
         <form name="newAnalisysForm" novalidate>
+          <div layout="column">
             <md-input-container flex>
                 <label>Nombre</label>
-                <input ng-model="newAnalisys.name" required name="name">
+                <input ng-model="analisys.name" required name="name" analisys input-text>
                 <div ng-messages="newAnalisysForm.name.$error" ng-if="newAnalisysForm.name.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
+                    <div ng-message="inputText">*Ingrese solo texto</div>
+                    <div ng-message="duplicated">*El analisis ya fue registrada</div>
                 </div>
             </md-input-container>
-            <div layout="row" flex>
-                <md-select placeholder="Area" ng-model="newAnalisys.area">
-                    <md-option ng-repeat="area in areas" value="{{area._id}}">{{area.name}}</md-option>
-                </md-select>
-
-                <md-select placeholder="Laboratorio" ng-model="newAnalisys.lab">
-                    <md-option ng-repeat="lab in labs" value="{{lab._id}}">{{lab.name}}</md-option>
-                </md-select>
-            </div>
-            <fieldset class="standar" ng-disabled="newAnalisysForm.name.$invalid">
-                <legend>Pruebas</legend>
-                <div layout="row">
-                    <div layout="column">
-                        <md-select placeholder="Pruebas" ng-model="selectedTest">
-                            <md-option ng-repeat="test in tests" ng-value="test">{{test.name}}</md-option>
-                        </md-select>
-                        <md-button class="md-primary" ng-click="saveTest()">
-                            &ensp;Agregar&ensp;&ensp;<span class="ion-chevron-right"></span>
-                        </md-button>
-                    </div>
-                    <md-list>
-                        <md-subheader class="md-no-sticky">Pruebas seleccionadas</md-subheader>
-                        <md-list-item ng-repeat="test in selectedTests">
-                            <div class="md-list-item-text">
-                                {{test.name}}
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </div>
-            </fieldset>
-            <fieldset class="standar" ng-disabled="newAnalisysForm.name.$invalid">
-                <legend>Examenes</legend>
-                <div layout="row">
-                    <div layout="column">
-                            <md-select placeholder="Examen" ng-model="selectedExam">
-                                <md-option ng-repeat="exam in exams" ng-value="exam">{{exam.name}}</md-option>
-                            </md-select>
-                            <md-button class="md-primary" ng-click="saveExam()">
-                                &ensp;Agregar&ensp;&ensp;<span class="ion-chevron-right"></span>
-                            </md-button>
-                    </div>
-                    <md-list>
-                        <md-subheader class="md-no-sticky">Examenes seleccionados</md-subheader>
-                        <md-list-item ng-repeat="exam in selectedExams">
-                            <div class="md-list-item-text">
-                                {{exam.name}}
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </div>
-            </fieldset>
+            <md-input-container flex>
+                <label>Descripcion</label>
+                <textarea ng-model="analisys.description" name="description"></textarea>
+            </md-input-container>
+          </div>
             <div class="md-actions" layout="row">
                 <span flex></span>
-                <md-button class="md-primary" ng-click="save()" ng-disabled="newUserForm.$invalid" type="submit">
+                <md-button class="md-primary" ng-click="save()" ng-disabled="newAnalisysForm.$invalid" type="submit">
                     Guardar
                 </md-button>
                 <md-button ng-click="cancel()">
