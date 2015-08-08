@@ -58,6 +58,10 @@ function AddModuleController($scope, notificationService, $mdDialog, module, $me
         angular.forEach($scope.selectedRoles, function(rol){
           keys.push(rol._id);
         });
+
+        //Cleaning data from transform
+        delete $scope.module.rolesObj;
+
         $scope.module.roles = keys;
         $scope.modules.save($scope.module).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el modulo");

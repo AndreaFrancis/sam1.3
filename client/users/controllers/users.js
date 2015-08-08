@@ -66,14 +66,17 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notifica
     }
 
     $scope.save = function(user) {
+      //Cleaning data from transform
+        delete $scope.user.rol;
+
         if($scope.selectedFile) {
           Images.insert($scope.selectedFile, function (err, fileObj) {
               if (err){
                   notificationService.showError("Error al subir la imagen");
                   console.log(err);
               } else {
-                  user.profile.mainRol  = $scope.selectedRol;
-                  user.profile.image = "/cfs/files/images/" + fileObj._id;
+                  $scope.user.profile.mainRol  = $scope.selectedRol;
+                  $scope.user.profile.image = "/cfs/files/images/" + fileObj._id;
                   Meteor.call("createNewUser", user, function(err) {
                       if(err) {
                           notificationService.showError("Error en el registro del usuario");

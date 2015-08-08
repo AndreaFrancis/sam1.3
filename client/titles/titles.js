@@ -3,6 +3,8 @@
  */
 angular.module("sam-1").controller("TitlesListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
+        $scope.headers = ["Nombre", "Analisis", "Examenes", "Acciones"];
+
         $scope.titles = $meteor.collection(function(){
           return Titles.find({active:true},{
             transform: function(doc){
@@ -13,6 +15,12 @@ angular.module("sam-1").controller("TitlesListCtrl",['$scope','$meteor','ModalSe
                   doc.analisysObj = obj.name;
                 }
               }
+
+              var exams = $meteor.collection(function(){
+                return Exams.find({$and:[{title:doc._id},{active:true}]});
+              },false);
+              doc.exams = exams;
+
               return doc;
             }
           });
@@ -47,6 +55,10 @@ function AddTitleController($scope, $meteor, notificationService, title, $mdDial
         if($scope.selectedAnalisys){
           $scope.title.analisys = $scope.selectedAnalisys;
         }
+        //Cleaning data from transform
+        delete $scope.title.exams;
+        delete $scope.title.analisysObj;
+
         $scope.title.active = true;
         $scope.titles.save($scope.title).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el titulo");

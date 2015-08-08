@@ -4,33 +4,17 @@
 angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
         $scope.analisysList = $meteor.collection(function(){
-          return Analisys.find({active:true});
-        }, false);
-        /**$scope.analisysList = $meteor.collection(function(){
-          return Analisys.find({},{
-            transform: function(doc) {
-              doc.labName = $meteor.object(Labs, doc.lab).name;
-              doc.areaName = $meteor.object(Areas, doc.area).name;
-              if(doc.tests){
-                doc.testsObj = [];
-                angular.forEach(doc.tests, function(test){
-                  doc.testsObj.push($meteor.object(Tests,test).name);
-                });
-              }
-
-              if(doc.exams){
-                doc.examsObj = [];
-                angular.forEach(doc.exams, function(exam){
-                  doc.examsObj.push($meteor.object(Exams,exam).name);
-                });
-              }
-
+          return Analisys.find({active:true},{
+            transform: function(doc){
+                doc.titles = $meteor.collection(function(){
+                  return Titles.find({analisys:doc._id});
+                },false);
               return doc;
             }
           });
-        }, false);**/
+        }, false);
 
-        $scope.headers = ['Nombre','Acciones'];
+        $scope.headers = ['Nombre','Titulos','Descripcion','Acciones'];
 
         $scope.showAddNew = function(ev) {
             ModalService.showModalWithParams(AddAnalisysController, 'client/analisys/views/addAnalisys.tmpl.ng.html', ev, {analisys:null});
@@ -55,6 +39,9 @@ function AddAnalisysController($scope, $meteor, notificationService, analisys,$m
     $scope.analisysList = $meteor.collection(Analisys, false);
 
     $scope.save = function() {
+        //Cleaning data from transform
+        delete $scope.analisys.titles;
+
         $scope.analisys.active = true;
         $scope.analisysList.save($scope.analisys).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el Analisis clinico");

@@ -3,6 +3,7 @@
  */
 angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalService',
     function($scope, $meteor, ModalService) {
+        $scope.headers = ["Nombre","Medida","Titulo", "Rangos", "Acciones"];
         $scope.titles = $meteor.collection(Exams, false);
 
         $scope.exams = $meteor.collection(function() {
@@ -11,7 +12,15 @@ angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalSer
                     doc.measureSymbol = '';
                     if(doc.measure) {
                         var measureSymbol = $meteor.object(Measures,doc.measure);
-                        doc.measureSymbol = measureSymbol.name+" ("+measureSymbol.symbol+")";
+                        if(measureSymbol){
+                          doc.measureSymbol = measureSymbol.symbol;
+                        }
+                    }
+                    if(doc.title) {
+                        var title = $meteor.object(Titles,doc.title);
+                        if(title){
+                          doc.titleName = title.name;
+                        }
                     }
                     return doc;
                 }
@@ -41,6 +50,7 @@ function AddExamCtrl($scope, $meteor, notificationService, exam,$mdDialog) {
       $scope.exam.ranges = [];
     }
 
+
     $scope.exams = $meteor.collection(Exams, false);
     $scope.ranges = $meteor.collection(Ranges, false);
     $scope.typeEvaluations = $meteor.collection(TypeEvaluation,false);
@@ -61,12 +71,12 @@ function AddExamCtrl($scope, $meteor, notificationService, exam,$mdDialog) {
     $scope.fields = [];
 
 
-
     $scope.saveRange = function() {
         var range = {
             name: $scope.newRange.name,
             type : $scope.selectedType._id,
-            fields : []
+            fields : [],
+            typeName : $scope.selectedType.name
         }
         for(var i= 0; i<$scope.selectedType.fields.length; i++) {
             var fieldName = $scope.selectedType.fields[i];
@@ -84,6 +94,10 @@ function AddExamCtrl($scope, $meteor, notificationService, exam,$mdDialog) {
     }
 
     $scope.save = function() {
+      //Cleaning data from transform
+        delete $scope.exam.measureSymbol;
+        delete $scope.exam.titleName;
+
         $scope.exam.active = true;
         $scope.exams.save($scope.exam).then(
             function(number){

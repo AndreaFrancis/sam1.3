@@ -4,23 +4,37 @@
             <i class="fa fa-plus"></i>
         </md-button>
     </div>
-    <div layout="column">
-      <md-card ng-repeat="exam in exams">
-        <md-card-content>
-          <h2 class="md-title">{{ exam.name }}</h2>
-          <h3>{{exams.measureSymbol}}</h3>
-          <p>
-            Aca iran los rangos
-          </p>
-        </md-card-content>
-        <div class="md-actions" layout="row" layout-align="end center">
-          <md-button class="md-icon-button" flex  aria-label="Ver" ng-click="show(exam, $event)">
-                  <i class="fa fa-eye"></i>
-          </md-button>
-          <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(exam)">
-                  <i class="fa fa-trash"></i>
-          </md-button>
-        </div>
-      </md-card>
+    <div class="sub-content">
+      <div class="table-responsive-vertical shadow-z-1 center-table">
+          <!-- Table starts here -->
+          <table id="table" class="table table-hover table-mc-light-blue">
+              <thead>
+              <tr>
+                  <th ng-repeat="h in headers" class="md-table-header">
+                      {{h}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="exam in exams" class="md-table-content-row" ng-click="show(exam, $event)">
+                  <td data-title="Nombre">{{ exam.name }}</td>
+                  <td data-title="Medida">{{exam.measureSymbol}}</td>
+                  <td data-title="Titulo">{{exam.titleName}}</td>
+                  <td data-title="Rangos">
+                    <ul>
+                      <li ng-repeat="range in exam.ranges">
+                        {{range.name|truncate:30}}
+                      </li>
+                    </ul>
+                    <!--p><span ng-repeat="field in range.fields">{{field.name}}: {{field.value}}&ensp;</span></p-->
+                  </td>
+                  <td data-title="Acciones">
+                      <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(exam)">
+                          <i class="fa fa-trash"></i>
+                      </md-button>
+                  </td>
+              </tr>
+              </tbody>
+          </table>
+      </div>
     </div>
 </div>

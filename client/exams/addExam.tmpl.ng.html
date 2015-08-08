@@ -45,16 +45,13 @@
                   </md-button>
               </div>
               <md-list flex style="padding:20px;">
-                    <md-list-item ng-repeat="range in exam.ranges">
-                        <div class="md-list-item-text">
-                          {{range.name|truncate:15}}
-                        </div>
-                        <p>
-                          <span ng-repeat="field in range.fields">{{field.name}}: {{field.value}}</span>
-                        </p>
-                        <md-button class="md-icon-button" aria-label="Borrar" ng-click="deleteRange($index)">
-                                <i class="fa fa-trash"></i>
-                        </md-button>
+                    <md-list-item ng-repeat="range in exam.ranges" class="md-3-line">
+                      <div class="md-list-item-text">
+                          <h3>{{range.name|truncate:15}}</h3>
+                          <h4>{{range.typeName}}</h4>
+                          <p><span ng-repeat="field in range.fields">{{field.name}}: {{field.value}}&ensp;</span></p>
+                      </div>
+                        <i class="md-secondary fa fa-trash" ng-click="deleteRange($index)" aria-label="Chat"></i>
                     </md-list-item>
               </md-list>
             </div>
