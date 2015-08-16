@@ -10,25 +10,6 @@
 
           <div layout="column">
             <div layout="row">
-              <md-input-container flex>
-              <label>Especialidad</label>
-              <input ng-model="doctor.especialism" required name="especialism" input-text>
-              <div ng-messages="newDoctorForm.especialism.$error" ng-if="newDoctorForm.especialism.$dirty">
-                  <div ng-message="required">*Campo obligatorio</div>
-                  <div ng-message="inputText">*Ingrese solo texto</div>
-              </div>
-              </md-input-container>
-
-              <md-input-container flex>
-                  <label>Matricula</label>
-                  <input ng-model="doctor.enrolment" required  name="enrolment" doctor>
-                  <div ng-messages="newDoctorForm.enrolment.$error" ng-if="newDoctorForm.enrolment.$dirty">
-                      <div ng-message="required">*Campo obligatorio</div>
-                      <div ng-message="duplicated">*La matricula ya fue registrada</div>
-                  </div>
-              </md-input-container>
-            </div>
-            <div layout="row">
             <md-input-container flex>
                 <label>Nombre</label>
                 <input ng-model="doctor.name" required name="name" input-text>
@@ -46,6 +27,23 @@
             </div>
             </md-input-container>
           </div>
+            <div layout="row">
+              <md-input-container flex>
+              <label>Especialidad</label>
+              <input ng-model="doctor.especialism" name="especialism" input-text>
+              <div ng-messages="newDoctorForm.especialism.$error" ng-if="newDoctorForm.especialism.$dirty">
+                  <div ng-message="inputText">*Ingrese solo texto</div>
+              </div>
+              </md-input-container>
+
+              <md-input-container flex>
+                  <label>Matricula</label>
+                  <input ng-model="doctor.enrolment" name="enrolment" doctor>
+                  <div ng-messages="newDoctorForm.enrolment.$error" ng-if="newDoctorForm.enrolment.$dirty">
+                      <div ng-message="duplicated">*La matricula ya fue registrada</div>
+                  </div>
+              </md-input-container>
+            </div>
           <div layout="row">
             <md-checkbox ng-model="isUser" aria-label="Id de usuario">
               Es interno

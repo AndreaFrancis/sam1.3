@@ -6,7 +6,7 @@ angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notifi
     function($scope, $meteor,notificationService, ModalService, $state) {
 
         var query = {}
-
+        $scope.headers = ["Codigo", "Paciente", "Fecha"];
 
         if(localStorage.getItem("rol") == "Bioquimico"){
             query = {bioquimic: localStorage.getItem("user")};
@@ -42,181 +42,167 @@ angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notifi
             });
         }, false);
 
-        $scope.show = function(study) {
+        $scope.show = function(study, ev) {
             $state.go('study',{studyId:study._id});
         }
 
         $scope.showAddNew = function($event) {
-            ModalService.showModalWithParams(AddStudyController, 'client/studies/addStudy.tmpl.ng.html', $event, {patient:null});
+            $state.go('newstudy',{patientId:null});
         }
     }]);
-function AddStudyController($scope, $mdDialog, $meteor, notificationService, patient, $timeout, $q, $log) {
-    $scope.isDoctor = localStorage.getItem("rol") == "Doctor";
-    $scope.existingStudy = false;
+
+
+angular.module("sam-1").controller("AddStudyController",AddStudyController);
+function AddStudyController($scope, $meteor, notificationService, $stateParams, ModalService,$state, CONDITIONS) {
+    var patientId =  $stateParams.patientId;
+    //$scope.isDoctor = localStorage.getItem("rol") == "Doctor";
+    $scope.study = {};
+    $scope.existingPatient = false;
+    $scope.existingDoctor = false;
     $scope.newDoctor = {};
-    if(patient){
-        $scope.patient = patient;
-        $scope.existingStudy = true;
+    if(patientId){
+        $scope.patient = $meteor.object(Patients, patientId);
+        $scope.existingPatient = true;
     }else{
+        $scope.study = {};
+        $scope.study.creationDate = new Date();
+        $scope.study.internData = {};
         $scope.patients = $meteor.collection(
         function() {
             return Patients.find({}, {
                 transform: function(doc) {
-                    doc.value = doc.name + " " + doc.lastName+ " "+ doc.lastNameMother;
+                    doc.value = (doc.lastName||"")+ " "+ (doc.lastNameMother||"") + " "+doc.name;
                     return doc;
                 }
             });
         }, false);
     }
 
-    if(!$scope.isDoctor) {
-        $scope.doctors = $meteor.collection(function(){
-            return Doctors.find({}, {
-                transform: function(doc) {
-                    if(doc.userId) {
-                        var user = Users.findOne({_id: doc.userId});
-                        doc.name = user.profile.name;
-                        doc.lastName = user.profile.lastName;
-                    }
-                    return doc;
-                }
-            });
-        }, false);
-    }
-
-    $scope.studies = $meteor.collection(Studies, false);
-    $scope.analisysList = $meteor.collection(function() {
-        return Analisys.find({}, {
-            transform: function(doc) {
-                doc.examsObj = [];
-                if(doc.exams) {
-                    doc.examsObj = $meteor.collection(function(){
-                        return Exams.find({
-                                _id: {$in: doc.exams}
-                            },{
-                                transform: function(doc) {
-                                    doc.testsObj = [];
-                                    if(doc.tests) {
-                                        doc.testsObj = $meteor.collection(function(){
-                                            return Tests.find({
-                                                _id: {$in: doc.tests}
-                                            }) ;
-                                        }, false);
-                                    }
-                                    return doc;
-                                }
-                            }
-                        );
-                    }, false) ;
-                }
-
-                doc.testsObj = [];
-                if(doc.tests) {
-                    doc.testsObj = $meteor.collection(function(){
-                        return Tests.find({
-                            _id: {$in: doc.tests}
-                        });
-                    }, false) ;
-                }
-
-
-                return doc;
-            }
-        });
+    $scope.attentions = $meteor.collection(Attentions, false);
+    $scope.services = $meteor.collection(Services, false);
+    $scope.doctors = $meteor.collection(function(){
+      return Doctors.find({},{
+        transform: function(doc){
+          doc.value = doc.name +" "+ doc.lastName;
+          return doc;
+        }
+      });
     }, false);
 
+    $scope.studies = $meteor.collection(Studies, false);
+    $scope.analisysList = $meteor.collection(function(){
+      return Analisys.find({active:true},{
+          transform: function(anDoc){
+            anDoc.titles = $meteor.collection(function(){
+              return Titles.find({$and:[{active:true},{analisys:anDoc._id}]},{
+                transform: function(titDoc){
+                    titDoc.exams = $meteor.collection(function(){
+                      return Exams.find({$and:[{active:true},{title:titDoc._id}]});
+                    },false);
+                  return titDoc;
+                }
+              });
+            },false);
+            return anDoc;
+          }
+      });
+    },false);
+
+    $scope.createNewDoctor = function(ev){
+      ModalService.showModalWithParams('AddDoctorController',  'client/doctors/addDoctor.tmpl.ng.html',ev, {doctor:null});
+    }
+
+    $scope.createNewPatient = function(ev){
+      ModalService.showModalWithParams('AddPatientController', 'client/patients/addPatient.tmpl.ng.html', ev, {patient:null});
+    }
+
+    $scope.changeAttention = function(){
+      var attentionJson = JSON.parse($scope.selectedAttention);
+      $scope.internData = attentionJson.name==CONDITIONS.INTERN_PATIENT;
+      if($scope.internData) {
+        $scope.study.internData = {};
+      }else{
+        delete $scope.study.internData;
+      }
+    }
+
     $scope.selectAnalisys = function(analisys) {
-        angular.forEach(analisys.testsObj, function(test) {
-            test.selected = !analisys.selected;
-        });
-        angular.forEach(analisys.examsObj, function(exam) {
-            $scope.selectExam(exam);
-            exam.selected = !analisys.selected;
+        angular.forEach(analisys.titles, function(title) {
+            $scope.selectTitle(title);
+            title.selected = !analisys.selected;
         });
     };
 
-    $scope.selectExam = function(exam) {
-        angular.forEach(exam.testsObj, function(test) {
-            test.selected = !exam.selected;
+    $scope.selectTitle = function(title) {
+        angular.forEach(title.exams, function(exam) {
+            exam.selected = !title.selected;
         });
     }
 
     $scope.save = function() {
-        var study = {};
-        study.analisys = [];
+        $scope.study.analisys = [];
+        var attentionJson = JSON.parse($scope.selectedAttention);
+        $scope.study.attention = attentionJson._id;
+        var serviceJson = JSON.parse($scope.selectedService);
+        $scope.study.service = serviceJson._id;
         angular.forEach($scope.analisysList, function(analisys)  {
-            var isAnalisysSelected = false;
             var component = {};
-            component.tests = [];
-            component.exams = [];
-            console.log(analisys.name+":"+analisys.selected);
-            angular.forEach(analisys.testsObj, function(test){
-                if(test.selected && !isAnalisysSelected){
-                    isAnalisysSelected = true;
-                    component.analisys = analisys._id;
+            component.titles = [];
+            angular.forEach(analisys.titles, function(title){
+                var titleComponent = {};
+                titleComponent.exams = [];
+                if(title.selected && !analisys.selected){
+                    analisys.selected = true;
                 };
-                if(test.selected) {
-                    component.tests.push({test:test._id});
-                }
-            });
-            angular.forEach(analisys.examsObj, function(exam){
-                var isExamSelected = false;
-                if(exam.selected && !isAnalisysSelected){
-                    isAnalisysSelected = true;
-                    component.analisys = analisys._id;
-                };
-
-                var examComponent = {};
-                angular.forEach(exam.testsObj, function(testEx){
-                    if(testEx.selected && !isExamSelected){
-                        isExamSelected = true;
-                        if(!isAnalisysSelected) {
-                            isAnalisysSelected = true;
-                            component.analisys = analisys._id;
-                        }
-                        examComponent.exam = exam._id;
-                        examComponent.tests = [];
-                    };
-                    if(testEx.selected) {
-                        examComponent.tests.push({test:testEx._id});
-                    }
+                angular.forEach(title.exams, function(exam){
+                  var examComponent = {};
+                  if(exam.selected) {
+                    examComponent.exam = exam._id;
+                    titleComponent.exams.push(examComponent);
+                      if(!title.selected){
+                          title.selected = true;
+                          if(!analisys.selected) {
+                              analisys.selected = true;
+                          }
+                      };
+                  }
                 });
 
-                if(isExamSelected) {
-                    examComponent.exam = exam._id;
-                    component.exams.push(examComponent);
+                if(title.selected) {
+                    titleComponent.title = title._id;
+                    component.titles.push(titleComponent);
                 }
             });
-            if(isAnalisysSelected){
-                study.analisys.push(component);
+            if(analisys.selected){
+                component.analisys = analisys._id;
+                $scope.study.analisys.push(component);
             }
         });
         if(localStorage.getItem("rol") == "Doctor"){
-            study.doctorUser = localStorage.getItem("user");
+            $scope.study.doctorUser = localStorage.getItem("user");
         }
 
         if(!$scope.isDoctor){
-            study.doctor = $scope.selectedDoctor._id;
+            $scope.study.doctor = $scope.selectedDoctor._id;
         }
-        study.creatorId = localStorage.getItem("user");
-        study.creationDate = new Date();
+        $scope.study.creatorId = localStorage.getItem("user");
         if($scope.patient) {
-            study.patient = $scope.patient._id;
+            $scope.study.patient = $scope.patient._id;
         }else {
-            study.patient = $scope.selectedItem._id;
+            $scope.study.patient = $scope.selectedItem._id;
         }
 
-        $scope.studies.save(study).then(function(number) {
+        $scope.studies.save($scope.study).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el estudio");
         }, function(error){
             notificationService.showError("Error en el registro del estudio");
             console.log(error);
         });
-        $mdDialog.hide();
+        $state.go("studies");
     }
 
     $scope.cancel = function() {
-        $mdDialog.cancel();
+        $state.go("studies");
     }
 
     $scope.saveNewDoctor = function(){
@@ -236,9 +222,6 @@ function AddStudyController($scope, $mdDialog, $meteor, notificationService, pat
     $scope.querySearch = function (query) {
         return query ? $scope.patients.filter( createFilterFor(query) ) : $scope.patients;
     }
-    $scope.selectedItemChange = function(item) {
-        $log.info('Item changed to ' + JSON.stringify(item));
-    }
 
     function createFilterFor(query) {
         var lowercaseQuery = angular.lowercase(query);
@@ -257,5 +240,29 @@ function AddStudyController($scope, $mdDialog, $meteor, notificationService, pat
             return (item.name.toLowerCase().indexOf(lowercaseQuery) === 0);
         };
     }
-
 }
+
+angular.module("sam-1").directive('dailyStudy',function() {
+  return {
+    require : 'ngModel',
+    link : function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(value) {
+        if(!value || value.length == 0) return;
+        var studyDate = new Date(attrs.date);
+        var month = studyDate.getMonth();
+        var year = studyDate.getFullYear();
+        var day = studyDate.getDay();
+        var date = new Date(year,month, day);
+        var queryDate = {"creationDate": {"$gte": date, "$lt": date}};
+
+        var studies = Studies.find({$and:[{dailyCode: value},queryDate]});
+        if(studies.count()>0){
+          ngModel.$setValidity('duplicated', false);
+        }else {
+          ngModel.$setValidity('duplicated', true);
+        }
+        return value;
+      })
+    }
+  }
+});

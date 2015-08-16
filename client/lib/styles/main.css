@@ -4,6 +4,9 @@
     background-color: #cccccc;
 }
 
+.uppercase {
+  text-transform:uppercase;
+}
 a {
     text-decoration: none !important;
     color: white;
@@ -177,8 +180,9 @@ body{
 
 /**TABLE**/
 .center-table{
-    margin-right: 10%;
-    margin-left: 10%;
+
+    margin-right: 1%;
+    margin-left: 1%;
     margin-top: 2%;
     background-color: #fafafa;
 }
@@ -1046,4 +1050,8 @@ label span input {
     _cursor: hand;
     margin: 0;
     padding:0;
+}
+
+ul {
+   list-style:none;
 }

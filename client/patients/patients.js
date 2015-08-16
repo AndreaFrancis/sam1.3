@@ -45,6 +45,8 @@ angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationSer
         }
     }]);
 
+
+angular.module("sam-1").controller("AddPatientController", AddPatientController);
 function AddPatientController($scope, notificationService, $mdDialog, patient,$meteor) {
 
     if(patient){

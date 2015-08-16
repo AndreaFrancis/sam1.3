@@ -60,8 +60,9 @@ function AddExamCtrl($scope, $meteor, notificationService, exam,$mdDialog) {
         transform: function(doc){
             if(doc.analisys){
               var analisys = $meteor.object(Analisys, doc.analisys);
-              if(analisys){
-                doc.analisysName = analisys.name;
+              doc.value = doc.name;
+              if(analisys.name){
+                doc.value+= "-"+analisys.name;
               }
             }
           return doc;
@@ -69,6 +70,19 @@ function AddExamCtrl($scope, $meteor, notificationService, exam,$mdDialog) {
       });
     },false);
     $scope.fields = [];
+
+    $scope.querySearch  = function(query) {
+      var results = query ? $scope.titles.filter( createFilterFor(query) ) : [];
+      return results;
+    }
+
+    function createFilterFor(query) {
+     var lowercaseQuery = angular.lowercase(query);
+     return function filterFn(title) {
+       var nameToLoweCase = angular.lowercase(title.name);
+       return (nameToLoweCase.indexOf(lowercaseQuery) >= 0);
+     };
+   }
 
 
     $scope.saveRange = function() {
@@ -98,6 +112,9 @@ function AddExamCtrl($scope, $meteor, notificationService, exam,$mdDialog) {
         delete $scope.exam.measureSymbol;
         delete $scope.exam.titleName;
 
+        if($scope.selectedTitle){
+          $scope.exam.title = $scope.selectedTitle._id;
+        }
         $scope.exam.active = true;
         $scope.exams.save($scope.exam).then(
             function(number){

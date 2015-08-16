@@ -26,7 +26,8 @@ angular.module("sam-1").controller("PatientCtrl", ['$scope', '$stateParams','$me
         }
 
         $scope.addStudy = function($event) {
-            ModalService.showModalWithParams(AddStudyController, 'client/studies/addStudy.tmpl.ng.html', $event, {patient:$scope.patient});
+            $state.go('newstudy',{patientId:$scope.patient._id});
+            //ModalService.showModalWithParams(AddStudyController, 'client/studies/addStudy.tmpl.ng.html', $event, {patient:$scope.patient});
         }
 
         $scope.show = function(study){

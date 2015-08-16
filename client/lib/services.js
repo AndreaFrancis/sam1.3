@@ -63,3 +63,63 @@ angular.module('sam-1').service("ModalService", function($mdDialog){
         });
     }
 });
+
+
+angular.module('sam-1').service("RangeEvaluator", function(RANGE_EVALUATOR, $meteor){
+    var equalEval = function(val, range){
+      var detail = {result:"Fuera de rango", correct:false};
+      var i = 0;
+      var found = false;
+      while(i<range.fields.length && !found){
+        if(range.fields[i].name == "valor"){
+          found = true;
+          var equalValue = range.fields[i].value;
+          if(equalValue == val){
+            detail.result = range.name;
+            detail.correct = true;
+          }
+        }
+        i++;
+      }
+      return detail;
+    }
+
+    var betweenEval = function(val, range){
+      var detail = {result:"Fuera de rango", correct:false};
+      var i = 0;
+      var initial = 0;
+      var final = 0;
+      var foundInitial = false;
+      var foundFinal = false;
+      while(i<range.fields.length && !foundInitial){
+        if(range.fields[i].name == "inicial"){
+          foundInitial = true;
+          initial = range.fields[i].value;
+        }
+        i++;
+      }
+      i = 0;
+      while(i<range.fields.length && !foundFinal){
+        if(range.fields[i].name == "final"){
+          foundFinal = true;
+          final = range.fields[i].value;
+        }
+        i++;
+      }
+
+      if(initial != undefined && final!= undefined){
+        if((val<=final) && (val>=initial)){
+          detail.result = range.name;
+          detail.correct = true;
+        }
+      }
+
+      return detail;
+    }
+
+
+    this.evaluatorsMap = {};
+    this.evaluatorsMap['Igual'] = equalEval;
+    this.evaluatorsMap['Entre'] = betweenEval;
+
+});

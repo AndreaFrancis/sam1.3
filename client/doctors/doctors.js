@@ -26,6 +26,8 @@ angular.module("sam-1").controller("DoctorsListCtrl",['$scope','$meteor','ModalS
         }
     }]);
 
+angular.module("sam-1").controller('AddDoctorController',AddDoctorController);
+
 function AddDoctorController($scope,$mdDialog, $meteor, doctor ,notificationService) {
     if(doctor) {
       $scope.doctor = doctor;

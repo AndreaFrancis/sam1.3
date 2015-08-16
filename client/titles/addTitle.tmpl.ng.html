@@ -15,9 +15,23 @@
                     <div ng-message="inputText">*Campo obligatorio</div>
                 </div>
             </md-input-container>
-            <md-select placeholder="Analisis" ng-model="selectedAnalisys" flex required>
-                <md-option ng-repeat="a in analisys" ng-value="a._id">{{a.name}}</md-option>
-            </md-select>
+            <md-autocomplete flex required
+            md-selected-item-change="null"
+              md-search-text-change="null"
+            md-input-name="autocompleteField"
+            md-no-cache="true"
+            md-selected-item="selectedAnalisys"
+            md-search-text="searchText"
+            md-items="item in querySearch(searchText)"
+            md-item-text="item.name"
+            md-floating-label="Analisis">
+              <md-item-template>
+                <span md-highlight-text="searchText">{{item.name}}</span>
+              </md-item-template>
+              <div ng-messages="titleForm.autocompleteField.$error" ng-if="titleForm.autocompleteField.$touched">
+                <div ng-message="required"><b>Debe</b> escoger un analisis</div>
+              </div>
+          </md-autocomplete>
             <!--fieldset class="standar" ng-disabled="newExamForm.name.$invalid">
                 <legend>Pruebas</legend>
                 <div layout="row">

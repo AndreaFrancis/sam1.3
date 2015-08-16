@@ -55,7 +55,7 @@ angular.module('sam-1').directive('inputText', function() {
   return {
     require: 'ngModel',
     link: function(scope, elem, attr, ctrl) {
-      var re = new RegExp("^([a-zA-Z]{0,})$");
+      var re = new RegExp("^([a-zA-Z ]{0,})$");
 
       ctrl.$parsers.unshift(function(value) {
           var valid = re.test(value);

@@ -50,10 +50,22 @@ function AddTitleController($scope, $meteor, notificationService, title, $mdDial
 
     $scope.titles = $meteor.collection(Titles, false);
     $scope.analisys = $meteor.collection(Analisys, false);
+    $scope.querySearch  = function(query) {
+      var results = query ? $scope.analisys.filter( createFilterFor(query) ) : [];
+      return results;
+    }
+
+    function createFilterFor(query) {
+     var lowercaseQuery = angular.lowercase(query);
+     return function filterFn(analisysEl) {
+       var nameToLoweCase = angular.lowercase(analisysEl.name);
+       return (nameToLoweCase.indexOf(lowercaseQuery) >= 0);
+     };
+   }
 
     $scope.save = function() {
         if($scope.selectedAnalisys){
-          $scope.title.analisys = $scope.selectedAnalisys;
+          $scope.title.analisys = $scope.selectedAnalisys._id;
         }
         //Cleaning data from transform
         delete $scope.title.exams;
