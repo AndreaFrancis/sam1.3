@@ -118,6 +118,7 @@
             <input ng-model="study.creationDate"  name="creationDate" type="date">
           </md-input-container>
         </div>
+        <md-content>
         <ul>
           <li ng-repeat="analisys in analisysList">
                  <md-checkbox ng-model="analisys.selected" aria-label="Checkbox 1" ng-click="selectAnalisys(analisys)">
@@ -148,5 +149,6 @@
                 Cancelar
             </md-button>
         </div>
+      </md-content>
       </md-whiteframe>
 </form>

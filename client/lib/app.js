@@ -63,7 +63,9 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
             }
         }
 
+
     $scope.showLeftMenu = function() {
+      alert("Toogle");
         $mdSidenav('left').toggle();
     }
 

@@ -2,18 +2,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="/">
 </head>
-<body  ng-app="sam-1" >
-  <div ng-controller="AppCtrl" layout="row">
-  <section layout="row" flex>
-    <header md-page-header ng-show="$root.currentUser" hide-gt-sm>
-        <md-toolbar layout="column"  flex="10" scroll>
+<body  ng-app="sam-1" ng-controller="AppCtrl">
+  <div  layout="row">
+  <section layout="column" flex>
+    <header md-page-header ng-show="$root.currentUser">
+        <md-toolbar layout="column"  flex="10" class="md-whiteframe-z2">
           <md-button class="md-icon-button" ng-click="showLeftMenu()" aria-label="Menu">
               <i class="fa fa-bars"></i>
           </md-button>
         </md-toolbar>
     </header>
+    <div layout="row">
     <md-sidenav layout="column" ng-show="$root.currentUser" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-sm md-is-locked-open="$mdMedia('gt-md')">
-      <md-toolbar class="profile md-tall" layout="column" layout-align="center center">
+      <md-toolbar class="profile md-tall profile-toolbar" layout="column" layout-align="center center">
         <avatar ng-model="{{user}}"></avatar>
         <div layout="column">
                   <simple-text ng-model="{{username}}"></simple-text>
@@ -28,12 +29,14 @@
         </span>
       </div>
     </md-sidenav>
+
     <md-content flex layout-padding>
       <div layout="column" layout-fill layout-align="top center">
         <div ui-view></div>
       </div>
       <div flex></div>
     </md-content>
+  </div>
   </section>
 </div>
     <!--md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" layout="column">

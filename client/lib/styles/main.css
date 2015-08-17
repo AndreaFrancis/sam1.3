@@ -1,3 +1,14 @@
+@media print
+{
+      md-button {
+        display: none;
+      }
+}
+
+.profile-toolbar{
+  background-image: url('../md1.png');
+}
+
 /**ANITHING**/
 
 .handler {
@@ -96,6 +107,15 @@ a {
     z-index:20;
     font-size:30px;
     bottom: 30px;
+    right:10px;
+    transform:scale(.88,.88);
+}
+
+.main-fab-report {
+    position:fixed;
+    z-index:20;
+    font-size:30px;
+    top:500px;
     right:10px;
     transform:scale(.88,.88);
 }

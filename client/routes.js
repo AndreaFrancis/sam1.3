@@ -153,7 +153,7 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                 }
             })
             .state('login',{
-              ulr: '/login',
+              url: '/login',
               templateUrl: 'client/starter/login.ng.html',
               controller: 'AppCtrl',
               data: {
@@ -161,7 +161,7 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
               }
             })
             .state('reports',{
-              ulr: '/reports',
+              url: '/reports',
               templateUrl: 'client/reports/reports.ng.html',
               controller: 'ReportsCtrl',
               data: {

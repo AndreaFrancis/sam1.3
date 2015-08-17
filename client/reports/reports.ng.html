@@ -1,62 +1,245 @@
 <div>
-
   <md-content class="md-padding">
-        <md-content class="md-padding">
-          <div layout="row">
-            <md-input-container flex>
-                <label>Desde</label>
-                <input ng-model="pInitialDate"  type="date">
-              </md-input-container>
-              <md-input-container flex>
-                <label>Hasta</label>
-                <input ng-model="pEndDate"  type="date">
-              </md-input-container>
-
-              <md-select placeholder="Atencion" ng-model="selectedAttention">
-                  <md-option ng-repeat="attention in attentions" ng-value="attention._id">{{attention.name}}</md-option>
-              </md-select>
-
-              <md-select placeholder="Servicio" ng-model="selectedService">
-                  <md-option ng-repeat="service in services" ng-value="service._id">{{service.name}}</md-option>
-              </md-select>
-
-              <md-button class="md-raised" ng-click="createProcedenceReport(pInitialDate,pEndDate,selectedAttention,selectedService)">
-                Generar
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="Fechas">
+        <md-content class="md-padding" id="reports">
+          <h1 class="md-display-2">Reporte por fechas</h1>
+          <div class="main-fab">
+              <md-button class="md-fab md-accent" ng-click="printDiv('reports')" aria-label="Agregar">
+                  <i class="fa fa-print"></i>
               </md-button>
+          </div>
+          <div layout="row">
+                  <md-input-container flex>
+                        <label>Desde</label>
+                      <input ng-model="pInitialDate"  type="date">
+                  </md-input-container>
+                  <md-input-container flex>
+                        <label>Hasta</label>
+                        <input ng-model="pEndDate"  type="date">
+                  </md-input-container>
+                  <md-button class="md-raised md-primary" ng-click="createDateReport(pInitialDate,pEndDate)">
+                        Generar
+                  </md-button>
+          </div>
+          <div class="sub-content">
+                      <div class="table-responsive-vertical shadow-z-1 center-table">
+                          <table id="table" class="table table-hover table-mc-light-blue">
+                              <thead>
+                              <tr>
+                                  <th  class="md-table-header">
+                                    Fecha
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Paciente
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Edad
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Doctor
+                                  </th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr ng-repeat="res in results" class="md-table-content-row">
+                                  <td data-title="Fecha">{{ res.creationDate }}</td>
+                                  <td data-title="Paciente">{{ res.patientName }}</td>
+                                  <td data-title="Edad">{{ res.age }}</td>
+                                  <td data-title="Doctor">{{ res.doctorName }}</td>
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+          </md-content>
+      </md-tab>
+      <md-tab label="Procedencia">
+        <md-content class="md-padding" id="procedence">
+          <h1 class="md-display-2">Reporte por procedencia y tipo de atención</h1>
+          <div class="main-fab">
+              <md-button class="md-fab md-accent" ng-click="printDiv('procedence')" aria-label="Agregar">
+                  <i class="fa fa-print"></i>
+              </md-button>
+          </div>
+          <div layout="row">
+                    <md-input-container flex>
+                        <label>Desde</label>
+                        <input ng-model="pInitialDate"  type="date">
+                      </md-input-container>
+                      <md-input-container flex>
+                        <label>Hasta</label>
+                        <input ng-model="pEndDate"  type="date">
+                      </md-input-container>
+
+                      <md-select placeholder="Atencion" ng-model="selectedAttention">
+                          <md-option ng-repeat="attention in attentions" ng-value="attention._id">{{attention.name}}</md-option>
+                      </md-select>
+
+                      <md-select placeholder="Servicio" ng-model="selectedService">
+                          <md-option ng-repeat="service in services" ng-value="service._id">{{service.name}}</md-option>
+                      </md-select>
+
+                      <md-button class="md-raised md-primary" ng-click="createProcedenceReport(pInitialDate,pEndDate,selectedAttention,selectedService)">
+                        Generar
+                      </md-button>
           </div>
 
           <div class="sub-content">
-              <div class="table-responsive-vertical shadow-z-1 center-table">
-                  <!-- Table starts here -->
-                  <table id="table" class="table table-hover table-mc-light-blue">
-                      <thead>
-                      <tr>
-                          <th  class="md-table-header">
-                            Fecha
-                          </th>
-                          <th  class="md-table-header">
-                            Paciente
-                          </th>
-                          <th  class="md-table-header">
-                            Edad
-                          </th>
-                          <th  class="md-table-header">
-                            Doctor
-                          </th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr ng-repeat="res in results" class="md-table-content-row">
-                          <td data-title="Fecha">{{ res.creationDate }}</td>
-                          <td data-title="Paciente">{{ res.patientName }}</td>
-                          <td data-title="Edad">{{ res.age }}</td>
-                          <td data-title="Doctor">{{ res.doctorName }}</td>
-                      </tr>
-                      </tbody>
-                  </table>
-              </div>
+                      <div class="table-responsive-vertical shadow-z-1 center-table">
+
+                          <table id="table" class="table table-hover table-mc-light-blue">
+                              <thead>
+                              <tr>
+                                  <th  class="md-table-header">
+                                    Fecha
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Paciente
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Edad
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Doctor
+                                  </th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr ng-repeat="res in results" class="md-table-content-row">
+                                  <td data-title="Fecha">{{ res.creationDate }}</td>
+                                  <td data-title="Paciente">{{ res.patientName }}</td>
+                                  <td data-title="Edad">{{ res.age }}</td>
+                                  <td data-title="Doctor">{{ res.doctorName }}</td>
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+        </md-content>
+      </md-tab>
+      <md-tab label="Analisis">
+        <md-content class="md-padding" id="analisys">
+          <h1 class="md-display-2">Reporte por Analisis, titulos y examenes</h1>
+          <div class="main-fab">
+              <md-button class="md-fab md-accent" ng-click="printDiv('analisys')" aria-label="Imprimir">
+                  <i class="fa fa-print"></i>
+              </md-button>
+          </div>
+          <div layout="row">
+                    <md-input-container flex>
+                        <label>Desde</label>
+                        <input ng-model="pInitialDate"  type="date">
+                      </md-input-container>
+                      <md-input-container flex>
+                        <label>Hasta</label>
+                        <input ng-model="pEndDate"  type="date">
+                      </md-input-container>
+
+                      <md-select placeholder="Analisis" ng-model="selectedAnalisys">
+                          <md-option ng-repeat="an in analisys" ng-value="an._id">{{an.name}}</md-option>
+                      </md-select>
+                      <md-button class="md-raised md-primary" ng-click="createAnalisysReport(pInitialDate,pEndDate,selectedAnalisys)">
+                        Generar
+                      </md-button>
           </div>
 
+          <div class="sub-content">
+                      <div class="table-responsive-vertical shadow-z-1 center-table">
+
+                          <table id="table" class="table table-hover table-mc-light-blue">
+                              <thead>
+                              <tr>
+                                  <th  class="md-table-header">
+                                    Fecha
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Paciente
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Edad
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Doctor
+                                  </th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr ng-repeat="res in results" class="md-table-content-row">
+                                  <td data-title="Fecha">{{ res.creationDate }}</td>
+                                  <td data-title="Paciente">{{ res.patientName }}</td>
+                                  <td data-title="Edad">{{ res.age }}</td>
+                                  <td data-title="Doctor">{{ res.doctorName }}</td>
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
         </md-content>
+      </md-tab>
+      <md-tab label="Estadisticas">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">Estadisticas</h1>
+          <p>En construccion</p>
+        </md-content>
+      </md-tab>
+      <md-tab label="Genero">
+        <md-content class="md-padding" id="gender">
+          <h1 class="md-display-2">Reporte por Genero</h1>
+          <div class="main-fab">
+              <md-button class="md-fab md-accent" ng-click="printDiv('gender')" aria-label="Imprimir">
+                  <i class="fa fa-print"></i>
+              </md-button>
+          </div>
+          <div layout="row">
+                  <md-input-container flex>
+                        <label>Desde</label>
+                      <input ng-model="pInitialDate"  type="date">
+                  </md-input-container>
+                  <md-input-container flex>
+                    <label>Hasta</label>
+                    <input ng-model="pEndDate"  type="date">
+                  </md-input-container>
+                  <md-radio-group ng-model="gender" layout="row">
+                      <md-radio-button value="F" >Femenino</md-radio-button>
+                      <md-radio-button value="M" class="md-primary"> Masculino</md-radio-button>
+                  </md-radio-group>
+                  <md-button class="md-raised md-primary" ng-click="createGenderReport(pInitialDate,pEndDate, gender)">
+                        Generar
+                  </md-button>
+          </div>
+          <div class="sub-content">
+                      <div class="table-responsive-vertical shadow-z-1 center-table">
+                          <table id="table" class="table table-hover table-mc-light-blue">
+                              <thead>
+                              <tr>
+                                  <th  class="md-table-header">
+                                    Fecha
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Paciente
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Edad
+                                  </th>
+                                  <th  class="md-table-header">
+                                    Doctor
+                                  </th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr ng-repeat="res in results" class="md-table-content-row">
+                                  <td data-title="Fecha">{{ res.creationDate }}</td>
+                                  <td data-title="Paciente">{{ res.patientName }}</td>
+                                  <td data-title="Edad">{{ res.age }}</td>
+                                  <td data-title="Doctor">{{ res.doctorName }}</td>
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+          </md-content>
+      </md-tab>
+    </md-tabs>
   </md-content>
 </div>

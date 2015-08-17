@@ -17,3 +17,4 @@ alanning:roles
 fortawesome:fontawesome
 cfs:standard-packages
 cfs:gridfs
+velocity:html-reporter

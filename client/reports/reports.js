@@ -6,9 +6,96 @@ angular.module("sam-1").controller("ReportsCtrl",['$scope','$meteor','notificati
     function($scope, $meteor,notificationService, ModalService) {
       $scope.initialDate = new Date();
       $scope.endDate = new Date();
+
+      $scope.analisys = $meteor.collection(Analisys, false);
       $scope.services = $meteor.collection(Services, false);
       $scope.attentions = $meteor.collection(Attentions, false);
       $scope.results = [];
+
+      $scope.createDateReport = function(initialDate, endDate){
+        $scope.results = $meteor.collection(function(){
+          return Studies.find(
+            {
+              "creationDate": {"$gte": initialDate, "$lt": endDate}
+            }
+            ,{
+            transform:function(doc){
+              if(doc.patient){
+                var patient = $meteor.object(Patients, doc.patient);
+                doc.patientName = patient.lastName+" "+patient.lastNameMother+" "+patient.name;
+                doc.age = $scope.calculateAge(patient.birthdate);
+              }
+              if(doc.doctor){
+                var doctor = $meteor.object(Doctors,doc.doctor);
+                doc.doctorName = doctor.lastName + " " + doctor.name;
+              }
+              return doc;
+            }
+          });
+        },false);
+      }
+      $scope.createGenderReport = function(initialDate, endDate, gender){
+        var genderPatients = $meteor.collection(function(){
+            return Patients.find({"gender":gender});
+        },false);
+        var patientIds = [];
+        angular.forEach(genderPatients, function(patient){
+            patientIds.push(patient._id);
+        });
+
+        $scope.results = $meteor.collection(function(){
+            return Studies.find(
+            {$and:[
+              {"creationDate": {"$gte": initialDate, "$lt": endDate}},
+              {"patient":{$in:patientIds}}
+            ]}
+              ,{
+                transform:function(doc){
+                  if(doc.patient){
+                    var patient = $meteor.object(Patients, doc.patient);
+                    doc.patientName = patient.lastName+" "+patient.lastNameMother+" "+patient.name;
+                    doc.age = $scope.calculateAge(patient.birthdate);
+                    doc.gender = patient.gender;
+                  }
+                  if(doc.doctor){
+                    var doctor = $meteor.object(Doctors,doc.doctor);
+                    doc.doctorName = doctor.lastName + " " + doctor.name;
+                  }
+                  return doc;
+                }
+              });
+            },false);
+
+      }
+      $scope.createAnalisysReport = function(initialDate, endDate, selectedAnalisys){
+        $scope.results = $meteor.collection(function(){
+          return Studies.find(
+            {$and:[
+                   {"creationDate": {"$gte": initialDate, "$lt": endDate}}
+                   ,
+                  {"analisys":{
+                       $elemMatch:{"analisys":selectedAnalisys  }
+                      }
+                }
+            ]}
+            ,{
+            transform:function(doc){
+              if(doc.patient){
+                var patient = $meteor.object(Patients, doc.patient);
+                doc.patientName = patient.lastName+" "+patient.lastNameMother+" "+patient.name;
+                doc.age = $scope.calculateAge(patient.birthdate);
+              }
+              if(doc.doctor){
+                var doctor = $meteor.object(Doctors,doc.doctor);
+                doc.doctorName = doctor.lastName + " " + doctor.name;
+              }
+              return doc;
+            }
+          });
+        },false);
+      }
+
+
       $scope.createProcedenceReport = function(initialDate, endDate, attention, service){
           $scope.results = $meteor.collection(function(){
             return Studies.find(
@@ -34,6 +121,15 @@ angular.module("sam-1").controller("ReportsCtrl",['$scope','$meteor','notificati
               }
             });
           },false);
+      }
+
+      $scope.printDiv = function (divName)
+      {
+        var divToPrint=document.getElementById(divName);
+        newWin= window.open("");
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.print();
+        newWin.close();
       }
 
       $scope.calculateAge = function getAge(date) {
