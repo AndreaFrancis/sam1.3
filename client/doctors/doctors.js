@@ -24,6 +24,26 @@ angular.module("sam-1").controller("DoctorsListCtrl",['$scope','$meteor','ModalS
         $scope.show = function(selectedDoctor, ev) {
           ModalService.showModalWithParams(AddDoctorController,  'client/doctors/addDoctor.tmpl.ng.html',ev, {doctor:selectedDoctor});
         }
+
+        $scope.search = function(){
+          $scope.doctors = $meteor.collection(function(){
+          return Doctors.find(
+            {'$or':[
+                  {
+                      "lastName" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  },{
+                      "name" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  },{
+                      "enrolment" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  },{
+                      "especialism" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  }
+                ]                
+            }
+          );
+          }, false);
+        }
+
     }]);
 
 angular.module("sam-1").controller('AddDoctorController',AddDoctorController);

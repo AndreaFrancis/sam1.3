@@ -29,6 +29,26 @@ angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','Modal
         $scope.show = function(selectedAnal, ev) {
             ModalService.showModalWithParams(AddAnalisysController, 'client/analisys/views/addAnalisys.tmpl.ng.html', ev, {analisys:selectedAnal});
         }
+
+
+        $scope.search = function(){
+          $scope.analisysList = $meteor.collection(function(){
+          return Analisys.find(
+            {$and:[{
+                      "name" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+            }, {active:true}]},{
+            transform: function(doc){
+                doc.titles = $meteor.collection(function(){
+                  return Titles.find({analisys:doc._id});
+                },false);
+              return doc;
+            }
+          }
+          )
+          ;
+          },false);
+        }
+
     }]);
 
 function AddAnalisysController($scope, $meteor, notificationService, analisys,$mdDialog) {

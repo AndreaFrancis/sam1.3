@@ -16,7 +16,9 @@
                         <p><i class="fa fa-heart"></i>&nbsp;{{ calculateAge(patient.birthdate)}}</p>
                         <p ng-show="patient.gender=='F'"><i class="fa fa-female"></i>&nbsp;Mujer</p>
                         <p ng-show="patient.gender=='M'"><i class="fa fa-male"></i>&nbsp;Varon</p>
-
+            <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete($event)">
+                            <i class="fa fa-trash"></i>
+            </md-button>
 
   <md-list>
     <md-toolbar class="md-theme-light">

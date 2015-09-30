@@ -10,26 +10,29 @@
             <div layout="row">
               <md-input-container flex>
                 <label>Nombre</label>
-                <input ng-model="module.name" required name="name" module>
+                <input ng-model="module.name" required name="name" module input-text>
                 <div ng-messages="newModuleForm.name.$error" ng-if="newModuleForm.name.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
-                    <div ng-message='duplicated'>*El rol ya existe</div>
+                    <div ng-message='duplicated'>*El modulo ya existe</div>
+                    <div ng-message="inputText">*Ingrese solo letras</div>
                 </div>
               </md-input-container>
               <md-input-container flex>
                 <label>Estado</label>
-                <input ng-model="module.state" required name="state">
+                <input ng-model="module.state" required name="state" input-text>
                 <div ng-messages="newModuleForm.state.$error" ng-if="newModuleForm.state.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
+                    <div ng-message="inputText">*Ingrese solo letras</div>
                 </div>
               </md-input-container>
             </div>
             <div layout="row">
               <md-input-container flex>
                 <label>Orden</label>
-                <input ng-model="module.order" required name="order">
+                <input ng-model="module.order" required name="order" input-numeric>
                 <div ng-messages="newModuleForm.order.$error" ng-if="newModuleForm.order.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
+                    <div ng-message="inputNumeric">*Ingrese solo numeros</div>
                 </div>
               </md-input-container>
               <md-input-container flex>

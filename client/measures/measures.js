@@ -25,6 +25,22 @@ angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','Modal
         $scope.show = function(selectedMeasure, ev) {
           ModalService.showModalWithParams(AddMeasureController,  'client/measures/addMeasure.tmpl.ng.html',ev, {measure:selectedMeasure});
         }
+
+        $scope.search = function(){
+          $scope.measures = $meteor.collection(function(){
+          return Measures.find(
+            {'$or':[
+                  {
+                      "symbol" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  },{
+                      "name" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  }
+                ]                
+            }
+          );
+        }, false);
+        }
+
     }]);
 
 function AddMeasureController($scope,$mdDialog, $meteor, measure ,notificationService) {

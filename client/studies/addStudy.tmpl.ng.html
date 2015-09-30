@@ -5,14 +5,18 @@
         <div layout="row">
           <md-input-container flex>
             <label>Codigo</label>
-            <input ng-model="study.dailyCode"  name="dailyCode" daily-study date="{{study.creationDate}}"  code={{study.dailyCode}}>
+            <input ng-model="study.dailyCode"  name="dailyCode" daily-study date="{{study.creationDate.toString()}}"  code="{{study.dailyCode}}">
             <div ng-messages="newStudyForm.dailyCode.$error" ng-if="newStudyForm.dailyCode.$dirty">
-                <div ng-message="duplicated">*El estudio ya fue programado</div>
+                <div ng-message="duplicated">*El estudio ya fue programado en la fecha indicada</div>
             </div>
           </md-input-container>
           <md-input-container flex>
             <label>Nro. Factura</label>
-            <input ng-model="study.bill"  name="bill">
+            <input ng-model="study.bill"  name="bill" input-numeric>
+            <div ng-messages="newStudyForm.bill.$error" ng-if="newStudyForm.bill.$dirty">
+                    <div ng-message="inputNumeric">*Ingrese solo numeros</div>
+                </div>
+
           </md-input-container>
           <md-select placeholder="Atencion" ng-model="selectedAttention" flex ng-change="changeAttention()">
               <md-option ng-repeat="attention in attentions" value="{{attention}}">{{attention.name}}</md-option>

@@ -40,6 +40,29 @@ angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalSer
         $scope.show = function(selectedExam, ev) {
             ModalService.showModalWithParams(AddExamCtrl, 'client/exams/addExam.tmpl.ng.html', ev,{exam:selectedExam});
         }
+
+        $scope.search = function(){
+          $scope.exams = $meteor.collection(function() {
+            return Exams.find({$and:[{active:true}, {name : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }}]}, {
+                transform: function(doc) {
+                    doc.measureSymbol = '';
+                    if(doc.measure) {
+                        var measureSymbol = $meteor.object(Measures,doc.measure);
+                        if(measureSymbol){
+                          doc.measureSymbol = measureSymbol.symbol;
+                        }
+                    }
+                    if(doc.title) {
+                        var title = $meteor.object(Titles,doc.title);
+                        if(title){
+                          doc.titleName = title.name;
+                        }
+                    }
+                    return doc;
+                }
+            });
+        }, false);
+        }
     }]);
 
 function AddExamCtrl($scope, $meteor, notificationService, exam,$mdDialog) {

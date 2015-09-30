@@ -62,6 +62,19 @@ angular.module('sam-1').service("ModalService", function($mdDialog){
             locals: params
         });
     }
+
+    this.showConfirmDialog = function(title, content, okTitle, cancelTitle, event, onCancel, onConfirm) {
+    var confirm = $mdDialog.confirm()
+      .parent(angular.element(document.body))
+      .title(title)
+      .content(content)
+      .ariaLabel(title)
+      .ok(okTitle)
+      .cancel(cancelTitle)
+      .targetEvent(event);
+      $mdDialog.show(confirm).then(onConfirm, onCancel);
+    }
+
 });
 
 

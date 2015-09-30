@@ -28,6 +28,12 @@ angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notifica
             ModalService.showModalWithParams(AddRolController, 'client/roles/addRol.tmpl.ng.html',ev, {rol:selectedRol});
         }
 
+        $scope.search = function(){
+              $scope.roles = $meteor.collection(function(){
+                return RolesData.find({name : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }});
+              }, false);
+        }
+
     }]);
 
 function AddRolController($scope, notificationService, $mdDialog,rol, $meteor) {

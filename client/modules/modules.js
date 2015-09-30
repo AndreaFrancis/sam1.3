@@ -37,6 +37,22 @@ angular.module("sam-1").controller("ModulesListCtrl",['$scope','$meteor','notifi
         $scope.show = function(selectedModule, ev) {
             ModalService.showModalWithParams(AddModuleController, 'client/modules/addModule.tmpl.ng.html', ev, {module:selectedModule});
         }
+
+        $scope.search = function(){
+            $scope.modules = $meteor.collection(function(){
+            return Modules.find({name : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }},{
+            transform: function(doc){
+              if(doc.roles){
+                doc.rolesObj = $meteor.collection(function(){
+                  return RolesData.find({_id:{$in:doc.roles}});
+                },false);
+              }
+              return doc;
+            }
+          });
+          },false);
+        }
+
     }]);
 
 function AddModuleController($scope, notificationService, $mdDialog, module, $meteor) {

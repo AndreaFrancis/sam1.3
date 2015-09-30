@@ -251,11 +251,13 @@ angular.module("sam-1").directive('dailyStudy',function() {
         var studyDate = new Date(attrs.date);
         var month = studyDate.getMonth();
         var year = studyDate.getFullYear();
-        var day = studyDate.getDay();
+        var day = studyDate.getDate();
         var date = new Date(year,month, day);
-        var queryDate = {"creationDate": {"$gte": date, "$lt": date}};
+        var endDate = new Date(year,month, day,23,59,59);
+        var queryDate = {"creationDate": {"$gte": date}};
+        var queryLess = {"creationDate": {"$lte": endDate}};
 
-        var studies = Studies.find({$and:[{dailyCode: value},queryDate]});
+        var studies = Studies.find({$and:[{dailyCode: value},queryDate,queryLess]});
         if(studies.count()>0){
           ngModel.$setValidity('duplicated', false);
         }else {

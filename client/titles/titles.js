@@ -40,6 +40,34 @@ angular.module("sam-1").controller("TitlesListCtrl",['$scope','$meteor','ModalSe
             ModalService.showModalWithParams(AddTitleController, 'client/titles/addTitle.tmpl.ng.html', ev, {title: selectedTitle});
         }
 
+        $scope.search = function(){
+          $scope.titles = $meteor.collection(function(){
+          return Titles.find(
+            {$and:[{
+                      "name" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+            }, {active:true}]},{
+            transform: function(doc){
+              if(doc.analisys){
+                doc.analisysObj = {};
+                var obj = $meteor.object(Analisys,doc.analisys);
+                if(obj){
+                  doc.analisysObj = obj.name;
+                }
+              }
+
+              var exams = $meteor.collection(function(){
+                return Exams.find({$and:[{title:doc._id},{active:true}]});
+              },false);
+              doc.exams = exams;
+
+              return doc;
+            }
+          }
+          )
+          ;
+          },false);
+        }
+
     }]);
 
 function AddTitleController($scope, $meteor, notificationService, title, $mdDialog) {

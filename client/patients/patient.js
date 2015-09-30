@@ -34,6 +34,35 @@ angular.module("sam-1").controller("PatientCtrl", ['$scope', '$stateParams','$me
           $state.go('study',{studyId:study._id});
         }
 
+
+        $scope.delete = function(event) {
+            var onRemoveCancel = function (){
+              console.log("Se cancelo la eliminacion del pacientes");
+            }
+            var onRemoveSuccess = function() {
+                //Studies.remove({patient:$scope.patient._id});
+                var  studies = $meteor.collection(function(){
+                    return Studies.find({patient:$scope.patient._id});
+                },false);
+                $meteor.collection(Studies,false).remove(studies);
+
+               Patients.remove($scope.patient._id);
+               $state.go('patients');
+               //notificationService.showSuccess("Se ha eliminado correctamente al paciente");
+               //var patients = $meteor.collection(Patients,false);
+               /*
+               $scope.patients.remove(patient).then(function(number) {
+                notificationService.showSuccess("Se ha eliminado correctamente al paciente");
+                }, function(error){
+                  notificationService.showError("Error en la eliminacino del paciente");
+                console.log(error);
+                });)*/
+            }
+            ModalService.showConfirmDialog('Eliminar paciente', '¿Estas seguro de eliminar los datos del paciente?, Se eliminaran los estudios vinculados al mismo', 'Eliminar', 'Cancelar', event, onRemoveCancel, onRemoveSuccess);
+        }
+
+
+
         $scope.calculateAge = function getAge(date) {
           var dateString = date.toString();
           var birthdate = new Date(dateString).getTime();

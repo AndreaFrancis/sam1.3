@@ -24,13 +24,10 @@
                     <td data-title="Apellidos">{{ patient.lastName }} {{ patient.lastNameMother }}</td>
                     <td data-title="Nombre">{{ patient.name }}</td>
                     <td data-title="Ci">{{ patient.ci }}</td>
-                    <td data-title="Acciones">
+                    <td data-title="Acciones" class="md-secondary">
                       <md-button class="md-icon-button" flex  aria-label="Estudios" ng-click="goStudies(patient)">
                           <i class="fa fa-flask"></i>
                       </md-button>
-                        <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(patient)">
-                            <i class="fa fa-trash"></i>
-                        </md-button>
                     </td>
                 </tr>
                 </tbody>

@@ -1,9 +1,6 @@
 /**
  * Created by Andrea on 07/06/2015.
  */
-/**
- * Created by Andrea on 07/06/2015.
- */
 angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notificationService','$mdDialog','ModalService',
     function($scope, $meteor,notificationService,$mdDialog, ModalService) {
         $scope.users = $meteor.collection(function(){
@@ -20,7 +17,6 @@ angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notifica
           });
         }, false);
 
-        $scope.showTextSearch = true;
 
         $scope.delete = function(user) {
           Meteor.call("deleteUser", user._id, function(err) {
@@ -44,12 +40,45 @@ angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notifica
         $scope.toggleSearch = function() {
             $scope.showTextSearch = !$scope.showTextSearch;
         }
+
+        $scope.search = function(){
+          $scope.users = $meteor.collection(function(){
+          return Users.find(
+            {'$or':[
+                  {
+                      "profile.name" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  },{
+                      "profile.lastName" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  },{
+                      "profile.lastNameMother" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  },{
+                      "username" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  }
+                ]                
+            }
+            ,{
+            transform: function(doc){
+              if(doc.profile.mainRol){
+                var rol = $meteor.object(RolesData,doc.profile.mainRol);
+                if(rol){
+                  doc.rol = rol.name;
+                }
+              }
+              return doc;
+            }
+          });
+        }, false);
+        }
+
         $scope.headers = ['Img', 'Nombre de usuario','Nombre', 'Apellido', 'Rol', 'Acciones'];
 }]);
 
 function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notificationService) {
+    var imageUrl  = "../descarga.png";
     if(user) {
       $scope.user = user;
+      var imageUrl  = $scope.user.profile.image;
+      $scope.imageStyle =     {'background': 'url("'+imageUrl+'"),background-repeat'};
     }else {
       $scope.user = {};
       $scope.user.profile = {};
@@ -63,6 +92,9 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notifica
     $scope.uploadFile = function(evemt) {
         $scope.selectedFile = event.target.files[0];
         $scope.image = URL.createObjectURL($scope.selectedFile);
+        $scope.imageStyle =     {'background': 'url('+$scope.image+')','background-repeat':'no-repeat'};
+        $scope.$apply();
+     
     }
 
     $scope.save = function(user) {

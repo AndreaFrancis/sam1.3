@@ -19,15 +19,6 @@ angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationSer
           ModalService.showModalWithParams(AddPatientController, 'client/patients/addPatient.tmpl.ng.html', ev, {patient:selectedPatient});
         }
 
-        $scope.delete = function(patient) {
-          $scope.patients.remove(patient).then(function(number) {
-              notificationService.showSuccess("Se ha eliminado correctamente al paciente");
-          }, function(error){
-              notificationService.showError("Error en la eliminacino del paciente");
-              console.log(error);
-          });
-        }
-
         $scope.search = function(){
               $scope.patients = $meteor.collection(function(){
                 return Patients.find({'$or':[

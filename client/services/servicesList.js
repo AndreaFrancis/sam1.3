@@ -27,6 +27,16 @@ angular.module("sam-1").controller("ServicesListCtrl",['$scope','$meteor','$root
         $scope.show = function(selectedService, ev) {
             ModalService.showModalWithParams(AddServiceController, 'client/services/addService.tmpl.ng.html',ev,{service:selectedService});
         }
+
+        $scope.search = function(){
+          $scope.services = $meteor.collection(function(){
+          return Services.find({
+                      "name" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+                  }  
+          );
+        }, false);
+        }
+
         $scope.headers = ['Nombre', 'Descripcion', 'Acciones'];
 
     }]);

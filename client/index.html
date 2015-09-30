@@ -5,69 +5,62 @@
 <body  ng-app="sam-1" ng-controller="AppCtrl">
   <div  layout="row">
   <section layout="column" flex>
-    <header md-page-header ng-show="$root.currentUser">
-        <md-toolbar layout="column"  flex="10" class="md-whiteframe-z2">
-          <md-button class="md-icon-button" ng-click="showLeftMenu()" aria-label="Menu">
-              <i class="fa fa-bars"></i>
-          </md-button>
-        </md-toolbar>
-    </header>
-    <div layout="row">
-    <md-sidenav layout="column" ng-show="$root.currentUser" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" hide-sm md-is-locked-open="$mdMedia('gt-md')">
-      <md-toolbar class="profile md-tall profile-toolbar" layout="column" layout-align="center center">
-        <avatar ng-model="{{user}}"></avatar>
-        <div layout="column">
-                  <simple-text ng-model="{{username}}"></simple-text>
+    <div layout="row" class="fixed">
+    <md-sidenav layout="column" ng-show="$root.currentUser" class="md-sidenav-left md-whiteframe-z2" md-component-id="left"  md-is-locked-open="$mdMedia('gt-md')"
+      >
+      <md-content flex style="border: 1px solid firebrick;" layout="column">
+        <div flex="5" layout="row" layout-align="center">
+            <md-toolbar flex="50">
+                <h2 class="md-toolbar-tools">
+                    <span>Toolbar</span>
+                </h2>
+            </md-toolbar>
         </div>
-      </md-toolbar>
-      <div layout-padding layout="column" layout-align="center start" class="modules">
-        <span class="module" ng-repeat="module in allowed | orderBy: 'order'" ng-click="showMenu(module)">
-            <div main-tex></div>
-        </span>
-        <span class="module" flex ng-click="logOut()" aria-label="Menu">
-          <i  class="fa fa-power-off">&nbsp;&nbsp;</i>Salir
-        </span>
-      </div>
+        <md-content layout="row" layout-align="center">
+            <md-content>
+              <md-toolbar class="profile md-tall profile-toolbar" layout="column" layout-align="center center">
+                <avatar ng-model="{{user}}"></avatar>
+                <div layout="column">
+                          <simple-text ng-model="{{username}}"></simple-text>
+                </div>
+              </md-toolbar>
+              <div flex layout="row">
+                <md-content flex>
+                  <ul>
+                    <li class="module" ng-repeat="module in allowed | orderBy: 'order'" ng-click="showMenu(module)">
+                        <div main-tex></div>
+                    </li>
+                    <li class="module" flex ng-click="logOut()" aria-label="Menu">
+                      <i  class="fa fa-power-off">&nbsp;&nbsp;</i>Salir
+                    </li>
+                  </ul>
+                </md-content>
+              </div>
+            </md-content>
+        </md-content>
     </md-sidenav>
+    <div layout="column" class="all-content">
+    <header md-page-header ng-show="$root.currentUser">
+        <md-toolbar>
+          <div class="md-toolbar-tools md-whiteframe-z2">
+            <md-button class="md-icon-button" ng-click="showLeftMenu()" aria-label="Menu">
+              <i class="fa fa-bars"></i>
+            </md-button>
+            <h2>
+              <span>&nbsp;&nbsp;&nbsp;&nbsp; <location ng-model="{{currentModule}}"></location></span>
+            </h2>
+            <span flex></span>
+          </div>
+        </md-toolbar>
+      </header>
 
     <md-content flex layout-padding>
       <div layout="column" layout-fill layout-align="top center">
         <div ui-view></div>
       </div>
-      <div flex></div>
     </md-content>
+    </div>
   </div>
   </section>
 </div>
-    <!--md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" layout="column">
-        <md-toolbar class="md-theme-light" flex="3" layout="column" layout-align="center center">
-              <avatar ng-model="{{user}}"></avatar>
-              <simple-text ng-model="{{username}}"></simple-text>
-        </md-toolbar>
-        <md-content  layout-padding layout="column" flex="7">
-            <md-button ng-repeat="module in allowed" ng-click="showMenu(module)">
-                <div main-tex></div>
-            </md-button>
-            <md-button class="md-accent" flex ng-click="logOut()" aria-label="Menu">
-                Salir
-            </md-button>
-        </md-content>
-    </md-sidenav-->
-    <!--md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" layout="column">
-      <md-toolbar class="md-theme-indigo" flex="3">
-        <avatar ng-model="{{user}}"></avatar>
-        <div layout="column">
-                  <simple-text ng-model="{{username}}"></simple-text>
-                  <simple-text ng-model="{{rol}}"></simple-text>
-        </div>
-      </md-toolbar>
-      <md-content layout-padding layout="column" flex="7">
-        <md-button ng-repeat="module in allowed" ng-click="showMenu(module)">
-            <div main-tex></div>
-        </md-button>
-        <md-button class="md-accent" flex ng-click="logOut()" aria-label="Menu">
-            Salir
-        </md-button>
-      </md-content>
-    </md-sidenav-->
 </body>

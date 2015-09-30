@@ -29,6 +29,17 @@ angular.module("sam-1").controller("AttentionsListCtrl",['$scope','$meteor','not
         $scope.show = function(selectedAtt, ev) {
             ModalService.showModalWithParams(AddAttentionController, 'client/attentions/addAttention.tmpl.ng.html', ev, {attention:selectedAtt});
         }
+
+        $scope.search = function(){
+          $scope.attentions = $meteor.collection(function(){
+          return Attentions.find(
+            {
+                      "name" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
+            }
+          );
+          },false);
+        }
+
     }]);
 
 function AddAttentionController($scope, notificationService, $mdDialog, attention, $meteor) {

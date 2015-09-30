@@ -8,9 +8,18 @@ angular.module('sam-1').directive('demoDirective', function($compile) {
     }
 });
 
-angular.module('sam-1').directive('simpleText', function($compile) {
+
+
+angular.module('sam-1').directive('indexText', function($compile) {
     return {
         template: '<div>{{username}}</div>',
+        replace: true
+    }
+});
+
+angular.module('sam-1').directive('location', function($compile) {
+    return {
+        template: '<div>{{currentModule}}</div>',
         replace: true
     }
 });
@@ -71,6 +80,28 @@ angular.module('sam-1').directive('inputText', function() {
     }
   };
 });
+
+angular.module('sam-1').directive('inputNumeric', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, elem, attr, ctrl) {
+      var re = new RegExp("^([0-9]{0,})$");
+
+      ctrl.$parsers.unshift(function(value) {
+          var valid = re.test(value);
+          ctrl.$setValidity('inputNumeric', valid);
+          return valid? value: undefined;
+      });
+
+      ctrl.$formatters.unshift(function(value) {
+          var valid = re.test(value);
+          ctrl.$setValidity('inputNumeric', valid);
+          return value;
+      });
+    }
+  };
+});
+
 
 angular.module('sam-1').directive('password', function() {
   return {
