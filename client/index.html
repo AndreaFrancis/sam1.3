@@ -5,18 +5,9 @@
 <body  ng-app="sam-1" ng-controller="AppCtrl">
   <div  layout="row">
   <section layout="column" flex>
-    <div layout="row" class="fixed">
     <md-sidenav layout="column" ng-show="$root.currentUser" class="md-sidenav-left md-whiteframe-z2" md-component-id="left"  md-is-locked-open="$mdMedia('gt-md')"
       >
       <md-content flex style="border: 1px solid firebrick;" layout="column">
-        <div flex="5" layout="row" layout-align="center">
-            <md-toolbar flex="50">
-                <h2 class="md-toolbar-tools">
-                    <span>Toolbar</span>
-                </h2>
-            </md-toolbar>
-        </div>
-        <md-content layout="row" layout-align="center">
             <md-content>
               <md-toolbar class="profile md-tall profile-toolbar" layout="column" layout-align="center center">
                 <avatar ng-model="{{user}}"></avatar>
@@ -60,7 +51,6 @@
       </div>
     </md-content>
     </div>
-  </div>
   </section>
 </div>
 </body>

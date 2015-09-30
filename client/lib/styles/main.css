@@ -861,9 +861,6 @@ md-sidenav {
   margin: 0;
   top: 0px;
   left: 0px;
-  max-height: 100px;
-  position: fixed;
-
 }
 
 .module {

@@ -14,6 +14,9 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           $scope.study.doctorObj = function(){
             return doctor.lastName + " "+ doctor.name;
           }
+          $scope.selectedAttention = $meteor.object(Attentions, $scope.study.attention);
+          $scope.selectedService = $meteor.object(Services, $scope.study.service);
+
         }
 
         angular.forEach($scope.study.analisys, function(analisys){
@@ -94,4 +97,16 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           });
           $scope.study.save();
         }
+
+        $scope.printContainer = function(){
+          var newWin= window.open("");
+          newWin.document.write("<b>Doctor (a): </b>"+$scope.study.doctorObj()+"<br>");
+          newWin.document.write("<b>Paciente: </b>"+$scope.patient.lastName+" "+
+          $scope.patient.lastNameMother+" "+$scope.patient.name+"<br>");
+          newWin.document.write("<b>Tipo de paciente: </b>"+$scope.selectedAttention.name+"<br>");
+          newWin.document.write("<b>Servicio de procedencia: </b>"+$scope.selectedService.name+"<br>");
+          newWin.print();
+          newWin.close();
+        }
+
     }]);
