@@ -120,7 +120,6 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           partialRecord.date = new Date();
           exam.historial.push(partialRecord);
           $scope.study.save();
-          $scope.verifyIfShouldCommit();
         }
 
 
@@ -198,34 +197,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
         }
 
         // methods
-        $scope.verifyIfShouldCommit = function() {
-          var shouldCommit = true;
-          var analisysSize = $scope.study.analisys.length;
-          var titlesSize = 0;
-          var examsSize = 0;
-          var i = 0, j = 0,k= 0;
-          while(i<analisysSize && shouldCommit){
-            titlesSize = $scope.study.analisys[i].titles.length;
-            j = 0;
-            while(j<titlesSize && shouldCommit){
-              examsSize = $scope.study.analisys[i].titles[j].exams.length;
-              k = 0;
-              while(k<examsSize && shouldCommit) {
-                shouldCommit = shouldCommit && !!$scope.study.analisys[i].titles[j].exams[k].result;
-                k++;
-              }
-              j++;
-            }
-            i++;
-          }
-          if(shouldCommit){
-            ModalService.showAlertDialog("Se ha completado el estudio",
-            "Los examenes han sido completados, ahora no podra editarlos.", "Ok");
-            $scope.study.commited = shouldCommit;
-            $scope.study.save();
-          }
-        }
-
+        
         $scope.calculateAge = function getAge(date) {
           var dateString = date.toString();
           var birthdate = new Date(dateString).getTime();
