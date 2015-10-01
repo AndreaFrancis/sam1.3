@@ -28,6 +28,16 @@ angular.module('sam-1').service("ProfileService", function($rootScope) {
     }
 });
 
+angular.module('sam-1').service("TextEvaluatorService", function() {
+
+    this.getTextEvenIfNullOrUndef = function(text) {
+        if(typeof(text) == 'undefined' || text == null){
+          text = "";
+        }
+        return text;
+    };
+});
+
 angular.module('sam-1').service("AuthorizationService", function(){
     this.showError = function(msg) {
         $mdToast.show({
@@ -73,6 +83,18 @@ angular.module('sam-1').service("ModalService", function($mdDialog){
       .cancel(cancelTitle)
       .targetEvent(event);
       $mdDialog.show(confirm).then(onConfirm, onCancel);
+    }
+
+    this.showAlertDialog = function(title, message, confirm) {
+      $mdDialog.show(
+      $mdDialog.alert()
+        .parent(angular.element(document.querySelector('#popupContainer')))
+        .clickOutsideToClose(true)
+        .title(title)
+        .content(message)
+        .ariaLabel('Mensaje de alerta')
+        .ok(confirm)
+    );
     }
 
 });
@@ -134,5 +156,4 @@ angular.module('sam-1').service("RangeEvaluator", function(RANGE_EVALUATOR, $met
     this.evaluatorsMap = {};
     this.evaluatorsMap['Igual'] = equalEval;
     this.evaluatorsMap['Entre'] = betweenEval;
-
 });

@@ -131,7 +131,10 @@
                                  <thead>
                                    <tr>
                                      <th class="md-table-header">
-                                       Act
+                                        Responsable
+                                     </th>
+                                     <th class="md-table-header" ng-hide="study.commited">
+                                        Act
                                      </th>
                                      <th class="md-table-header">
                                        Examen
@@ -149,7 +152,8 @@
                                  </thead>
                                  <tbody>
                                  <tr class="md-table-content-row" ng-repeat="exam in title.exams" ng-init="edit=false">
-                                     <td data-title="Act">
+                                     <td data-title="Responsable">{{exam.responsible}} </td>
+                                     <td data-title="Act" ng-hide="study.commited">
                                        <div layout="row">
                                          <md-button class="md-icon-button" flex  aria-label="Editar" ng-click="edit=true" ng-hide="edit">
                                            <i class="fa fa-pencil-square-o"></i>
@@ -174,7 +178,7 @@
                                          <li ng-repeat="range in exam.ranges()">
                                            <p>{{range.name}} - {{range.typeName()}}
                                              <span ng-repeat="field in range.fields">{{field.name}}: {{field.value}}&ensp;</span>
-                                               {{exam.symbol}}
+                                               {{exam.symbol()}}
                                            </p>
                                          </li>
                                        </ul>

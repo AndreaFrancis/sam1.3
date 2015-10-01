@@ -145,6 +145,7 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
         $scope.study.attention = attentionJson._id;
         var serviceJson = JSON.parse($scope.selectedService);
         $scope.study.service = serviceJson._id;
+        $scope.study.commited = false;
         angular.forEach($scope.analisysList, function(analisys)  {
             var component = {};
             component.titles = [];
@@ -158,6 +159,7 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
                   var examComponent = {};
                   if(exam.selected) {
                     examComponent.exam = exam._id;
+                    examComponent.historial = [];
                     titleComponent.exams.push(examComponent);
                       if(!title.selected){
                           title.selected = true;

@@ -4,22 +4,23 @@
 /**
  * Created by Andrea on 28/07/2015.
  */
-angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$meteor','ModalService','$state','RangeEvaluator',
-    function($scope, $stateParams, $meteor, ModalService, $state, RangeEvaluator){
+angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$meteor','ModalService','$state','RangeEvaluator','TextEvaluatorService',
+    function($scope, $stateParams, $meteor, ModalService, $state, RangeEvaluator, TextEvaluatorService){
 
         if($stateParams.studyId){
           $scope.isExistingStudy = true;
           $scope.study = $meteor.object(Studies, $stateParams.studyId, false);
           var doctor = $meteor.object(Doctors, $scope.study.doctor);
+
           $scope.study.doctorObj = function(){
             return doctor.lastName + " "+ doctor.name;
           }
+
           $scope.selectedAttention = $meteor.object(Attentions, $scope.study.attention);
           $scope.selectedService = $meteor.object(Services, $scope.study.service);
 
-        }
-
-        angular.forEach($scope.study.analisys, function(analisys){
+          //Fill analisis, titles, exams
+          angular.forEach($scope.study.analisys, function(analisys){
             var analisysName = $meteor.object(Analisys, analisys.analisys);
             analisys.name = function(){
               return analisysName.name;
@@ -34,6 +35,16 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
                     exam.name = function(){
                       return examTitle.name;
                     }
+
+                    if(!!exam.historial){
+                      var lastModifier = exam.historial.length-1;
+                      if(lastModifier>=0){
+                        var userId = exam.historial[lastModifier].user;
+                        var responsible = $meteor.object(Users, userId);
+                        exam.responsible =   responsible.username;
+                      }
+                    }
+
                     if(examTitle.measure){
                       var measure = $meteor.object(Measures,examTitle.measure);
                       exam.symbol = function(){
@@ -56,6 +67,9 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
             });
         });
 
+        }
+
+        //Extra data
         $scope.patient = $meteor.object(Patients, $scope.study.patient);
         $scope.creator = $meteor.object(Users, $scope.study.creatorId);
         $scope.bioquimic = {};
@@ -78,7 +92,6 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
         }
 
         $scope.evaluateRange = function(exam){
-            exam.detail = RangeEvaluator.evaluateRange(exam);
         }
 
         $scope.save = function(exam) {
@@ -95,8 +108,17 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
                 exam.state = detail.correct;
               }
           });
+          //Historial
+          var userAsigned = localStorage.getItem("user"); //Change if is a secretary
+          var partialRecord = {};
+          partialRecord.value = exam.result;
+          partialRecord.user = userAsigned;
+          exam.historial.push(partialRecord);
           $scope.study.save();
+          $scope.verifyIfShouldCommit();
         }
+
+
 
         $scope.printContainer = function(){
           var newWin= window.open("");
@@ -108,5 +130,112 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           newWin.print();
           newWin.close();
         }
+        $scope.printStudy = function(){
+          var newWin= window.open("");
+          newWin.document.write("<b>Resultado de examenes</b><br>");
+          newWin.document.write("<b>Paciente: </b>"+$scope.patient.lastName+" "+
+          $scope.patient.lastNameMother+" "+$scope.patient.name+"<br>");
+          newWin.document.write("<b>Doctor: </b>"+$scope.study.doctorObj()+"<br>");
+          var gender = $scope.patient.gender == "F"? "Femenino": "Masculino";
+          newWin.document.write("<b>Sexo: </b>"+gender+"<br>");
+          if(!!$scope.patient.birthdate){
+            newWin.document.write("<b>Edad: </b>"+$scope.calculateAge($scope.patient.birthdate)+"<br>");
+          }
+          if(!!$scope.patient.medHis){
+            newWin.document.write("<b>H.C: </b>"+$scope.patient.medHis+"<br>");
+          }
+          newWin.document.write("<b>C.I: </b>"+$scope.patient.ci+"<br>");
+          newWin.document.write("<b>Fecha de creación: </b>"+$scope.study.creationDate+"<br>");
+          newWin.document.write("<b>Muestras: </b>"+$scope.study.shows+"<br>");
+          if(!!$scope.study.bill){
+            newWin.document.write("<b>Numero de recibo: </b>"+$scope.study.bill+"<br>");
+          }
+          newWin.document.write("<b>Identificador: </b>"+$scope.study.dailyCode+"<br>");
+          angular.forEach($scope.study.analisys, function(analisys){
+              newWin.document.write("<h1>"+analisys.name()+"</h1>");
+              angular.forEach(analisys.titles, function(title){
+                newWin.document.write("<h3>"+title.name()+"<h3>");
+                newWin.document.write("<table>");
+                newWin.document.write("<tr><th>Examen</th><th>Resultado</th><th>Referencia</th><th>Detalle</th></tr>");
+                  angular.forEach(title.exams, function(exam){
+                    newWin.document.write("<tr>");
+                    //Exam name
+                    newWin.document.write("<td>"+exam.name()+"</td>");
+                    //Result
+                    newWin.document.write("<td>"+TextEvaluatorService.getTextEvenIfNullOrUndef(exam.result)+"</td>");
+                    //Reference
+                    if(exam.ranges()){
+                      newWin.document.write("<td>");
+                        angular.forEach(exam.ranges(), function(range){
+                          var rangeText = range.name+" - "+range.typeName()+" ";
+                          angular.forEach(range.fields, function(field){
+                            rangeText+= field.name+": "+field.value+" ";
+                          });
+                          newWin.document.write("<p>"+rangeText+"</p>");
+                        });
+
+                      newWin.document.write("</td>");
+                    }
+                    //Details
+                    newWin.document.write("<td>"+TextEvaluatorService.getTextEvenIfNullOrUndef(exam.detail)+"</td>");
+
+                    newWin.document.write("</tr>");
+                  });
+                newWin.document.write("</table>");
+              });
+          });
+          newWin.print();
+          newWin.close();
+        }
+
+        // methods
+        $scope.verifyIfShouldCommit = function() {
+          var shouldCommit = true;
+          var analisysSize = $scope.study.analisys.length;
+          var titlesSize = 0;
+          var examsSize = 0;
+          var i = 0, j = 0,k= 0;
+          while(i<analisysSize && shouldCommit){
+            titlesSize = $scope.study.analisys[i].titles.length;
+            j = 0;
+            while(j<titlesSize && shouldCommit){
+              examsSize = $scope.study.analisys[i].titles[j].exams.length;
+              k = 0;
+              while(k<examsSize && shouldCommit) {
+                shouldCommit = shouldCommit && !!$scope.study.analisys[i].titles[j].exams[k].result;
+                k++;
+              }
+              j++;
+            }
+            i++;
+          }
+          if(shouldCommit){
+            ModalService.showAlertDialog("Se ha completado el estudio",
+            "Los examenes han sido completados, ahora no podra editarlos.", "Ok");
+            $scope.study.commited = shouldCommit;
+            $scope.study.save();
+          }
+        }
+
+        $scope.calculateAge = function getAge(date) {
+          var dateString = date.toString();
+          var birthdate = new Date(dateString).getTime();
+          var now = new Date().getTime();
+          var n = (now - birthdate)/1000;
+          if (n < 604800) { // less than a week
+            var day_n = Math.floor(n/86400);
+            return day_n + ' dia' + (day_n > 1 ? 's' : '');
+          } else if (n < 2629743) {  // less than a month
+            var week_n = Math.floor(n/604800);
+            return week_n + ' semana' + (week_n > 1 ? 's' : '');
+          } else if (n < 63113852) { // less than 24 months
+            var month_n = Math.floor(n/2629743);
+            return month_n + ' mes' + (month_n > 1 ? 'es' : '');
+          } else {
+            var year_n = Math.floor(n/31556926);
+            return year_n + ' año' + (year_n > 1 ? 's' : '');
+          }
+        }
+
 
     }]);
