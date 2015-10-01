@@ -2,8 +2,8 @@
  * Created by Andrea on 24/07/2015.
  */
 
-angular.module("sam-1").controller("ModulesListCtrl",['$scope','$meteor','notificationService','ModalService',
-    function($scope, $meteor,notificationService, ModalService) {
+angular.module("sam-1").controller("ModulesListCtrl",['$scope','$meteor','notificationService','ModalService','PrintService',
+    function($scope, $meteor,notificationService, ModalService,PrintService) {
         $scope.modules = $meteor.collection(function(){
           return Modules.find({},{
             transform: function(doc){
@@ -19,6 +19,10 @@ angular.module("sam-1").controller("ModulesListCtrl",['$scope','$meteor','notifi
         $scope.headers = ['', 'Nombre','Prioridad','Url','Roles', 'Acciones'];
 
         $scope.showTextSearch = true;
+
+        $scope.print = function(){
+          PrintService.printModules($scope.modules);
+        }
         $scope.showAddNew = function(ev) {
             ModalService.showModalWithParams(AddModuleController, 'client/modules/addModule.tmpl.ng.html', ev, {module:null});
         }

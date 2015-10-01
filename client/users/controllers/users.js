@@ -1,8 +1,8 @@
 /**
  * Created by Andrea on 07/06/2015.
  */
-angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notificationService','$mdDialog','ModalService',
-    function($scope, $meteor,notificationService,$mdDialog, ModalService) {
+angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notificationService','$mdDialog','ModalService','PrintService',
+    function($scope, $meteor,notificationService,$mdDialog, ModalService,PrintService) {
         $scope.users = $meteor.collection(function(){
           return Users.find({},{
             transform: function(doc){
@@ -17,6 +17,9 @@ angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notifica
           });
         }, false);
 
+        $scope.print = function(){
+          PrintService.printUsers($scope.users);
+        }
 
         $scope.delete = function(user) {
           Meteor.call("deleteUser", user._id, function(err) {
@@ -54,7 +57,7 @@ angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notifica
                   },{
                       "username" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
                   }
-                ]                
+                ]
             }
             ,{
             transform: function(doc){
@@ -94,7 +97,7 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notifica
         $scope.image = URL.createObjectURL($scope.selectedFile);
         $scope.imageStyle =     {'background': 'url('+$scope.image+')','background-repeat':'no-repeat'};
         $scope.$apply();
-     
+
     }
 
     $scope.save = function(user) {

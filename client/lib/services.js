@@ -99,6 +99,17 @@ angular.module('sam-1').service("ModalService", function($mdDialog){
 
 });
 
+angular.module('sam-1').service("DateService", function(){
+  var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+  var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
+  this.dateAsLiteral = function(date){
+    var text = "";
+    if(!!date){
+      text = diasSemana[date.getDay()] + ", " + date.getDate() + " de " + meses[date.getMonth()] + " de " + date.getFullYear();
+    }
+    return text;
+  }
+});
 
 angular.module('sam-1').service("RangeEvaluator", function(RANGE_EVALUATOR, $meteor){
     var equalEval = function(val, range){
@@ -134,26 +145,161 @@ angular.module('sam-1').service("RangeEvaluator", function(RANGE_EVALUATOR, $met
         i++;
       }
       i = 0;
-      while(i<range.fields.length && !foundFinal){
+    while(i<range.fields.length && !foundFinal){
         if(range.fields[i].name == "final"){
           foundFinal = true;
           final = range.fields[i].value;
         }
         i++;
-      }
+    }
 
-      if(initial != undefined && final!= undefined){
+    if(initial != undefined && final!= undefined){
         if((val<=final) && (val>=initial)){
           detail.result = range.name;
           detail.correct = true;
         }
-      }
+    }
 
-      return detail;
+    return detail;
     }
 
 
     this.evaluatorsMap = {};
     this.evaluatorsMap['Igual'] = equalEval;
     this.evaluatorsMap['Entre'] = betweenEval;
+});
+
+
+angular.module('sam-1').service("PrintService", function(){
+    this.printRoles = function(roles) {
+      var text = "<tr><th>Nro</th><th>Nombre</th></tr>";
+      var counter = 1;
+      angular.forEach(roles, function(rol){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+rol.name+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de roles", text);
+    }
+
+    this.printUsers = function(users) {
+      var text = "<tr><th>Nro</th><th>Nombre de usuario</th><th>Nombre</th><th>Apellido</th><th>Rol</th></tr>";
+      var counter = 1;
+      angular.forEach(users, function(user){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+user.username+"</td>";
+        text+="<td>"+user.profile.name+"</td>";
+        text+="<td>"+user.profile.lastName+"</td>";
+        text+="<td>"+user.rol+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de usuarios", text);
+    }
+    this.printModules = function(modules) {
+      var text = "<tr><th>Nro</th><th>Nombre</th><th>Roles</th></tr>";
+      var counter = 1;
+      angular.forEach(modules, function(module){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+module.name+"</td>";
+        text+="<td>";
+        module.rolesObj.forEach(function(rol){
+          text+=rol.name+"<br>";
+        })
+        text+="</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de modulos", text);
+    }
+
+    this.printAttentions = function(attentions) {
+      var text = "<tr><th>Nro</th><th>Nombre</th></tr>";
+      var counter = 1;
+      angular.forEach(attentions, function(attention){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+attention.name+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de tipos de atencion", text);
+    }
+
+    this.printServices = function(services) {
+      var text = "<tr><th>Nro</th><th>Nombre</th></tr>";
+      var counter = 1;
+      angular.forEach(services, function(service){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+service.name+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de servicios", text);
+    }
+
+    this.printDoctors = function(doctors) {
+      var text = "<tr><th>Nro</th><th>Nombre</th><th>Apellido</th><th>Especialidad</th><th>Matricula</th></tr>";
+      var counter = 1;
+      angular.forEach(doctors, function(doctor){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+doctor.name+"</td>";
+        text+="<td>"+doctor.lastName+"</td>";
+        text+="<td>"+doctor.especialism+"</td>";
+        text+="<td>"+doctor.enrolment+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de doctores", text);
+    }
+
+    this.printDoctors = function(doctors) {
+      var text = "<tr><th>Nro</th><th>Nombre</th><th>Apellido</th><th>Especialidad</th><th>Matricula</th></tr>";
+      var counter = 1;
+      angular.forEach(doctors, function(doctor){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+doctor.name+"</td>";
+        text+="<td>"+doctor.lastName+"</td>";
+        text+="<td>"+doctor.especialism+"</td>";
+        text+="<td>"+doctor.enrolment+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de doctores", text);
+    }
+
+    this.printPatients = function(patients) {
+      var text = "<tr><th>Nro</th><th>Apellido</th><th>Nombre</th><th>CI</th></tr>";
+      var counter = 1;
+      angular.forEach(patients, function(patient){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+patient.lastName+"</td>";
+        text+="<td>"+patient.name+"</td>";
+        text+="<td>"+patient.ci+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de pacientes", text);
+    }
+
+
+    this.printTableWithText = function(title,text){
+      var newWin= window.open("");
+      newWin.document.write("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><style type='text/css'>table {width:100%} table, th, td {border: 1px solid black;}</style></head><body>");
+      newWin.document.write("<h2>"+title+"</h2>");
+      newWin.document.write("<table>");
+      newWin.document.write(text);
+      newWin.document.write("</table>");
+      newWin.document.write("</body></html>");
+      newWin.print();
+      newWin.close();
+    }
 });

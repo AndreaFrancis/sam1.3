@@ -133,7 +133,7 @@
                                      <th class="md-table-header">
                                         Responsable
                                      </th>
-                                     <th class="md-table-header" ng-hide="study.commited">
+                                     <th class="md-table-header">
                                         Act
                                      </th>
                                      <th class="md-table-header">
@@ -153,8 +153,11 @@
                                  <tbody>
                                  <tr class="md-table-content-row" ng-repeat="exam in title.exams" ng-init="edit=false">
                                      <td data-title="Responsable">{{exam.responsible}} </td>
-                                     <td data-title="Act" ng-hide="study.commited">
+                                     <td data-title="Act">
                                        <div layout="row">
+                                         <md-button class="md-icon-button" flex  aria-label="Historial" ng-click="showHistorial(exam,$event)">
+                                           <i class="fa fa-file-text-o"></i>
+                                         </md-button>
                                          <md-button class="md-icon-button" flex  aria-label="Editar" ng-click="edit=true" ng-hide="edit">
                                            <i class="fa fa-pencil-square-o"></i>
                                          </md-button>

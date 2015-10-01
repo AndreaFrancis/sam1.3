@@ -1,8 +1,13 @@
-angular.module("sam-1").controller("DoctorsListCtrl",['$scope','$meteor','ModalService','notificationService',
-    function($scope, $meteor,ModalService,notificationService) {
+angular.module("sam-1").controller("DoctorsListCtrl",['$scope','$meteor','ModalService','notificationService','PrintService',
+    function($scope, $meteor,ModalService,notificationService,PrintService) {
 
         $scope.doctors = $meteor.collection(Doctors, false);
         $scope.headers = ['Nombre', 'Apellido','Especialidad', 'Matricula','Acciones'];
+
+
+        $scope.print = function(){
+          PrintService.printDoctors($scope.doctors);
+        }
 
         $scope.showAddNew = function(ev) {
             ModalService.showModalWithParams(AddDoctorController,  'client/doctors/addDoctor.tmpl.ng.html',ev, {doctor:null});
@@ -38,7 +43,7 @@ angular.module("sam-1").controller("DoctorsListCtrl",['$scope','$meteor','ModalS
                   },{
                       "especialism" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
                   }
-                ]                
+                ]
             }
           );
           }, false);

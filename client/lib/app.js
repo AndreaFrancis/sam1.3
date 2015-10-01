@@ -5,9 +5,9 @@ var app = angular.module('sam-1',['angular-meteor','ui.router','ngMaterial', 'ng
 app.config(function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('light-blue')
-            .accentPalette('indigo');
+            .accentPalette('deep-orange');
         $mdThemingProvider.theme('nav-theme')
-        .primaryPalette('indigo');
+        .primaryPalette('deep-orange');
     $mdThemingProvider.setDefaultTheme('default');
 });
 
@@ -55,14 +55,14 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
                 });
                 $scope.username = $rootScope.currentUser.username;
                 $scope.user = $rootScope.currentUser;
-                $rootScope.$apply();
+                //$rootScope.$apply();
             } else{
                 if(localStorage.getItem("rol")) {
                     $scope.username = localStorage.getItem("username");
                     $scope.allowed = $meteor.collection(function(){
                         return Modules.find({roles: {"$in":[localStorage.getItem("rol")]}});
                     });
-                    $scope.$apply();
+                    //$scope.$apply();
                 }
             }
         }

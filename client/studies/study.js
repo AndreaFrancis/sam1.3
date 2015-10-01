@@ -87,6 +87,10 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
             return Users.find({roles: {"$in": ['Bioquimico']}});
         });
 
+        $scope.showHistorial = function(exam, ev){
+          ModalService.showModalWithParams(HistorialController,  'client/studies/historial.tmpl.ng.html',ev, {exam:exam});
+        }
+
         $scope.goStudies = function(){
             $state.go('studies');
         }
@@ -113,6 +117,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           var partialRecord = {};
           partialRecord.value = exam.result;
           partialRecord.user = userAsigned;
+          partialRecord.date = new Date();
           exam.historial.push(partialRecord);
           $scope.study.save();
           $scope.verifyIfShouldCommit();
@@ -132,7 +137,10 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
         }
         $scope.printStudy = function(){
           var newWin= window.open("");
-          newWin.document.write("<b>Resultado de examenes</b><br>");
+          newWin.document.write("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><style type='text/css'>table {width:100%} table, th, td {border: 1px solid black;}</style></head><body>");
+          newWin.document.write("<h1>Resultado de examenes</h1>");
+          newWin.document.write("<h1>"+$scope.study.dailyCode+"</h1>");
+          newWin.document.write("<hr>");
           newWin.document.write("<b>Paciente: </b>"+$scope.patient.lastName+" "+
           $scope.patient.lastNameMother+" "+$scope.patient.name+"<br>");
           newWin.document.write("<b>Doctor: </b>"+$scope.study.doctorObj()+"<br>");
@@ -150,9 +158,9 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           if(!!$scope.study.bill){
             newWin.document.write("<b>Numero de recibo: </b>"+$scope.study.bill+"<br>");
           }
-          newWin.document.write("<b>Identificador: </b>"+$scope.study.dailyCode+"<br>");
+          newWin.document.write("<hr>");
           angular.forEach($scope.study.analisys, function(analisys){
-              newWin.document.write("<h1>"+analisys.name()+"</h1>");
+              newWin.document.write("<h2>"+analisys.name()+"</h2>");
               angular.forEach(analisys.titles, function(title){
                 newWin.document.write("<h3>"+title.name()+"<h3>");
                 newWin.document.write("<table>");
@@ -184,6 +192,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
                 newWin.document.write("</table>");
               });
           });
+          newWin.document.write("</body></html>");
           newWin.print();
           newWin.close();
         }
@@ -239,3 +248,19 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
 
 
     }]);
+
+
+function HistorialController($scope,$mdDialog, exam, $meteor, DateService) {
+        if(exam) {
+          $scope.exam = exam;
+        }
+        $scope.dateService = DateService;
+        angular.forEach($scope.exam.historial, function(modification){
+          var user = $meteor.object(Users, modification.user);
+          modification.userName = user.profile.name||"" + " "+ user.profile.lastName||"";
+        });
+
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        }
+}

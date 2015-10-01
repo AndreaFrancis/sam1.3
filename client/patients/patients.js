@@ -1,11 +1,15 @@
 /**
  * Created by Andrea on 26/07/2015.
  */
-angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationService','ModalService','$rootScope','$state','$meteor',
-    function($scope,notificationService, ModalService, $rootScope, $state, $meteor) {
+angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationService','ModalService','$rootScope','$state','$meteor','PrintService',
+    function($scope,notificationService, ModalService, $rootScope, $state, $meteor,PrintService) {
         $scope.patients = $meteor.collection(Patients, false);
         $scope.headers = ['Apellidos', 'Nombre','Ci', 'Acciones'];
         $scope.searchText = '';
+
+        $scope.print = function(){
+          PrintService.printPatients($scope.patients);
+        }
 
         $scope.showAddNew = function(ev) {
             ModalService.showModalWithParams(AddPatientController, 'client/patients/addPatient.tmpl.ng.html', ev, {patient:null});

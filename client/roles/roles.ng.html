@@ -1,4 +1,4 @@
-<div ng-controller="RolesListCtrl">
+<div >
     <div class="main-fab">
         <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="Agregar">
             <i class="fa fa-plus"></i>
@@ -8,6 +8,9 @@
       <label>Buscar Rol </label>
       <input ng-model="searchText" ng-change="search()">
     </md-input-container>
+    <md-button aria-label="Imprimir" ng-click="print()">
+        Imprimir
+    </md-button>
     <div class="sub-content">
         <div class="table-responsive-vertical shadow-z-1 center-table">
 

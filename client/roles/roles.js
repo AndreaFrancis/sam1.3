@@ -2,12 +2,16 @@
  * Created by Andrea on 22/07/2015.
  */
 
-angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notificationService','ModalService',
-    function($scope, $meteor,notificationService, ModalService) {
+angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notificationService','ModalService','PrintService',
+    function($scope, $meteor,notificationService, ModalService,PrintService) {
         $scope.roles = $meteor.collection(RolesData, false);
         $scope.headers = ['Nombre', 'Acciones'];
 
         $scope.showTextSearch = true;
+
+        $scope.print = function(){
+          PrintService.printRoles($scope.roles);
+        }
         $scope.showAddNew = function(ev) {
             ModalService.showModalWithParams(AddRolController, 'client/roles/addRol.tmpl.ng.html',ev,{rol:null});
         }
