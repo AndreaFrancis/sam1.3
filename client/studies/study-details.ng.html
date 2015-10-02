@@ -25,7 +25,7 @@
                 <!--Patient-->
               <div flex layout="row">
                 <div ng-show="existingPatient || isExistingStudy">
-                    Paciente: {{patient.lastName}} {{patient.lastNameMother}} {{patient.name}}
+                    Paciente: {{study.patientObj.lastName}} {{study.patientObj.lastNameMother}} {{study.patientObj.name}}
                 </div>
                 <div layout="row" ng-hide="existingPatient || isExistingStudy ">
                     <md-autocomplete
@@ -59,7 +59,7 @@
               <!--Doctor-->
               <div flex layout="row">
                 <div ng-show="existingDoctor || isExistingStudy ">
-                    Doctor: {{study.doctorObj()}}
+                    Doctor: {{study.doctorObj.lastName}}  {{study.doctorObj.name}}
                 </div>
                 <div layout="row" ng-hide="existingDoctor || isExistingStudy ">
                     <md-autocomplete

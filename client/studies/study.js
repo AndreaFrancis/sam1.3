@@ -9,15 +9,55 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
 
         if($stateParams.studyId){
           $scope.isExistingStudy = true;
-          $scope.study = $meteor.object(Studies, $stateParams.studyId, false);
-          var doctor = $meteor.object(Doctors, $scope.study.doctor);
+          //$scope.study = $meteor.object(Studies, $stateParams.studyId, false);
+
+          /*var doctor = $meteor.object(Doctors, $scope.study.doctor);
 
           $scope.study.doctorObj = function(){
             return doctor.lastName + " "+ doctor.name;
-          }
+          }*/
 
-          $scope.selectedAttention = $meteor.object(Attentions, $scope.study.attention);
-          $scope.selectedService = $meteor.object(Services, $scope.study.service);
+          $scope.studies = $meteor.collection(function() {
+              return Studies.find({_id:$stateParams.studyId}, {
+                  transform: function(doc) {
+                      doc.patientObj = {};
+                      if(doc.patient) {
+                          var patientObj = $meteor.collection(function(){
+                              return Patients.find({_id: {"$in": [doc.patient]}});
+                          });
+                          if(patientObj[0]) {
+                            doc.patientObj = patientObj[0];
+                          }
+                      }
+
+                      doc.doctorObj = {};
+                      if(!!doc.doctor){
+                        var doctorObj = $meteor.collection(function(){
+                            return Doctors.find({_id: {"$in": [doc.doctor]}});
+                        });
+                        if(doctorObj[0]) {
+                          doc.doctorObj = doctorObj[0];
+                        }
+                      }
+
+                      doc.creatorName = {};
+                      if(doc.creatorId) {
+                          var creatorName = $meteor.collection(function(){
+                              return Users.find({_id: {"$in": [doc.creatorId]}});
+                          });
+                          if(creatorName[0]) {
+                              doc.creatorName = creatorName[0].profile.name + " "+ creatorName[0].profile.lastName;
+                          }
+                      }
+
+                      return doc;
+                  }
+              });
+          }, false);
+          $scope.study = $scope.studies[0];
+
+          //$scope.selectedAttention = $meteor.object(Attentions, $scope.study.attention);
+          //$scope.selectedService = $meteor.object(Services, $scope.study.service);
 
           //Fill analisis, titles, exams
           angular.forEach($scope.study.analisys, function(analisys){
@@ -70,8 +110,8 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
         }
 
         //Extra data
-        $scope.patient = $meteor.object(Patients, $scope.study.patient);
-        $scope.creator = $meteor.object(Users, $scope.study.creatorId);
+        //$scope.patient = $meteor.object(Patients, $scope.study.patient);
+        //$scope.creator = $meteor.object(Users, $scope.study.creatorId);
         $scope.bioquimic = {};
         $scope.isSecretary = localStorage.getItem("rol") == "Secretario";
         $scope.isBioquimic = localStorage.getItem("rol") == "Bioquimico";
@@ -83,9 +123,9 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
             return bios;
         });
 
-        var creatorName = $meteor.collection(function(){
+        /*var creatorName = $meteor.collection(function(){
             return Users.find({roles: {"$in": ['Bioquimico']}});
-        });
+        });*/
 
         $scope.showHistorial = function(exam, ev){
           ModalService.showModalWithParams(HistorialController,  'client/studies/historial.tmpl.ng.html',ev, {exam:exam});
@@ -99,6 +139,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
         }
 
         $scope.save = function(exam) {
+          /*
           var detail = "";
           var ranges = exam.ranges();
 
@@ -119,7 +160,8 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           partialRecord.user = userAsigned;
           partialRecord.date = new Date();
           exam.historial.push(partialRecord);
-          $scope.study.save();
+          $scope.studies.save($scope.study);
+          */
         }
 
 
@@ -140,18 +182,18 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           newWin.document.write("<h1>Resultado de examenes</h1>");
           newWin.document.write("<h1>"+$scope.study.dailyCode+"</h1>");
           newWin.document.write("<hr>");
-          newWin.document.write("<b>Paciente: </b>"+$scope.patient.lastName+" "+
-          $scope.patient.lastNameMother+" "+$scope.patient.name+"<br>");
-          newWin.document.write("<b>Doctor: </b>"+$scope.study.doctorObj()+"<br>");
-          var gender = $scope.patient.gender == "F"? "Femenino": "Masculino";
+          newWin.document.write("<b>Paciente: </b>"+$scope.study.patientObj.lastName+" "+
+          $scope.study.patientObj.lastNameMother+" "+$scope.study.patientObj.name+"<br>");
+          newWin.document.write("<b>Doctor: </b>"+$scope.study.doctorObj.lastName+" "+$scope.study.doctorObj.name+"<br>");
+          var gender = $scope.study.doctorObj.gender == "F"? "Femenino": "Masculino";
           newWin.document.write("<b>Sexo: </b>"+gender+"<br>");
-          if(!!$scope.patient.birthdate){
-            newWin.document.write("<b>Edad: </b>"+$scope.calculateAge($scope.patient.birthdate)+"<br>");
+          if(!!$scope.study.doctorObj.birthdate){
+            newWin.document.write("<b>Edad: </b>"+$scope.calculateAge($scope.study.doctorObj.birthdate)+"<br>");
           }
-          if(!!$scope.patient.medHis){
-            newWin.document.write("<b>H.C: </b>"+$scope.patient.medHis+"<br>");
+          if(!!$scope.study.doctorObj.medHis){
+            newWin.document.write("<b>H.C: </b>"+$scope.study.doctorObj.medHis+"<br>");
           }
-          newWin.document.write("<b>C.I: </b>"+$scope.patient.ci+"<br>");
+          newWin.document.write("<b>C.I: </b>"+$scope.study.doctorObj.ci+"<br>");
           newWin.document.write("<b>Fecha de creación: </b>"+$scope.study.creationDate+"<br>");
           newWin.document.write("<b>Muestras: </b>"+$scope.study.shows+"<br>");
           if(!!$scope.study.bill){
@@ -197,7 +239,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
         }
 
         // methods
-        
+
         $scope.calculateAge = function getAge(date) {
           var dateString = date.toString();
           var birthdate = new Date(dateString).getTime();
@@ -217,6 +259,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
             return year_n + ' año' + (year_n > 1 ? 's' : '');
           }
         }
+
 
 
     }]);

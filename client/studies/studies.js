@@ -27,6 +27,14 @@ angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notifi
                         doc.patientObj = patientObj[0];
                     }
 
+                    doc.doctorObj = {};
+                    if(!!doc.doctor){
+                      var doctorObj = $meteor.collection(function(){
+                          return Doctors.find({_id: {"$in": [doc.doctor]}});
+                      });
+                      doc.doctorObj = doctorObj[0];
+                    }
+
                     doc.creatorName = {};
                     if(doc.creatorId) {
                         var creatorName = $meteor.collection(function(){
