@@ -36,12 +36,14 @@
 .uppercase {
   text-transform:uppercase;
 }
+
+/*
 a {
     text-decoration: none !important;
     color: white;
     height:100%;
     width:100%;
-}
+}*/
 
 .md-avatar{
     max-width: 50px;
@@ -917,8 +919,9 @@ label span input {
     padding:0;
 }
 
+/*
 ul {
    list-style:none;
    margin      : 0px;
    padding     : 0px;
-}
+}*/

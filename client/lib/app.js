@@ -5,9 +5,9 @@ var app = angular.module('sam-1',['angular-meteor','ui.router','ngMaterial', 'ng
 app.config(function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('light-blue')
-            .accentPalette('deep-orange');
+            .accentPalette('indigo');
         $mdThemingProvider.theme('nav-theme')
-        .primaryPalette('deep-orange');
+        .primaryPalette('indigo');
     $mdThemingProvider.setDefaultTheme('default');
 });
 
@@ -43,7 +43,7 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
     $scope.showMenu = function(target) {
             $scope.currentModule = target.name;
             $state.go(target.state);
-            $mdSidenav('left').toggle();
+            //$mdSidenav('left').toggle();
     }
     $scope.checkRoles = function() {
         var check = localStorage.getItem("check");
@@ -68,10 +68,10 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
         }
     }
 
-
+    /*
     $scope.showLeftMenu = function() {
         $mdSidenav('left').toggle();
-    }
+    }*/
 
     $scope.logOut = function() {
         if(Meteor.connection.status().connected){
@@ -83,7 +83,7 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
         localStorage.removeItem("username");
         $scope.username = '';
         $scope.password = '';
-        $mdSidenav('left').toggle();
+        //$mdSidenav('left').toggle();
         $scope.allowed = [];
         localStorage.setItem("check","false");
         $state.go("login");

@@ -30,6 +30,8 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
                           }
                       }
 
+
+
                       doc.doctorObj = {};
                       if(!!doc.doctor){
                         var doctorObj = $meteor.collection(function(){
@@ -56,8 +58,8 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           }, false);
           $scope.study = $scope.studies[0];
 
-          //$scope.selectedAttention = $meteor.object(Attentions, $scope.study.attention);
-          //$scope.selectedService = $meteor.object(Services, $scope.study.service);
+          $scope.selectedAttention = $meteor.object(Attentions, $scope.study.attention);
+          $scope.selectedService = $meteor.object(Services, $scope.study.service);
 
           //Fill analisis, titles, exams
           angular.forEach($scope.study.analisys, function(analisys){
@@ -168,9 +170,9 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
 
         $scope.printContainer = function(){
           var newWin= window.open("");
-          newWin.document.write("<b>Doctor (a): </b>"+$scope.study.doctorObj()+"<br>");
-          newWin.document.write("<b>Paciente: </b>"+$scope.patient.lastName+" "+
-          $scope.patient.lastNameMother+" "+$scope.patient.name+"<br>");
+          newWin.document.write("<b>Doctor (a): </b>"+$scope.study.doctorObj.lastName+" "+$scope.study.doctorObj.name+"<br>");
+          newWin.document.write("<b>Paciente: </b>"+$scope.study.patientObj.lastName+" "+
+          $scope.study.patientObj.lastNameMother+" "+$scope.study.patientObj.name+"<br>");
           newWin.document.write("<b>Tipo de paciente: </b>"+$scope.selectedAttention.name+"<br>");
           newWin.document.write("<b>Servicio de procedencia: </b>"+$scope.selectedService.name+"<br>");
           newWin.print();
@@ -185,15 +187,15 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           newWin.document.write("<b>Paciente: </b>"+$scope.study.patientObj.lastName+" "+
           $scope.study.patientObj.lastNameMother+" "+$scope.study.patientObj.name+"<br>");
           newWin.document.write("<b>Doctor: </b>"+$scope.study.doctorObj.lastName+" "+$scope.study.doctorObj.name+"<br>");
-          var gender = $scope.study.doctorObj.gender == "F"? "Femenino": "Masculino";
+          var gender = $scope.study.patientObj.gender == "F"? "Femenino": "Masculino";
           newWin.document.write("<b>Sexo: </b>"+gender+"<br>");
-          if(!!$scope.study.doctorObj.birthdate){
-            newWin.document.write("<b>Edad: </b>"+$scope.calculateAge($scope.study.doctorObj.birthdate)+"<br>");
+          if(!!$scope.study.patientObj.birthdate){
+            newWin.document.write("<b>Edad: </b>"+$scope.calculateAge($scope.study.patientObj.birthdate)+"<br>");
           }
-          if(!!$scope.study.doctorObj.medHis){
-            newWin.document.write("<b>H.C: </b>"+$scope.study.doctorObj.medHis+"<br>");
+          if(!!$scope.study.medHis){
+            newWin.document.write("<b>H.C: </b>"+$scope.study.medHis+"<br>");
           }
-          newWin.document.write("<b>C.I: </b>"+$scope.study.doctorObj.ci+"<br>");
+          newWin.document.write("<b>C.I: </b>"+$scope.study.patientObj.ci+"<br>");
           newWin.document.write("<b>Fecha de creación: </b>"+$scope.study.creationDate+"<br>");
           newWin.document.write("<b>Muestras: </b>"+$scope.study.shows+"<br>");
           if(!!$scope.study.bill){
