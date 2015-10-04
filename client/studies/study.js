@@ -141,7 +141,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
         }
 
         $scope.save = function(exam) {
-          /*
+
           var detail = "";
           var ranges = exam.ranges();
 
@@ -163,7 +163,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           partialRecord.date = new Date();
           exam.historial.push(partialRecord);
           $scope.studies.save($scope.study);
-          */
+          
         }
 
 
