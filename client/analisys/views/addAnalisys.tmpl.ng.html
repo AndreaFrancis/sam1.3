@@ -21,6 +21,24 @@
                 <label>Descripcion</label>
                 <textarea ng-model="analisys.description" name="description"></textarea>
             </md-input-container>
+            <md-autocomplete flex required
+            md-selected-item-change="null"
+              md-search-text-change="null"
+            md-input-name="autocompleteField"
+            md-no-cache="true"
+            md-selected-item="selectedLab"
+            md-search-text="searchText"
+            md-items="item in querySearch(searchText)"
+            md-item-text="item.name"
+            md-floating-label="Laboratorio">
+              <md-item-template>
+                <span md-highlight-text="searchText">{{item.name}}</span>
+              </md-item-template>
+              <div ng-messages="newAnalisysForm.autocompleteField.$error" ng-if="newAnalisysForm.autocompleteField.$touched">
+                <div ng-message="required"><b>Debe</b> escoger un laboratorio</div>
+              </div>
+          </md-autocomplete>
+
           </div>
             <div class="md-actions" layout="row">
                 <span flex></span>

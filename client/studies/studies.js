@@ -5,7 +5,12 @@
 angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notificationService','ModalService','$state',
     function($scope, $meteor,notificationService, ModalService, $state) {
 
-        var query = {}
+        var query = {};
+        var conditionNotProgramed = {$or:
+          [
+            { "dailyCode": { $exists: false } },
+            { "dailyCode": null }
+          ]};
         $scope.headers = ["Codigo", "Paciente", "Fecha"];
 
         if(localStorage.getItem("rol") == "Bioquimico"){
@@ -17,7 +22,7 @@ angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notifi
         }
 
         $scope.studies = $meteor.collection(function() {
-            return Studies.find(query, {
+            return Studies.find({$and:[query,conditionNotProgramed]}, {
                 transform: function(doc) {
                     doc.patientObj = {};
                     if(doc.patient) {

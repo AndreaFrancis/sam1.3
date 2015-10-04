@@ -21,6 +21,7 @@
               </thead>
               <tbody>
               <tr ng-repeat="analisys in analisysList" class="md-table-content-row" ng-click="show(analisys, $event)">
+                  <td data-title="Laboratorio">{{ analisys.labObj }}</td>
                   <td data-title="Nombre">{{ analisys.name }}</td>
                   <td data-title="Titulos">
                     <ul>

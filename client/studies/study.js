@@ -129,6 +129,9 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
             return Users.find({roles: {"$in": ['Bioquimico']}});
         });*/
 
+        $scope.saveStudy = function(event){
+          $scope.studies.save($scope.study);
+        }
         $scope.showHistorial = function(exam, ev){
           ModalService.showModalWithParams(HistorialController,  'client/studies/historial.tmpl.ng.html',ev, {exam:exam});
         }
@@ -163,7 +166,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           partialRecord.date = new Date();
           exam.historial.push(partialRecord);
           $scope.studies.save($scope.study);
-          
+
         }
 
 

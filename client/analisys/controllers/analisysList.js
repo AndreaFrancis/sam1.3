@@ -9,12 +9,17 @@ angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','Modal
                 doc.titles = $meteor.collection(function(){
                   return Titles.find({analisys:doc._id});
                 },false);
+
+                var obj = $meteor.object(Labs,doc.lab);
+                if(obj){
+                  doc.labObj = obj.name;
+                }
               return doc;
             }
           });
         }, false);
 
-        $scope.headers = ['Nombre','Titulos','Descripcion','Acciones'];
+        $scope.headers = ['Lab','Nombre','Titulos','Descripcion','Acciones'];
 
         $scope.showAddNew = function(ev) {
             ModalService.showModalWithParams(AddAnalisysController, 'client/analisys/views/addAnalisys.tmpl.ng.html', ev, {analisys:null});
@@ -57,11 +62,28 @@ function AddAnalisysController($scope, $meteor, notificationService, analisys,$m
     }
 
     $scope.analisysList = $meteor.collection(Analisys, false);
+    $scope.labs = $meteor.collection(Labs, false);
+    $scope.querySearch  = function(query) {
+      var results = query ? $scope.labs.filter( createFilterFor(query) ) : [];
+      return results;
+    }
+
+    function createFilterFor(query) {
+     var lowercaseQuery = angular.lowercase(query);
+     return function filterFn(labEl) {
+       var nameToLoweCase = angular.lowercase(labEl.name);
+       return (nameToLoweCase.indexOf(lowercaseQuery) >= 0);
+     };
+    }
+
 
     $scope.save = function() {
         //Cleaning data from transform
         delete $scope.analisys.titles;
 
+        if($scope.selectedLab){
+          $scope.analisys.lab = $scope.selectedLab._id;
+        }
         $scope.analisys.active = true;
         $scope.analisysList.save($scope.analisys).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el Analisis clinico");
