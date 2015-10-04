@@ -19,10 +19,10 @@
             </md-input-container>
           <div layout="row">
             <md-select placeholder="Usuario" ng-model="selectedUser" flex required>
-                <md-option ng-repeat="us in users" ng-value="us">{{pers.user}}</md-option>
+                <md-option ng-repeat="us in users" ng-value="us">{{us.username}}</md-option>
             </md-select>
             <md-select placeholder="Laboratorio" ng-model="selectedLab" flex required>
-                <md-option ng-repeat="lab in labs" ng-value="lab">{{pers.lab}}</md-option>
+                <md-option ng-repeat="lab in labs" ng-value="lab">{{lab.name}}</md-option>
             </md-select>
           </div>
           </div>

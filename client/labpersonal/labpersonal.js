@@ -1,7 +1,28 @@
 angular.module("sam-1").controller("LabPersonalListCtrl",['$scope','$meteor','ModalService','notificationService','PrintService',
     function($scope, $meteor,ModalService,notificationService,PrintService) {
 
-        $scope.personal = $meteor.collection(Labpersonal, false);
+        $scope.personal = $meteor.collection(function(){
+          return Labpersonal.find({},{
+            transform: function(doc){
+              if(doc.user){
+                var user = $meteor.object(Users,doc.user);
+                if(user){
+                  doc.userObj = user.username;
+                }
+              }
+              if(doc.lab){
+                var lab = $meteor.object(Labs,doc.lab);
+                if(lab){
+                  doc.labObj = lab.name;
+                }
+              }
+
+              return doc;
+
+            }
+          });
+        }, false);
+
         $scope.headers = ['Usuario', 'Laboratorio','Cargo','Acciones'];
 
         $scope.print = function(){
@@ -48,23 +69,22 @@ function AddLabpersonalController($scope,$mdDialog, $meteor, pers ,notificationS
       $scope.pers = pers;
     }
 
-    $scope.personal = $meteor.collection(Labpersonal,false);
-    $scope.users = $meteor.collection(function(){
-      var ids = $meteor.collection(function(){
-        return RolesData.find({name:'Doctor'});
-      },false);
-      if(ids){
-        return Users.find({'profile.mainRol':ids[0]._id});
-      }else{
-          return [];
-      }
-    }, false);
-    $scope.selectedUser = {};
+    $scope.users = $meteor.collection(Users, false);
+    $scope.labs = $meteor.collection(Labs, false);
 
+
+    $scope.personal = $meteor.collection(Labpersonal,false);
+    $scope.selectedUser = {};
+    $scope.selectedLab = {};
     $scope.save = function() {
         if($scope.selectedUser){
           $scope.pers.user  = $scope.selectedUser._id;
         }
+
+        if($scope.selectedLab){
+          $scope.pers.lab  = $scope.selectedLab._id;
+        }
+
         $scope.personal.save($scope.pers).then(function(number) {
             notificationService.showSuccess("Se ha guardado correctamente el personal de laboratorio");
         }, function(error){

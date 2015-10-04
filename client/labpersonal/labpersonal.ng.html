@@ -23,11 +23,11 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="pers in personal" class="md-table-content-row" ng-click="show(pers, $event)">
-                    <td data-title="Usuario">{{ doctor.userObj }}</td>
-                    <td data-title="Laboratorio">{{ doctor.labObj }}</td>
-                    <td data-title="Cargo">{{ doctor.job }}</td>
+                    <td data-title="Usuario">{{ pers.userObj }}</td>
+                    <td data-title="Laboratorio">{{ pers.labObj }}</td>
+                    <td data-title="Cargo">{{ pers.job }}</td>
                     <td data-title="Acciones">
-                        <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(doctor)">
+                        <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete(pers)">
                             <i class="fa fa-trash"></i>
                         </md-button>
                     </td>
