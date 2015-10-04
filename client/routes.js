@@ -136,6 +136,14 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                   requireLogin: true
                 }
             })
+            .state('results', {
+                url: '/results',
+                templateUrl: 'client/results/results.ng.html',
+                controller: 'ResultsListCtrl',
+                data: {
+                  requireLogin: true
+                }
+            })
             .state('study', {
                 url: '/study/:studyId',
                 templateUrl: 'client/studies/study-details.ng.html',
@@ -156,6 +164,14 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                 url: '/doctors',
                 templateUrl: 'client/doctors/doctors.ng.html',
                 controller: 'DoctorsListCtrl',
+                data: {
+                  requireLogin: true
+                }
+            })
+            .state('labpersonal', {
+                url: '/labpersonal',
+                templateUrl: 'client/labpersonal/labpersonal.ng.html',
+                controller: 'LabPersonalListCtrl',
                 data: {
                   requireLogin: true
                 }

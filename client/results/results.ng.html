@@ -1,0 +1,22 @@
+<div>
+    <div class="sub-content">
+        <div class="table-responsive-vertical shadow-z-1 center-table">
+            <!-- Table starts here -->
+            <table id="table" class="table table-hover table-mc-light-blue">
+                <thead>
+                <tr>
+                    <th ng-repeat="h in headers" class="md-table-header">
+                        {{h}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="md-table-content-row" ng-repeat="study in studies | orderBy: '-creationDate'" ng-click="show(study, $event)">
+                    <td data-title="Codigo">{{ study.dailyCode }}</td>
+                    <td data-title="Paciente">{{study.patientObj.name}} {{study.patientObj.lastName}} {{study.patientObj.lastNameMother}}</td>
+                    <td data-title="Fecha">{{study.creationDate.toLocaleString()}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
