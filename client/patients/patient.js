@@ -1,25 +1,52 @@
 /**
  * Created by Andrea on 28/07/2015.
  */
-angular.module("sam-1").controller("PatientCtrl", ['$scope', '$stateParams','$meteor','ModalService','$state',
-    function($scope, $stateParams, $meteor, ModalService, $state){
+angular.module("sam-1").controller("PatientCtrl", ['$scope', '$stateParams','$meteor','ModalService','$state','PrintService',
+    function($scope, $stateParams, $meteor, ModalService, $state, PrintService){
         $scope.patient = $meteor.object(Patients, $stateParams.patientId);
-        $scope.studies = $meteor.collection(function(){
-            return Studies.find({patient:  $scope.patient._id}, {
-                transform: function(doc){
-                    doc.creatorName = {};
-                    if(doc.creatorId) {
-                        var creatorName = $meteor.collection(function(){
-                            return Users.find({_id: {"$in": [doc.creatorId]}});
-                        });
-                        if(creatorName[0]) {
-                            doc.creatorName = creatorName[0].profile.name + " "+ creatorName[0].profile.lastName;
-                        }
-                    }
-                    return doc;
-                }
-            });
-        }, false);
+
+        $scope.showAll = function(){
+          $scope.studies = $meteor.collection(function(){
+              return Studies.find({patient:  $scope.patient._id}, {
+                  transform: function(doc){
+                      doc.creatorName = {};
+                      if(doc.creatorId) {
+                          var creatorName = $meteor.collection(function(){
+                              return Users.find({_id: {"$in": [doc.creatorId]}});
+                          });
+                          if(creatorName[0]) {
+                              doc.creatorName = creatorName[0].profile.name + " "+ creatorName[0].profile.lastName;
+                          }
+                      }
+                      return doc;
+                  }
+              });
+          }, false);
+        }
+
+        $scope.showDate = function(pInitialDate, pEndDate){
+          $scope.studies = $meteor.collection(function(){
+              return Studies.find({
+                $and:[
+                  {patient:  $scope.patient._id},
+                  {"creationDate": {"$gte": pInitialDate, "$lt": pEndDate}}
+                ]
+              }, {
+                  transform: function(doc){
+                      doc.creatorName = {};
+                      if(doc.creatorId) {
+                          var creatorName = $meteor.collection(function(){
+                              return Users.find({_id: {"$in": [doc.creatorId]}});
+                          });
+                          if(creatorName[0]) {
+                              doc.creatorName = creatorName[0].profile.name + " "+ creatorName[0].profile.lastName;
+                          }
+                      }
+                      return doc;
+                  }
+              });
+          }, false);
+        }
 
         $scope.goPatients = function(){
             $state.go('patients');
@@ -27,13 +54,15 @@ angular.module("sam-1").controller("PatientCtrl", ['$scope', '$stateParams','$me
 
         $scope.addStudy = function($event) {
             $state.go('newstudy',{patientId:$scope.patient._id});
-            //ModalService.showModalWithParams(AddStudyController, 'client/studies/addStudy.tmpl.ng.html', $event, {patient:$scope.patient});
         }
 
         $scope.show = function(study){
           $state.go('study',{studyId:study._id});
         }
 
+        $scope.showPatient = function(patient, ev){
+          ModalService.showModalWithParams(AddPatientController, 'client/patients/addPatient.tmpl.ng.html', ev, {patient:$scope.patient});
+        }
 
         $scope.delete = function(event) {
             var onRemoveCancel = function (){
@@ -61,28 +90,11 @@ angular.module("sam-1").controller("PatientCtrl", ['$scope', '$stateParams','$me
             ModalService.showConfirmDialog('Eliminar paciente', '¿Estas seguro de eliminar los datos del paciente?, Se eliminaran los estudios vinculados al mismo', 'Eliminar', 'Cancelar', event, onRemoveCancel, onRemoveSuccess);
         }
 
-
-
-        $scope.calculateAge = function getAge(date) {
-          var dateString = date.toString();
-          var birthdate = new Date(dateString).getTime();
-          var now = new Date().getTime();
-          var n = (now - birthdate)/1000;
-          if (n < 604800) { // less than a week
-            var day_n = Math.floor(n/86400);
-            return day_n + ' dia' + (day_n > 1 ? 's' : '');
-          } else if (n < 2629743) {  // less than a month
-            var week_n = Math.floor(n/604800);
-            return week_n + ' semana' + (week_n > 1 ? 's' : '');
-          } else if (n < 63113852) { // less than 24 months
-            var month_n = Math.floor(n/2629743);
-            return month_n + ' mes' + (month_n > 1 ? 'es' : '');
-          } else {
-            var year_n = Math.floor(n/31556926);
-            return year_n + ' año' + (year_n > 1 ? 's' : '');
-          }
+        $scope.print = function(){
+            PrintService.printPatientHistorial($scope.patient, $scope.studies);
         }
 
+        $scope.showAll();
     }]);
 
 function AddStudyController($scope, $mdDialog, $meteor, notificationService, patient) {

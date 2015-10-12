@@ -79,12 +79,13 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
     $scope.existingPatient = false;
     $scope.existingDoctor = false;
     $scope.newDoctor = {};
+    $scope.study.creationDate = new Date();
     if(patientId){
         $scope.patient = $meteor.object(Patients, patientId);
         $scope.existingPatient = true;
+
     }else{
         $scope.study = {};
-        $scope.study.creationDate = new Date();
         $scope.study.internData = {};
         $scope.patients = $meteor.collection(
         function() {
@@ -164,7 +165,6 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
         $scope.study.attention = attentionJson._id;
         var serviceJson = JSON.parse($scope.selectedService);
         $scope.study.service = serviceJson._id;
-        $scope.study.commited = false;
         angular.forEach($scope.analisysList, function(analisys)  {
             var component = {};
             component.titles = [];

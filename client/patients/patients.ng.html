@@ -23,13 +23,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="patient in patients" class="md-table-content-row" ng-click="show(patient, $event)">
+                <tr ng-repeat="patient in patients" class="md-table-content-row" ng-click="goStudies(patient)">
                     <td data-title="Apellidos">{{ patient.lastName }} {{ patient.lastNameMother }}</td>
                     <td data-title="Nombre">{{ patient.name }}</td>
                     <td data-title="Ci">{{ patient.ci }}</td>
                     <td data-title="Acciones" class="md-secondary">
-                      <md-button class="md-icon-button" flex  aria-label="Estudios" ng-click="goStudies(patient)">
-                          <i class="fa fa-flask"></i>
+                      <md-button class="md-icon-button" flex  aria-label="Detalles" ng-click="delete(patient, $event)">
+                          <i class="fa fa-trash"></i>
                       </md-button>
                     </td>
                 </tr>

@@ -198,6 +198,91 @@ angular.module('sam-1').service("RangeEvaluator", function(RANGE_EVALUATOR, $met
 
 
 angular.module('sam-1').service("PrintService", function(){
+    this.printCatalog = function(catalog){
+      var newWin= window.open("");
+      newWin.document.write("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><style type='text/css'>table {width:100%} table, th, td {border: 1px solid black;}</style></head><body>");
+      newWin.document.write("<h2>Listado de analisis</h2>");
+      angular.forEach(catalog, function(analisys){
+        newWin.document.write("<h3>"+analisys.name+"</h3>");
+        newWin.document.write("<ul>");
+        angular.forEach(analisys.titles, function(title){
+          newWin.document.write("<li>"+title.name+"</li>");
+          newWin.document.write("<table>");
+          var text = "<tr><th>Examen</th><th>Valores referenciales</th></tr>";
+          angular.forEach(title.exams, function(exam){
+            text+= "<tr>";
+            text+= "<td>"+exam.name+"</td>";
+            if(!exam.ranges){
+              text+= "<td></td>";
+            }
+            var symbol = "";
+            var getType = {};
+            if(exam.symbol && getType.toString.call(exam.symbol) === '[object Function]'){
+                symbol= exam.symbol();
+            }
+            text+= "<td>";
+            text+= "<ul>";
+            angular.forEach(exam.ranges, function(range){
+                text+= "<li>";
+                text+= range.name+" - "+range.typeName()+" ";
+                angular.forEach(range.fields, function(field){
+                  text+= field.name+": "+field.value+" "+symbol+" ";
+                });
+                text+= "</li>";
+            });
+            text+= "</ul>";
+            text+= "</td>";
+            text+= "</tr>";
+            //newWin.document.write(text);
+          });
+          newWin.document.write(text);
+          newWin.document.write("</table>");
+        });
+        newWin.document.write("</ul>");
+      });
+
+      newWin.document.write("</body></html>");
+      newWin.print();
+      newWin.close();
+    }
+    this.printPatientHistorial =  function(patient, studies){
+      var newWin= window.open("");
+      newWin.document.write("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><style type='text/css'>table {width:100%} table, th, td {border: 1px solid black;}</style></head><body>");
+      newWin.document.write("<h2>Historial de paciente</h2>");
+      //Personal data
+      newWin.document.write("<b>Datos personales</b>");
+
+      var textPersonalData = "";
+      textPersonalData+= "<b>Nombre</b>"+patient.lastName+" "+patient.lastNameMother+" "+patient.name+"</br>";
+      textPersonalData+= "<b>Direccion</b>"+patient.address+"</br>";
+      textPersonalData+= "<b>Telefono</b>"+patient.phone+"</br>";
+      textPersonalData+= "<b>Edad</b>"+patient.age.value+" "+patient.age.in+"</br>";
+      textPersonalData+= "<b>Genero</b>"+patient.gender+"</br>";
+
+      newWin.document.write(textPersonalData);
+
+      //Studies data
+      newWin.document.write("<b>Estudios</b>");
+      newWin.document.write("<table>");
+      var text = "<tr><th>Nro.</th><th>Cod.</th><th>Fecha</th><th>Diagnostico</th></tr>";
+      var counter = 1;
+      angular.forEach(studies, function(study){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+study.dailyCode+"</td>";
+        text+="<td>"+study.creationDate.toLocaleString()+"</td>";
+        text+="<td>"+study.diagnostic+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+
+      newWin.document.write(text);
+      newWin.document.write("</table>");
+      newWin.document.write("</body></html>");
+      newWin.print();
+      newWin.close();
+    }
+
     this.printRoles = function(roles) {
       var text = "<tr><th>Nro</th><th>Nombre</th></tr>";
       var counter = 1;
@@ -329,4 +414,5 @@ angular.module('sam-1').service("PrintService", function(){
       newWin.print();
       newWin.close();
     }
+
 });

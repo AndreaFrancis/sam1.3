@@ -9,7 +9,10 @@
       <md-input-container>
           <label>Buscar Analisis </label>
           <input ng-model="searchText" ng-change="search()">
-        </md-input-container>
+      </md-input-container>
+      <md-button aria-label="Imprimir" ng-click="printCatalog()">
+            Imprimir Catalogo
+      </md-button>
       <div class="table-responsive-vertical shadow-z-1 center-table">
           <!-- Table starts here -->
           <table id="table" class="table table-hover table-mc-light-blue">

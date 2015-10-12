@@ -41,8 +41,7 @@ angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationSer
     }]);
 
 
-angular.module("sam-1").controller("AddPatientController", AddPatientController);
-function AddPatientController($scope, notificationService, $mdDialog, patient,$meteor,AgeCalculatorService) {
+AddPatientController = function ($scope, notificationService, $mdDialog, patient,$meteor,AgeCalculatorService) {
 
     $scope.inType  = AgeCalculatorService.inTypes;
     if(patient){
@@ -100,3 +99,5 @@ angular.module("sam-1").directive('patientHc',function() {
     }
   }
 });
+
+angular.module("sam-1").controller("AddPatientController", AddPatientController);

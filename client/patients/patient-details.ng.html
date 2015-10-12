@@ -10,31 +10,74 @@
                                 <i class="fa fa-arrow-left"></i>
           </md-button>
           <md-whiteframe class="md-whiteframe-z1">
-          <h1 class="md-title">{{patient.name}} {{patient.lastName}} {{patient.lastNameMother}}</h1>
-                        <p><i class="fa fa-home"></i>&nbsp;{{ patient.address}}</p>
-                        <p><i class="fa fa-phone"></i>&nbsp;{{ patient.phone}}</p>
-                        <p><i class="fa fa-heart"></i>&nbsp;{{ calculateAge(patient.birthdate)}}</p>
-                        <p ng-show="patient.gender=='F'"><i class="fa fa-female"></i>&nbsp;Femenino</p>
-                        <p ng-show="patient.gender=='M'"><i class="fa fa-male"></i>&nbsp;Masculino</p>
-            <md-button class="md-icon-button" flex  aria-label="Borrar" ng-click="delete($event)">
-                            <i class="fa fa-trash"></i>
-            </md-button>
-
-  <md-list>
-    <md-toolbar class="md-theme-light">
-      <h2 class="md-toolbar-tools">
-        <span>Estudios</span>
-      </h2>
-    </md-toolbar>
-    <md-list-item class="md-3-line"  ng-repeat="study in studies | orderBy: '-creationDate'" ng-click="show(study)">
-      <div class="md-list-item-text">
-        <h3>Creado por</h3>
-        <h4>{{study.creatorName}}</h4>
-        <p>{{study.creationDate.toLocaleString()}}</p>
-      </div>
-      <md-divider md-inset ng-if="!$last"></md-divider>
-    </md-list-item>
-  </md-list>
+          <md-toolbar class="md-theme-light">
+            <h2 class="md-toolbar-tools">
+              <span>{{patient.lastName}} {{patient.lastNameMother}} {{patient.name}} </span>
+            </h2>
+          </md-toolbar>
+          <md-button aria-label="Imprimir" ng-click="print()">
+              Imprimir
+          </md-button>
+          <md-subheader class="md-no-sticky">Datos personales</md-subheader>
+          <div class="table-responsive-vertical shadow-z-1 center-table">
+              <!-- Table starts here -->
+              <table id="table" class="table table-hover table-mc-light-blue">
+                  <thead>
+                  <tr>
+                      <th>Direccion</th>
+                      <th>Telefono</th>
+                      <th>Edad</th>
+                      <th>Genero</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr class="md-table-content-row" ng-click="showPatient(patient, $event)">
+                      <td data-title="Direccion">{{ patient.adress }}</td>
+                      <td data-title="Telefono">{{patient.phone}}</td>
+                      <td data-title="Edad">{{patient.age.value}} {{patient.age.in}}</td>
+                      <td data-title="Genero">{{patient.gender}}</td>
+                  </tr>
+                  </tbody>
+              </table>
+          </div>
+            <md-subheader class="md-no-sticky">Estudios</md-subheader>
+            <div layout="row">
+              <md-input-container flex>
+                  <label>Desde</label>
+                <input ng-model="pInitialDate"  type="date">
+              </md-input-container>
+              <md-input-container flex>
+                  <label>Hasta</label>
+                  <input ng-model="pEndDate"  type="date">
+                </md-input-container>
+              <md-button class="md-fab" aria-label="Buscar" ng-click="showDate(pInitialDate,pEndDate)">
+                <i class="fa fa-search"></i>
+              </md-button>
+              <md-button class="md-fab md-primary" ng-click="showAll()" aria-label="Show all">
+                        <i class="fa fa-eye"></i>
+              </md-button>
+            </div>
+            <div class="table-responsive-vertical shadow-z-1 center-table">
+                <!-- Table starts here -->
+                <table id="table" class="table table-hover table-mc-light-blue">
+                    <thead>
+                    <tr>
+                        <th>Cod.</th>
+                        <th>Creador</th>
+                        <th>Fecha</th>
+                        <th>Diagnostico</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="md-table-content-row" ng-repeat="study in studies | orderBy: '-creationDate'" ng-click="show(study)">
+                        <td data-title="Cod.">{{ study.dailyCode }}</td>
+                        <td data-title="Creador">{{study.creatorName}}</td>
+                        <td data-title="Fecha">{{study.creationDate.toLocaleString()}}</td>
+                        <td data-title="Creador">{{study.diagnostic}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             </md-whiteframe>
 
     </div>
