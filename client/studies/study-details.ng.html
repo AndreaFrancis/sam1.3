@@ -142,6 +142,7 @@
               <div class="panel panel-default">
                 <!--Start table-->
                 <div ng-repeat="analisys in study.analisys">
+                  <div ng-show="analisys.lab() == myLab">
                   <md-toolbar md-scroll-shrink>
                     <div class="md-toolbar-tools">
                       <h3><span>{{analisys.name()}}</span></h3>
@@ -204,10 +205,8 @@
                                 </tbody>
                                 </table>
                             </div>
-
-
-
                           </div>
+                        </div>
                         </div>
                 <!--end table-->
 

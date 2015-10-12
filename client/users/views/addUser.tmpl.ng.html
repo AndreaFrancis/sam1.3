@@ -64,15 +64,9 @@
                     </div>
                   </md-input-container>
                   <md-select placeholder="Rol" ng-model="selectedRol" flex required>
-                      <md-option ng-repeat="rol in roles" ng-value="rol._id">{{rol.name}}</md-option>
+                      <md-option ng-repeat="rol in roles" ng-value="{{rol}}">{{rol.name}}</md-option>
                   </md-select>
                 </div>
-                <!--label class="filebutton" flex>
-                      <span>
-                      <input type="file" custom-on-change="uploadFile" required accept="image/*"/>
-                      <img src="{{image}}"/>
-                      </span>
-                </label-->
                 <div flex ng-style="imageStyle" layout="row" layout-align="center center">
                   <input type="file" custom-on-change="uploadFile" required name="image" class="input-image-src" accept="image/*"/>
                 </div>

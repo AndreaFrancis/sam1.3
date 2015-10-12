@@ -11,20 +11,15 @@ app.config(function($mdThemingProvider) {
     $mdThemingProvider.setDefaultTheme('default');
 });
 
-
-//tESTIN
 app.run(function ($rootScope, $state, ModalService) {
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
     var requireLogin = toState.data.requireLogin;
     if (requireLogin && ($rootScope.currentUser === 'undefined' || $rootScope.currentUser === null)) {
       event.preventDefault();
-      $state.go("login");
+      //$state.go("start");
     }
   });
-
 });
-
-//End testing
 
 app.controller("AppCtrl",['$scope','$mdSidenav','$rootScope','$state','$meteor',AppCtrl]);
 
@@ -35,6 +30,14 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
     $scope.currentModule = '';
     $scope.modules = $meteor.collection(Modules, false);
 
+    $scope.showPerfil = function(){
+      $state.go(target.state);
+    }
+
+    $scope.showConfiguration = function(){
+      $state.go(target.state);
+    }
+
     $scope.goToModule = function(target) {
             $scope.currentModule = target.name;
             $state.go(target.state);
@@ -43,35 +46,27 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
     $scope.showMenu = function(target) {
             $scope.currentModule = target.name;
             $state.go(target.state);
-            //$mdSidenav('left').toggle();
     }
     $scope.checkRoles = function() {
-        var check = localStorage.getItem("check");
-        if(check =="true"){
-            if($rootScope.currentUser) {
-                $scope.roles =   [$rootScope.currentUser.profile.mainRol];
-                $scope.allowed = $meteor.collection(function(){
-                    return Modules.find({roles: {"$in":$scope.roles}});
-                });
-                $scope.username = $rootScope.currentUser.username;
-                $scope.user = $rootScope.currentUser;
-                //$rootScope.$apply();
-            } else{
-                if(localStorage.getItem("rol")) {
-                    $scope.username = localStorage.getItem("username");
-                    $scope.allowed = $meteor.collection(function(){
-                        return Modules.find({roles: {"$in":[localStorage.getItem("rol")]}});
-                    });
-                    //$scope.$apply();
-                }
-            }
-        }
+      var check = localStorage.getItem("check");
+      if(check =="true"){
+          $scope.roles = "";
+          if($rootScope.currentUser) {
+              $scope.roles =   [$rootScope.currentUser.profile.mainRol];
+              $scope.username = $rootScope.currentUser.username;
+              $scope.user = $rootScope.currentUser;
+          } else{
+              if(localStorage.getItem("rol")) {
+                  $scope.username = localStorage.getItem("username");
+                  $scope.roles = [localStorage.getItem("rol")];
+              }
+          }
+          $scope.allowed = $meteor.collection(function(){
+            var mods =  Modules.find({roles: {"$in":$scope.roles}});
+            return mods;
+          }, false);
+      }
     }
-
-    /*
-    $scope.showLeftMenu = function() {
-        $mdSidenav('left').toggle();
-    }*/
 
     $scope.logOut = function() {
         if(Meteor.connection.status().connected){
@@ -81,12 +76,12 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
         localStorage.removeItem("rol");
         localStorage.removeItem("user");
         localStorage.removeItem("username");
+        localStorage.removeItem("lab");
         $scope.username = '';
         $scope.password = '';
-        //$mdSidenav('left').toggle();
         $scope.allowed = [];
         localStorage.setItem("check","false");
-        $state.go("login");
+        $state.go("start");
     }
 
     $scope.login = function() {
@@ -101,6 +96,14 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
                 localStorage.setItem("user", $rootScope.currentUser._id);
                 localStorage.setItem("rol", $rootScope.currentUser.profile.mainRol);
                 localStorage.setItem("check","true");
+
+                var ifIsPersonalLab = $meteor.collection(function(){
+                    return Labpersonal.find({user: {"$in": [$scope.username]}});
+                });
+                if(ifIsPersonalLab.length>0){
+                  var personal = ifIsPersonalLab[0];
+                  localStorage.setItem("lab",personal.lab);
+                }
                 $scope.checkRoles();
                 $state.go("start");
             }

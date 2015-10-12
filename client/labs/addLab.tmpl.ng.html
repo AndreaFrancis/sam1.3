@@ -22,6 +22,13 @@
                     <div ng-message="required">*Campo obligatorio</div>
                 </div>
             </md-input-container>
+            <md-input-container flex>
+                <label>Color</label>
+                <input ng-model="lab.color" required name="color">
+                <div ng-messages="newLabForm.color.$error" ng-if="newLabForm.color.$dirty">
+                    <div ng-message="required">*Campo obligatorio</div>
+                </div>
+            </md-input-container>
         </md-dialog-content>
             <div class="md-actions" layout="row">
                 <span flex></span>

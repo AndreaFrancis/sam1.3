@@ -76,7 +76,7 @@ angular.module("sam-1").controller("UsersListCtrl",['$scope','$meteor','notifica
         $scope.headers = ['Img', 'Nombre de usuario','Nombre', 'Apellido', 'Rol', 'Acciones'];
 }]);
 
-function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notificationService) {
+function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notificationService, ROLES) {
     var imageUrl  = "../descarga.png";
     if(user) {
       $scope.user = user;
@@ -86,7 +86,9 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notifica
       $scope.user = {};
       $scope.user.profile = {};
     }
+
     $scope.roles = $meteor.collection(RolesData, false);
+
     $scope.selectedRol = {};
     $scope.cancel = function() {
         $mdDialog.cancel();
@@ -123,7 +125,7 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notifica
               }
           });
         }else{
-          user.profile.mainRol  = $scope.selectedRol;
+          user.profile.mainRol  = $scope.selectedRol._id;
           Meteor.call("createNewUser", user, function(err) {
               if(err) {
                   notificationService.showError("Error en el registro del usuario");

@@ -69,6 +69,12 @@ angular.module("sam-1").controller("AddStudyController",AddStudyController);
 function AddStudyController($scope, $meteor, notificationService, $stateParams, ModalService,$state, CONDITIONS) {
     var patientId =  $stateParams.patientId;
     //$scope.isDoctor = localStorage.getItem("rol") == "Doctor";
+    $scope.labs = $meteor.collection(Labs,false);
+    $scope.labsCounter = [];
+    angular.forEach($scope.labs, function(lab){
+      $scope.labsCounter.push({lab:lab._id, counter:0});
+    });
+
     $scope.study = {};
     $scope.existingPatient = false;
     $scope.existingDoctor = false;
@@ -191,6 +197,7 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
             if(analisys.selected){
                 component.analisys = analisys._id;
                 $scope.study.analisys.push(component);
+                $scope.incrementAcordingToLab(analisys.lab);
             }
         });
         if(localStorage.getItem("rol") == "Doctor"){
@@ -207,6 +214,8 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
             $scope.study.patient = $scope.selectedItem._id;
         }
 
+        $scope.study.labsCounter = $scope.labsCounter;
+
         $scope.studies.save($scope.study).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el estudio");
         }, function(error){
@@ -214,6 +223,14 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
             console.log(error);
         });
         $state.go("studies");
+    }
+
+    $scope.incrementAcordingToLab = function(lab){
+      var result = _.findWhere($scope.labsCounter, {lab: lab});
+      if(result){
+        var counter = result.counter+1;
+        result.counter = counter;
+      }
     }
 
     $scope.cancel = function() {

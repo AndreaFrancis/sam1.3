@@ -11,9 +11,16 @@
                 </thead>
                 <tbody>
                 <tr class="md-table-content-row" ng-repeat="study in studies | orderBy: '-creationDate'" ng-click="show(study, $event)">
+
+                    <td data-title="Labs">
+                      <span ng-repeat="c in study.labsObj">
+                        {{c.name}}-{{c.counter}}
+                      </span>
+                    </td>
                     <td data-title="Codigo">{{ study.dailyCode }}</td>
                     <td data-title="Paciente">{{study.patientObj.name}} {{study.patientObj.lastName}} {{study.patientObj.lastNameMother}}</td>
                     <td data-title="Fecha">{{study.creationDate.toLocaleString()}}</td>
+                  
                 </tr>
                 </tbody>
             </table>

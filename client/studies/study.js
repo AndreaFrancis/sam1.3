@@ -6,7 +6,7 @@
  */
 angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$meteor','ModalService','$state','RangeEvaluator','TextEvaluatorService',
     function($scope, $stateParams, $meteor, ModalService, $state, RangeEvaluator, TextEvaluatorService){
-
+        $scope.myLab = localStorage.getItem("lab");
         if($stateParams.studyId){
           $scope.isExistingStudy = true;
           //$scope.study = $meteor.object(Studies, $stateParams.studyId, false);
@@ -64,6 +64,9 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           //Fill analisis, titles, exams
           angular.forEach($scope.study.analisys, function(analisys){
             var analisysName = $meteor.object(Analisys, analisys.analisys);
+            analisys.lab = function(){
+              return analisysName.lab;
+            }
             analisys.name = function(){
               return analisysName.name;
             }

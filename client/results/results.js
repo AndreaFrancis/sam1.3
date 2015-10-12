@@ -4,14 +4,13 @@
 
 angular.module("sam-1").controller("ResultsListCtrl",['$scope','$meteor','notificationService','ModalService','$state',
     function($scope, $meteor,notificationService, ModalService, $state) {
-
         var query = {};
         var conditionNotProgramed = {$and:
           [
             { "dailyCode": { $exists: true } },
             { "dailyCode": {$ne:null} }
           ]};
-        $scope.headers = ["Codigo", "Paciente", "Fecha"];
+        $scope.headers = ["Labs","Codigo", "Paciente", "Fecha"];
 
         if(localStorage.getItem("rol") == "Bioquimico"){
             query = {bioquimic: localStorage.getItem("user")};
@@ -30,6 +29,15 @@ angular.module("sam-1").controller("ResultsListCtrl",['$scope','$meteor','notifi
                             return Patients.find({_id: {"$in": [doc.patient]}});
                         });
                         doc.patientObj = patientObj[0];
+                    }
+
+                    if(doc.labsCounter) {
+                        var labsObj = [];
+                        angular.forEach(doc.labsCounter, function(lab){
+                          var labObj = $meteor.object(Labs,lab.lab);
+                          labsObj.push({name:labObj.name, color:labsObj.color, counter: lab.counter});
+                        });
+                        doc.labsObj = labsObj;
                     }
 
                     doc.doctorObj = {};

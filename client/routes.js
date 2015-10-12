@@ -7,6 +7,22 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
         $locationProvider.html5Mode(true);
 
         $stateProvider
+            .state('profile', {
+              url: '/profile',
+              templateUrl: 'client/starter/profile.ng.html',
+              controller: 'ProfileCtrl',
+              data: {
+                requireLogin: true
+              }
+            })
+            .state('config', {
+              url: '/config',
+              templateUrl: 'client/starter/config.ng.html',
+              controller: 'ConfigCtrl',
+              data: {
+                requireLogin: true
+              }
+            })
             .state('services', {
                 url: '/services',
                 templateUrl: 'client/services/services.ng.html',
@@ -85,15 +101,6 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                 data: {
                   requireLogin: true
                 }
-                /*
-                 ,
-                 resolve: {
-                 "currentUser": ["$meteor", function($meteor){
-                 return $meteor.requireValidUser(function(user) {
-                 return user.username==='maria';
-                 });
-                 }]
-                 }*/
             })
             .state('modules', {
                 url: '/modules',
@@ -102,15 +109,6 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
                 data: {
                   requireLogin: true
                 }
-                /*
-                 ,
-                 resolve: {
-                 "currentUser": ["$meteor", function($meteor){
-                 return $meteor.requireValidUser(function(user) {
-                 return user.username==='maria';
-                 });
-                 }]
-                 }*/
             })
             .state('patients', {
                 url: '/patients',
@@ -181,7 +179,7 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
               templateUrl: 'client/starter/login.ng.html',
               controller: 'AppCtrl',
               data: {
-                requireLogin: false
+                requireLogin: true
               }
             })
             .state('reports',{
