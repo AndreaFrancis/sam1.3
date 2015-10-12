@@ -2,8 +2,9 @@
  * Created by Andrea on 22/07/2015.
  */
 
-angular.module("sam-1").controller("ReportsCtrl",['$scope','$meteor','notificationService','ModalService',
-    function($scope, $meteor,notificationService, ModalService) {
+ angular.module("sam-1").controller("ReportsCtrl",['$scope','$meteor','notificationService','ModalService','AgeCalculatorService',
+    function($scope, $meteor,notificationService, ModalService, AgeCalculatorService) {
+      $scope.inTypes = AgeCalculatorService.inTypes;
       $scope.initialDate = new Date();
       $scope.endDate = new Date();
 
@@ -34,9 +35,13 @@ angular.module("sam-1").controller("ReportsCtrl",['$scope','$meteor','notificati
           });
         },false);
       }
-      $scope.createGenderReport = function(initialDate, endDate, gender){
+      $scope.createPatientReport = function(pInitialDate,pEndDate, gender,pInitialAge,pEndAge,selectedInType){
         var genderPatients = $meteor.collection(function(){
-            return Patients.find({"gender":gender});
+            return Patients.find({$and:[
+              {"age.value": {"$gte": pInitialAge, "$lte": pEndAge}},
+              {"age.in":selectedInType},
+              {"gender":gender}
+            ]});
         },false);
         var patientIds = [];
         angular.forEach(genderPatients, function(patient){
@@ -46,7 +51,7 @@ angular.module("sam-1").controller("ReportsCtrl",['$scope','$meteor','notificati
         $scope.results = $meteor.collection(function(){
             return Studies.find(
             {$and:[
-              {"creationDate": {"$gte": initialDate, "$lt": endDate}},
+              {"creationDate": {"$gte": pInitialDate, "$lt": pEndDate}},
               {"patient":{$in:patientIds}}
             ]}
               ,{
@@ -54,7 +59,7 @@ angular.module("sam-1").controller("ReportsCtrl",['$scope','$meteor','notificati
                   if(doc.patient){
                     var patient = $meteor.object(Patients, doc.patient);
                     doc.patientName = patient.lastName+" "+patient.lastNameMother+" "+patient.name;
-                    doc.age = $scope.calculateAge(patient.birthdate);
+                    doc.age = patient.age;
                     doc.gender = patient.gender;
                   }
                   if(doc.doctor){

@@ -42,12 +42,14 @@ angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationSer
 
 
 angular.module("sam-1").controller("AddPatientController", AddPatientController);
-function AddPatientController($scope, notificationService, $mdDialog, patient,$meteor) {
+function AddPatientController($scope, notificationService, $mdDialog, patient,$meteor,AgeCalculatorService) {
 
+    $scope.inType  = AgeCalculatorService.inTypes;
     if(patient){
       $scope.patient = patient;
     }
     $scope.patients = $meteor.collection(Patients, false);
+
     $scope.save = function() {
         $scope.patients.save($scope.patient).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el paciente");

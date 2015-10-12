@@ -111,6 +111,33 @@ angular.module('sam-1').service("DateService", function(){
   }
 });
 
+angular.module('sam-1').service("AgeCalculatorService", function(){
+  this.inTypes = ["Años", "Meses","Semanas", "Dias"];
+  this.calculateAge = function getAge(date) {
+    var dateString = date.toString();
+    var birthdate = new Date(dateString).getTime();
+    var now = new Date().getTime();
+    var n = (now - birthdate)/1000;
+    if (n < 604800) { // less than a week
+      var day_n = Math.floor(n/86400);
+      return {value: day_n, inType: this.inTypes[3] };
+      //return day_n + ' dia' + (day_n > 1 ? 's' : '');
+    } else if (n < 2629743) {  // less than a month
+      var week_n = Math.floor(n/604800);
+      return {value: week_n, inType: this.inTypes[2] };
+      //return week_n + ' semana' + (week_n > 1 ? 's' : '');
+    } else if (n < 63113852) { // less than 24 months
+      var month_n = Math.floor(n/2629743);
+      return {value: month_n, inType: this.inTypes[1] };
+      //return month_n + ' mes' + (month_n > 1 ? 'es' : '');
+    } else {
+      var year_n = Math.floor(n/31556926);
+      return {value: year_n, inType: this.inTypes[0] };
+      //return year_n + ' año' + (year_n > 1 ? 's' : '');
+    }
+  }
+});
+
 angular.module('sam-1').service("RangeEvaluator", function(RANGE_EVALUATOR, $meteor){
     var equalEval = function(val, range){
       var detail = {result:"Fuera de rango", correct:false};

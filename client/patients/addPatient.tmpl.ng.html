@@ -35,9 +35,15 @@
                     </div>
                 </md-input-container>
                 <md-input-container flex>
-                    <label>Fecha de nacimiento</label>
-                    <input type="date" ng-model="patient.birthdate" required>
+                    <label>Edad</label>
+                    <input ng-model="patient.age.value" name="age" input-numeric required>
+                    <div ng-messages="newPatientForm.age.$error" ng-if="newPatientForm.age.$dirty">
+                        <div ng-message="inputNumeric">*Ingrese solo numeros</div>
+                    </div>
                 </md-input-container>
+                <md-select placeholder="En" ng-model="patient.age.in" required>
+                    <md-option ng-repeat="i in inType" value="{{i}}">{{i}}</md-option>
+                </md-select>
             </div>
             <div layout="row">
                 <md-input-container flex>
@@ -49,7 +55,7 @@
                 </md-input-container>
                 <md-input-container flex>
                     <label>H.C</label>
-                    <input ng-model="patient.medHis" name="medhis" patient-hc input-numeric>
+                    <input ng-model="patient.medHis" name="medhis" patient-hc>
                     <div ng-messages="newPatientForm.medhis.$error" ng-if="newPatientForm.medhis.$dirty">
                         <div ng-message="duplicated">*Ya existe este historial</div>
                         <div ng-message="inputNumeric">*Ingrese solo numeros</div>
@@ -65,7 +71,7 @@
             <div layout="row">
                 <md-input-container flex>
                     <label>Telefono de referencia</label>
-                    <input ng-model="patient.phone"  name="phone" input-numeric>
+                    <input ng-model="patient.phone"  name="phone">
                     <div ng-messages="newPatientForm.phone.$error" ng-if="newPatientForm.phone.$dirty">
                         <div ng-message="inputNumeric">*Ingrese solo numeros</div>
                     </div>
