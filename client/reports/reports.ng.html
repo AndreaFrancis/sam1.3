@@ -252,8 +252,17 @@
       </md-tab>
       <md-tab label="Estadisticas">
         <md-content class="md-padding">
-          <h1 class="md-display-2">Estadisticas</h1>
-          <p>En construccion</p>
+          <md-input-container flex>
+                <label>Desde</label>
+              <input ng-model="pInitialDate"  type="date">
+          </md-input-container>
+          <md-input-container flex>
+                <label>Hasta</label>
+                <input ng-model="pEndDate"  type="date">
+          </md-input-container>
+          <md-button class="md-fab" aria-label="Generar" ng-click="createDiscriminated(pInitialDate,pEndDate)">
+              <i class="fa fa-search"></i>
+          </md-button>
         </md-content>
       </md-tab>
     </md-tabs>

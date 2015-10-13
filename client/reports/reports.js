@@ -128,6 +128,42 @@
           },false);
       }
 
+
+      $scope.createDiscriminated = function(pInitialDate,pEndDate){
+        var attentions = $meteor.collection(Attentions,false);
+        var services = $meteor.collection(Services,false);
+        var keys = {};
+        angular.forEach(attentions, function(attention){
+          var detail = {};
+          angular.forEach(services, function(service){
+            detail[service._id] = 0;
+          });
+          keys[attention._id] = detail;
+        });
+
+        var template = {};
+        var analisysList = $meteor.collection(Analisys,false);
+        angular.forEach(analisysList, function(analisys){
+          var titles = {};
+          var titlesP = $meteor.collection(function(){
+              return Titles.find({analisys:analisys._id});
+          },false);
+          angular.forEach(titlesP, function(title){
+            var exams = {};
+            var examsP = $meteor.collection(function(){
+                return Exams.find({title:title._id});
+            },false);
+            angular.forEach(examsP, function(exam){
+                exams[exam._id] = {name:exam.name, result: JSON.parse(JSON.stringify(keys))}
+            });
+            titles[title._id] = {name: title.name, exams:exams};
+          });
+          template[analisys._id] = {name: analisys.name, titles:titles, result: JSON.parse(JSON.stringify(keys))};
+        });
+        alert(template);
+
+      }
+
       $scope.printDiv = function (divName)
       {
         var divToPrint=document.getElementById(divName);
