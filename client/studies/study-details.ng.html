@@ -6,14 +6,14 @@
   <!--end rol-->
   <!--Start eow-->
   <div layout="row">
-    <md-input-container flex>
+    <md-input-container flex ng-show="isDoctor">
       <label>Codigo</label>
       <input ng-model="study.dailyCode"  name="dailyCode" daily-study date="{{study.creationDate}}"  code={{study.dailyCode}}>
       <div ng-messages="newStudyForm.dailyCode.$error" ng-if="newStudyForm.dailyCode.$dirty">
           <div ng-message="duplicated">*El estudio ya fue programado</div>
       </div>
     </md-input-container>
-    <md-input-container flex>
+    <md-input-container flex ng-hide="isDoctor">
       <label>Nro. Factura</label>
       <input ng-model="study.bill"  name="bill">
     </md-input-container>
@@ -62,7 +62,7 @@
         </div>
         <div flex>
           <!--End autocomplete-->
-          <div ng-show="existingDoctor || isExistingStudy ">
+          <div ng-show="existingDoctor || isExistingStudy || isDoctor ">
               <b>Doctor:</b> {{study.doctorObj.lastName}}  {{study.doctorObj.name}}
           </div>
           <!--Start Autocompletet-->
@@ -118,7 +118,7 @@
   </div>
   <!--End eow-->
   <!--Start row-->
-  <div layout="row">
+  <div layout="row" ng-hide="isDoctor">
     <md-input-container flex>
       <label>Muestras</label>
       <input ng-model="study.shows"  name="shows">
@@ -128,7 +128,7 @@
       <input ng-model="study.creationDate"  name="creationDate" type="date">
     </md-input-container>
   </div>
-  <md-button class="md-icon-button" flex  aria-label="Guardar" ng-click="saveStudy($event)">
+  <md-button class="md-icon-button" flex  aria-label="Guardar" ng-click="saveStudy($event)" ng-hide="isDoctor">
       <i class="fa fa-save"></i>
   </md-button>
   <!--end row-->

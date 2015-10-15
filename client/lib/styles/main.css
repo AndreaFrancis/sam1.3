@@ -1,3 +1,11 @@
+.page-wrapper{
+  min-width: 100%;
+  max-width: 100%;
+}
+.center-content{
+  min-width: 100%;
+  max-width: 100%;
+}
 .error {
   font-weight: 300;
   text-align:center;
@@ -127,8 +135,8 @@ a {
     z-index:20;
     font-size:30px;
     /*bottom: 30px;*/
-    top: 38px;
-    right:10px;
+    top: 12%;
+    right:1%;
     transform:scale(.88,.88);
 }
 
@@ -919,9 +927,7 @@ label span input {
     padding:0;
 }
 
-/*
+
 ul {
    list-style:none;
-   margin      : 0px;
-   padding     : 0px;
-}*/
+}

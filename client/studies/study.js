@@ -7,6 +7,7 @@
 angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$meteor','ModalService','$state','RangeEvaluator','TextEvaluatorService',
     function($scope, $stateParams, $meteor, ModalService, $state, RangeEvaluator, TextEvaluatorService){
         $scope.myLab = localStorage.getItem("lab");
+        $scope.isDoctor = false;
         if($stateParams.studyId){
           $scope.isExistingStudy = true;
           //$scope.study = $meteor.object(Studies, $stateParams.studyId, false);

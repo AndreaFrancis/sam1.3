@@ -50,6 +50,7 @@ angular.module("sam-1").config(['$urlRouterProvider', '$stateProvider', '$locati
             .state('start', {
                 url: '/start',
                 templateUrl: 'client/starter/start.ng.html',
+                controller: 'DashboardCtrl',
                 data: {
                   requireLogin: true
                 }

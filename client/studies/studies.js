@@ -12,17 +12,20 @@ angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notifi
             { "dailyCode": null }
           ]};
         $scope.headers = ["Codigo", "Paciente", "Fecha"];
-
-        if(localStorage.getItem("rol") == "Bioquimico"){
-            query = {bioquimic: localStorage.getItem("user")};
+        var userRol = localStorage.getItem("rolName");
+        $scope.isBioquimic = userRol=="Bioquimico";
+        $scope.isDoctor = userRol=="Doctor";
+        if($scope.isBioquimic){
+            query = conditionNotProgramed;
         }
 
-        if(localStorage.getItem("rol") == "Doctor"){
+        if($scope.isDoctor){
             query = {creatorId: localStorage.getItem("user")};
         }
 
+
         $scope.studies = $meteor.collection(function() {
-            return Studies.find({$and:[query,conditionNotProgramed]}, {
+            return Studies.find(query, {
                 transform: function(doc) {
                     doc.patientObj = {};
                     if(doc.patient) {
@@ -68,18 +71,33 @@ angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notifi
 angular.module("sam-1").controller("AddStudyController",AddStudyController);
 function AddStudyController($scope, $meteor, notificationService, $stateParams, ModalService,$state, CONDITIONS) {
     var patientId =  $stateParams.patientId;
-    //$scope.isDoctor = localStorage.getItem("rol") == "Doctor";
+    var userRol = localStorage.getItem("rolName");
+    $scope.study = {};
+    $scope.conditions = CONDITIONS;
+    $scope.isBioquimic = userRol=="Bioquimico";
+    $scope.isDoctor = userRol=="Doctor";
+
     $scope.labs = $meteor.collection(Labs,false);
     $scope.labsCounter = [];
     angular.forEach($scope.labs, function(lab){
       $scope.labsCounter.push({lab:lab._id, counter:0});
     });
 
-    $scope.study = {};
-    $scope.existingPatient = false;
-    $scope.existingDoctor = false;
+
+
+
+
     $scope.newDoctor = {};
     $scope.study.creationDate = new Date();
+
+    if($scope.isDoctor){
+      var doctor = $meteor.collection(function(){
+          return Doctors.find({userId: localStorage.getItem("user")});
+      });
+      if(doctor.length>0){
+        $scope.selectedDoctor = doctor[0];
+      }
+    }
     if(patientId){
         $scope.patient = $meteor.object(Patients, patientId);
         $scope.existingPatient = true;
@@ -137,7 +155,7 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
     }
 
     $scope.changeAttention = function(){
-      var attentionJson = JSON.parse($scope.selectedAttention);
+      var attentionJson = $scope.selectedAttention;
       $scope.internData = attentionJson.name==CONDITIONS.INTERN_PATIENT;
       if($scope.internData) {
         $scope.study.internData = {};
@@ -203,10 +221,7 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
         if(localStorage.getItem("rol") == "Doctor"){
             $scope.study.doctorUser = localStorage.getItem("user");
         }
-
-        if(!$scope.isDoctor){
-            $scope.study.doctor = $scope.selectedDoctor._id;
-        }
+        $scope.study.doctor = $scope.selectedDoctor._id;
         $scope.study.creatorId = localStorage.getItem("user");
         if($scope.patient) {
             $scope.study.patient = $scope.patient._id;
@@ -252,13 +267,13 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
     $scope.isDisabled    = false;
 
     $scope.querySearch = function (query) {
-        return query ? $scope.patients.filter( createFilterFor(query) ) : $scope.patients;
+        return query ? $scope.patients.filter( createFilterFor(query) ) : [];
     }
 
     function createFilterFor(query) {
         var lowercaseQuery = angular.lowercase(query);
         return function filterFn(item) {
-            return (item.value.toLowerCase().indexOf(lowercaseQuery) === 0);
+            return (item.value.toLowerCase().indexOf(lowercaseQuery) >= 0);
         };
     }
 
@@ -269,7 +284,7 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
     function createFilterForDoctor(query) {
         var lowercaseQuery = angular.lowercase(query);
         return function filterFn(item) {
-            return (item.name.toLowerCase().indexOf(lowercaseQuery) === 0);
+            return (item.name.toLowerCase().indexOf(lowercaseQuery) >= 0);
         };
     }
 }

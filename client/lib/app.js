@@ -16,7 +16,7 @@ app.run(function ($rootScope, $state, ModalService) {
     var requireLogin = toState.data.requireLogin;
     if (requireLogin && ($rootScope.currentUser === 'undefined' || $rootScope.currentUser === null)) {
       event.preventDefault();
-      //$state.go("start");
+      //$state.go("login");
     }
   });
 });
@@ -31,7 +31,7 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
     $scope.modules = $meteor.collection(Modules, false);
 
     $scope.showPerfil = function(){
-      $state.go(target.state);
+      $state.go("profile");
     }
 
     $scope.showConfiguration = function(){
@@ -57,7 +57,7 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
               $scope.user = $rootScope.currentUser;
           } else{
               if(localStorage.getItem("rol")) {
-                  $scope.username = localStorage.getItem("username");
+                  $scope.username = localStorage.getItem("user");
                   $scope.roles = [localStorage.getItem("rol")];
               }
           }
@@ -69,14 +69,15 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
     }
 
     $scope.logOut = function() {
-        if(Meteor.connection.status().connected){
+        //if(Meteor.connection.status().connected){
             Meteor.logout();
-        }
+        //}
         $rootScope.currentUser = null;
         localStorage.removeItem("rol");
         localStorage.removeItem("user");
         localStorage.removeItem("username");
         localStorage.removeItem("lab");
+        localStorage.removeItem("rolName");
         $scope.username = '';
         $scope.password = '';
         $scope.allowed = [];
@@ -91,14 +92,22 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
                 console.log(error.reason);
             } else{
                 $rootScope.currentUser = Meteor.user();
-                $scope.username = $rootScope.currentUser._id;
-                localStorage.setItem("username", $rootScope.currentUser._id);
+
+                $scope.username = $rootScope.currentUser.username;
+                $scope.userId = $rootScope.currentUser._id;
+
+                localStorage.setItem("username", $rootScope.currentUser.username);
                 localStorage.setItem("user", $rootScope.currentUser._id);
-                localStorage.setItem("rol", $rootScope.currentUser.profile.mainRol);
+                var rolId = $rootScope.currentUser.profile.mainRol;
+                localStorage.setItem("rol", rolId);
+
+                var rol = $meteor.object(RolesData, rolId);
+
+                localStorage.setItem("rolName", rol.name);
                 localStorage.setItem("check","true");
 
                 var ifIsPersonalLab = $meteor.collection(function(){
-                    return Labpersonal.find({user: {"$in": [$scope.username]}});
+                    return Labpersonal.find({user: {"$in": [$scope.userId]}});
                 });
                 if(ifIsPersonalLab.length>0){
                   var personal = ifIsPersonalLab[0];

@@ -24,6 +24,13 @@ angular.module('sam-1').directive('location', function($compile) {
     }
 });
 
+angular.module('sam-1').directive('error', function($compile) {
+    return {
+        template: '<div>{{error}}</div>',
+        replace: true
+    }
+});
+
 angular.module('sam-1').directive('avatar', function($compile) {
   return {
     template: '<img ng-src="{{user.profile.image}}" class="md-avatar" alt="{{user.username}}" />',

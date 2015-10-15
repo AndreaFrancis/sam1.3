@@ -8,6 +8,7 @@ body {
     background-color: #f8f8f8;
 }
 
+
 #wrapper {
     width: 100%;
 }
@@ -27,7 +28,11 @@ body {
     }
 }
 
+#page-wrapper {
+    min-width: 80%;
+    max-width: 80%;
 
+}
 .navbar-top-links {
     margin-right: 0;
 }
