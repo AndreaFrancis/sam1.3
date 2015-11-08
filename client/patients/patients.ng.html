@@ -1,5 +1,12 @@
-<div ng-controller="PatientsListCtrl">
-    <div class="main-fab">
+<div class="row">
+
+    <div class="col-lg-12">
+        <h1 class="page-header">Pacientes</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div>
+    <div class="main-fab" ng-if="isBioquimic">
         <md-button class="md-fab md-accent" ng-click="showAddNew($event)" aria-label="Agregar">
             <i class="fa fa-plus"></i>
         </md-button>
@@ -8,8 +15,15 @@
     <div class="sub-content">
         <md-input-container>
           <label>Buscar Paciente </label>
-          <input ng-model="searchText" ng-change="search()">
+          <input ng-model="searchText">
         </md-input-container>
+        <md-button aria-label="search" ng-click="search()">
+            Buscar
+        </md-button>
+        <!--md-input-container>
+          <label>Buscar Paciente </label>
+          <input ng-model="searchText" ng-change="search()">
+        </md-input-container-->
         <md-button aria-label="Imprimir" ng-click="print()">
             Imprimir
         </md-button>

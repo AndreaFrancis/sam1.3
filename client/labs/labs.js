@@ -1,5 +1,5 @@
-angular.module("sam-1").controller("LabsListCtrl",['$scope','$meteor','ModalService','notificationService',
-    function($scope, $meteor,ModalService,notificationService) {
+angular.module("sam-1").controller("LabsListCtrl",['$scope','$meteor','ModalService','notificationService','PrintService',
+    function($scope, $meteor,ModalService,notificationService,PrintService) {
 
         $scope.labs = $meteor.collection(Labs, false);
         $scope.headers = ['Nombre', 'Descripcion','Acciones'];
@@ -12,6 +12,9 @@ angular.module("sam-1").controller("LabsListCtrl",['$scope','$meteor','ModalServ
             $scope.showTextSearch = !$scope.showTextSearch;
         }
 
+        $scope.print = function(){
+          PrintService.printLabs($scope.labs);
+        }
 
         $scope.delete = function(lab) {
           $scope.labs.remove(lab).then(function(number) {
@@ -42,6 +45,11 @@ function AddLabController($scope,$mdDialog, $meteor, lab ,notificationService) {
     }
     $scope.labs = $meteor.collection(Labs, false);
     $scope.save = function() {
+      var width = parseInt($scope.lab.width);
+      $scope.lab.width = width;
+      var heigth = parseInt($scope.lab.heigth);
+      $scope.lab.heigth = heigth;
+
         $scope.labs.save($scope.lab).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el laboratorio");
         }, function(error){

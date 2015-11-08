@@ -64,6 +64,18 @@ angular.module('sam-1').service("ModalService", function($mdDialog){
         });
     }
 
+    this.showConfirmDialog = function(title, content, okTitle, cancelTitle, event, onCancel, onConfirm) {
+    var confirm = $mdDialog.confirm()
+      .parent(angular.element(document.body))
+      .title(title)
+      .content(content)
+      .ariaLabel(title)
+      .ok(okTitle)
+      .cancel(cancelTitle)
+      .targetEvent(event);
+      $mdDialog.show(confirm).then(onConfirm, onCancel);
+    }
+
     this.showModalWithParams = function(controller, urlTemplate, event, params) {
         $mdDialog.show({
             controller: controller,
@@ -179,7 +191,8 @@ angular.module('sam-1').service("RangeEvaluator", function(RANGE_EVALUATOR, $met
         }
         i++;
     }
-
+    var initial = parseInt(initial);
+    var final = parseInt(final);
     if(initial != undefined && final!= undefined){
         if((val<=final) && (val>=initial)){
           detail.result = range.name;
@@ -342,6 +355,26 @@ angular.module('sam-1').service("PrintService", function(){
       this.printTableWithText("Reporte de tipos de atencion", text);
     }
 
+    this.printTitles = function(titles) {
+      var text = "<tr><th>Nro</th><th>Nombre</th><th>Analisis</th><th>Examenes</th></tr>";
+      var counter = 1;
+      angular.forEach(titles, function(title){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+title.name+"</td>";
+        text+="<td>"+title.analisysObj+"</td>";
+        text+= "<ul>";
+        angular.forEach(title.exams, function(ex){
+          text+="<li>"+ex.name+"</li>";
+        });
+        text+= "</ul>";
+
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de tipos de atencion", text);
+    }
+
     this.printServices = function(services) {
       var text = "<tr><th>Nro</th><th>Nombre</th></tr>";
       var counter = 1;
@@ -400,6 +433,78 @@ angular.module('sam-1').service("PrintService", function(){
         counter++;
       });
       this.printTableWithText("Reporte de pacientes", text);
+    }
+
+    this.printExams = function(exams) {
+      var text = "<tr><th>Nro</th><th>Nombre</th><th>U.M</th></tr>";
+      var counter = 1;
+      angular.forEach(exams, function(exam){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+exam.name+"</td>";
+        text+="<td>"+exam.measureSymbol+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de examenes", text);
+    }
+
+    this.printLabs = function(labs) {
+      var text = "<tr><th>Nro</th><th>Nombre</th><th>Descripcion</th></tr>";
+      var counter = 1;
+      angular.forEach(labs, function(lab){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+lab.name+"</td>";
+        text+="<td>"+lab.description+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de laboratorios", text);
+    }
+
+    this.printMeasures = function(measures) {
+      var text = "<tr><th>Nro</th><th>Nombre</th><th>Simbolo</th></tr>";
+      var counter = 1;
+      angular.forEach(measures, function(measure){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+measure.name+"</td>";
+        text+="<td>"+measure.symbol+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de unidades de medida", text);
+    }
+
+    this.printPersonal = function(personal) {
+      var text = "<tr><th>Nro</th><th>Usuario</th><th>Laboratorio</th><th>Cargo</th></tr>";
+      var counter = 1;
+      angular.forEach(personal, function(p){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+p.userObj+"</td>";
+        text+="<td>"+p.labObj+"</td>";
+        text+="<td>"+p.job+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de unidades de medida", text);
+    }
+
+    this.printAnalisys = function(analisys) {
+      var text = "<tr><th>Nro</th><th>Nombre</th><th>Laboratorio</th><th>Descripcion</th></tr>";
+      var counter = 1;
+      angular.forEach(analisys, function(a){
+        text+="<tr>";
+        text+="<td>"+counter+"</td>";
+        text+="<td>"+a.name+"</td>";
+        text+="<td>"+a.labObj||""+"</td>";
+        text+="<td>"+a.description||""+"</td>";
+        text+="</tr>";
+        counter++;
+      });
+      this.printTableWithText("Reporte de analisis", text);
     }
 
 

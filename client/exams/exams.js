@@ -1,8 +1,8 @@
 /**
  * Created by Andrea on 26/07/2015.
  */
-angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalService',
-    function($scope, $meteor, ModalService) {
+angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalService','PrintService',
+    function($scope, $meteor, ModalService,PrintService) {
         $scope.headers = ["Nombre","Medida","Titulo", "Rangos", "Acciones"];
         $scope.titles = $meteor.collection(Exams, false);
 
@@ -27,7 +27,9 @@ angular.module("sam-1").controller("ExamsListCtrl",['$scope','$meteor','ModalSer
             });
         }, false);
 
-
+        $scope.print = function(){
+          PrintService.printExams($scope.exams);
+        }
         $scope.showAddNew = function(ev) {
             ModalService.showModalWithParams(AddExamCtrl, 'client/exams/addExam.tmpl.ng.html', ev,{exam:null});
         }

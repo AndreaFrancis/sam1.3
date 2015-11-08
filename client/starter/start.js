@@ -4,6 +4,10 @@
 
 angular.module("sam-1").controller("DashboardCtrl",['$scope','$meteor','$state',
     function($scope, $meteor,$state) {
+      var userRol = localStorage.getItem("rolName");
+      $scope.isBioquimic = userRol=="Bioquimico";
+      $scope.isDoctor = userRol=="Doctor";
+      $scope.isAdmin = userRol=="Admin";
       var today = new Date();
 
       var studyDate = new Date();
@@ -20,6 +24,12 @@ angular.module("sam-1").controller("DashboardCtrl",['$scope','$meteor','$state',
         {creationDate: today},
         {dailyCode: {$ne: null}}
       ]}).count();
+
+      $scope.roles = RolesData.find({}).count();
+      $scope.users = Users.find({}).count();
+      $scope.analisys = Analisys.find({}).count();
+      $scope.doctors = Doctors.find({}).count();
+
       $scope.show = function(url){
         $state.go(url);
       }

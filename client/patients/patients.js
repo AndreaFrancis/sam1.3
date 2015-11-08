@@ -3,9 +3,13 @@
  */
 angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationService','ModalService','$rootScope','$state','$meteor','PrintService',
     function($scope,notificationService, ModalService, $rootScope, $state, $meteor,PrintService) {
+
+
         $scope.patients = $meteor.collection(Patients, false);
         $scope.headers = ['Apellidos', 'Nombre','Ci', 'Acciones'];
         $scope.searchText = '';
+        var userRol = localStorage.getItem("rolName");
+        $scope.isBioquimic = userRol=="Bioquimico";
 
         $scope.print = function(){
           PrintService.printPatients($scope.patients);
@@ -24,6 +28,7 @@ angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationSer
         }
 
         $scope.search = function(){
+              /*
               $scope.patients = $meteor.collection(function(){
                 return Patients.find({'$or':[
                   {
@@ -36,7 +41,16 @@ angular.module("sam-1").controller("PatientsListCtrl",['$scope','notificationSer
                       ci : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
                   }
                 ]});
-              }, false);
+              }, false);*/
+
+              Meteor.call("findPatient", $scope.searchText, function(err, result) {
+                  if(err) {
+                      notificationService.showError("No se pudo conectar al servidor SQL");
+                      console.log(err);
+                  }else{
+                      alert(result);
+                  }
+              });
         }
     }]);
 

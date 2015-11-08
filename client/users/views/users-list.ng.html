@@ -1,3 +1,9 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Usuarios</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
 <!--Ver en : http://codepen.io/jbltx/pen/WbdRRb-->
 <div ng-controller="UsersListCtrl">
     <div class="main-fab">
@@ -23,7 +29,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="user in users" class="md-table-content-row" ng-click="show(user, $event)">
+                <tr ng-repeat="user in users| orderBy: 'rol'" class="md-table-content-row" ng-click="show(user, $event)">
                     <td data-title="">
                         <img ng-src="{{user.profile.image}}" class="md-avatar" alt="{{user.username}}" />
 

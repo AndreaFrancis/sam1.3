@@ -81,7 +81,8 @@ function AddModuleController($scope, notificationService, $mdDialog, module, $me
 
         //Cleaning data from transform
         delete $scope.module.rolesObj;
-
+        var order = parseInt($scope.module.order);
+        $scope.module.order = order;
         $scope.module.roles = keys;
         $scope.modules.save($scope.module).then(function(number) {
             notificationService.showSuccess("Se ha registrado correctamente el modulo");

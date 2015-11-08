@@ -23,10 +23,11 @@ angular.module("sam-1").controller("LabPersonalListCtrl",['$scope','$meteor','Mo
           });
         }, false);
 
+
         $scope.headers = ['Usuario', 'Laboratorio','Cargo','Acciones'];
 
         $scope.print = function(){
-
+          PrintService.printPersonal($scope.personal);
         }
 
         $scope.showAddNew = function(ev) {

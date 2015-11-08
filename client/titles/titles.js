@@ -1,8 +1,8 @@
 /**
  * Created by Andrea on 07/06/2015.
  */
-angular.module("sam-1").controller("TitlesListCtrl",['$scope','$meteor','ModalService',
-    function($scope, $meteor, ModalService) {
+angular.module("sam-1").controller("TitlesListCtrl",['$scope','$meteor','ModalService','PrintService',
+    function($scope, $meteor, ModalService, PrintService) {
         $scope.headers = ["Nombre", "Analisis", "Examenes", "Acciones"];
 
         $scope.titles = $meteor.collection(function(){
@@ -25,6 +25,10 @@ angular.module("sam-1").controller("TitlesListCtrl",['$scope','$meteor','ModalSe
             }
           });
         }, false);
+
+        $scope.print = function(){
+          PrintService.printTitles($scope.titles);
+        }
 
         $scope.showAddNew = function(ev) {
             ModalService.showModalWithParams(AddTitleController, 'client/titles/addTitle.tmpl.ng.html', ev, {title: null});

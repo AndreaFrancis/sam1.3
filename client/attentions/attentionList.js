@@ -4,12 +4,16 @@
 /**
  * Created by Andrea on 07/06/2015.
  */
-angular.module("sam-1").controller("AttentionsListCtrl",['$scope','$meteor','notificationService','ModalService',
-    function($scope, $meteor,notificationService, ModalService) {
+angular.module("sam-1").controller("AttentionsListCtrl",['$scope','$meteor','notificationService','ModalService','PrintService',
+    function($scope, $meteor,notificationService, ModalService,PrintService) {
         $scope.attentions = $meteor.collection(Attentions, false);
         $scope.headers = ['Nombre', 'Descripcion', 'Acciones'];
 
         $scope.showTextSearch = true;
+
+        $scope.print = function(){
+          PrintService.printRoles($scope.attentions);
+        }
         $scope.showAddNew = function(ev) {
             ModalService.showModalWithParams(AddAttentionController, 'client/attentions/addAttention.tmpl.ng.html', ev, {attention:null});
         }

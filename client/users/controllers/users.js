@@ -112,7 +112,7 @@ function AddUserController($rootScope, $scope,$mdDialog, $meteor, user ,notifica
                   notificationService.showError("Error al subir la imagen");
                   console.log(err);
               } else {
-                  user.profile.mainRol  = $scope.selectedRol;
+                  user.profile.mainRol  = $scope.selectedRol._id;
                   user.profile.image = "/cfs/files/images/" + fileObj._id;
                   Meteor.call("createNewUser", user, function(err) {
                       if(err) {

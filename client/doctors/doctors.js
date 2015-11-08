@@ -54,7 +54,11 @@ angular.module("sam-1").controller("DoctorsListCtrl",['$scope','$meteor','ModalS
 angular.module("sam-1").controller('AddDoctorController',AddDoctorController);
 
 function AddDoctorController($scope,$mdDialog, $meteor, doctor ,notificationService) {
-    if(doctor) {
+    var userRol = localStorage.getItem("rolName");
+    $scope.isAdmin = userRol=="Admin";
+    $scope.isUser= false;
+    $scope.selectedUser = {};
+    if(!!doctor) {
       $scope.doctor = doctor;
       if($scope.doctor.userId){
         $scope.selectedUser = $meteor.object(Users,$scope.doctor.userId);
@@ -73,12 +77,14 @@ function AddDoctorController($scope,$mdDialog, $meteor, doctor ,notificationServ
           return [];
       }
     }, false);
-    $scope.selectedUser = {};
+
 
     $scope.save = function() {
-        if($scope.isUser && $scope.selectedUser){
+        if($scope.selectedUser){
           $scope.doctor.userId  = $scope.selectedUser._id;
         }
+
+
         $scope.doctors.save($scope.doctor).then(function(number) {
             notificationService.showSuccess("Se ha guardado correctamente el doctor");
         }, function(error){

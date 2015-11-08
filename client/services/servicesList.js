@@ -1,11 +1,15 @@
 /**
  * Created by Andrea on 07/06/2015.
  */
-angular.module("sam-1").controller("ServicesListCtrl",['$scope','$meteor','$rootScope','notificationService','ModalService',
-    function($scope, $meteor,  $rootScope,notificationService, ModalService) {
+angular.module("sam-1").controller("ServicesListCtrl",['$scope','$meteor','$rootScope','notificationService','ModalService','PrintService',
+    function($scope, $meteor,  $rootScope,notificationService, ModalService,PrintService) {
         $scope.services = $meteor.collection(Services, false);
 
         $scope.showTextSearch = true;
+
+        $scope.print = function(){
+          PrintService.printServices($scope.services);
+        }
 
         $scope.showAddNew = function(ev) {
             ModalService.showModalWithParams(AddServiceController, 'client/services/addService.tmpl.ng.html',ev,{service:null});
@@ -32,7 +36,7 @@ angular.module("sam-1").controller("ServicesListCtrl",['$scope','$meteor','$root
           $scope.services = $meteor.collection(function(){
           return Services.find({
                       "name" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
-                  }  
+                  }
           );
         }, false);
         }

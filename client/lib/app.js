@@ -1,13 +1,11 @@
 /**
  * Created by Andrea on 06/06/2015.
  */
-var app = angular.module('sam-1',['angular-meteor','ui.router','ngMaterial', 'ngMessages']);
+var app = angular.module('sam-1',['angular-meteor','ui.router','ngMaterial', 'ngMessages','angularUtils.directives.dirPagination']);
 app.config(function($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('light-blue')
-            .accentPalette('indigo');
-        $mdThemingProvider.theme('nav-theme')
-        .primaryPalette('indigo');
+            .accentPalette('amber');
     $mdThemingProvider.setDefaultTheme('default');
 });
 
@@ -16,7 +14,6 @@ app.run(function ($rootScope, $state, ModalService) {
     var requireLogin = toState.data.requireLogin;
     if (requireLogin && ($rootScope.currentUser === 'undefined' || $rootScope.currentUser === null)) {
       event.preventDefault();
-      //$state.go("login");
     }
   });
 });
@@ -78,6 +75,8 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
         localStorage.removeItem("username");
         localStorage.removeItem("lab");
         localStorage.removeItem("rolName");
+        localStorage.removeItem("width");
+        localStorage.removeItem("heigth");
         $scope.username = '';
         $scope.password = '';
         $scope.allowed = [];
@@ -111,7 +110,12 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
                 });
                 if(ifIsPersonalLab.length>0){
                   var personal = ifIsPersonalLab[0];
+                  alert(personal.lab);
                   localStorage.setItem("lab",personal.lab);
+                  var lab = $meteor.object(Labs, personal.lab);
+                  localStorage.setItem("width",lab.width);
+                  localStorage.setItem("heigth",lab.heigth);
+                  alert("Saving: "+lab.width+" - "+lab.heigth);
                 }
                 $scope.checkRoles();
                 $state.go("start");

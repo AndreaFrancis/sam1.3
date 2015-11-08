@@ -1,5 +1,5 @@
-angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','ModalService','notificationService',
-    function($scope, $meteor,ModalService,notificationService) {
+angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','ModalService','notificationService','PrintService',
+    function($scope, $meteor,ModalService,notificationService,PrintService) {
 
         $scope.measures = $meteor.collection(Measures, false);
         $scope.headers = ['Simbolo', 'Nombre','Acciones'];
@@ -12,6 +12,9 @@ angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','Modal
             $scope.showTextSearch = !$scope.showTextSearch;
         }
 
+        $scope.print = function(){
+          PrintService.printMeasures($scope.measures);
+        }
 
         $scope.delete = function(measure) {
           $scope.measures.remove(measure).then(function(number) {
@@ -35,7 +38,7 @@ angular.module("sam-1").controller("MeasuresListCtrl",['$scope','$meteor','Modal
                   },{
                       "name" : { $regex : '.*' + $scope.searchText || '' + '.*', '$options' : 'i' }
                   }
-                ]                
+                ]
             }
           );
         }, false);

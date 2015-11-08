@@ -2,16 +2,8 @@
 <form name="newStudyForm" novalidate layout="column">
   <md-whiteframe class="md-whiteframe-z1" layout="column">
     <div layout="row">
-    <md-button ng-click="cancel()">
-        <i class="fa fa-close"></i>
-    </md-button>
-    <span flex></span>
-    <md-button class="md-primary" ng-click="save()" ng-disabled="newStudyForm.$invalid" layout-align="end center">
-        <i class="fa fa-save"></i>
-    </md-button>
+
   </div>
-    <md-tabs md-dynamic-height md-border-bottom>
-      <md-tab label="Datos Generales">
         <md-content class="md-padding" id="general">
           <div layout="row">
             <md-input-container flex ng-if="isBioquimic">
@@ -29,16 +21,10 @@
                   </div>
 
             </md-input-container>
-            <md-select placeholder="Atencion" ng-model="selectedAttention" flex  required>
-                <md-option ng-repeat="attention in attentions" value="{{attention}}">{{attention.name}}</md-option>
-            </md-select>
-            <md-select placeholder="Servicio" ng-model="selectedService" flex required>
-                <md-option ng-repeat="service in services" value="{{service}}">{{service.name}}</md-option>
-            </md-select>
           </div>
           <div layout="row">
                   <div ng-show="existingPatient || isExistingStudy">
-                      Paciente: {{patient.lastName}} {{patient.lastNameMother}} {{patient.name}}
+                      <b>Paciente</b>: {{patient.lastName}} {{patient.lastNameMother}} {{patient.name}}
                   </div>
                   <div layout="row" ng-hide="existingPatient || isExistingStudy">
                       <md-autocomplete
@@ -69,15 +55,54 @@
                           <i class="fa fa-plus"></i>
                       </md-button>
                   </div>
-
+                  <div flex layout="row">
+                    <div ng-show="existingDoctor ||isExistingStudy || isDoctor">
+                        <span></span><b>Doctor</b>:{{selectedDoctor.lastName}} {{selectedDoctor.name}}
+                    </div>
+                    <div layout="row" ng-if="isBioquimic" >
+                        <md-autocomplete
+                                md-search-text-change="null"
+                                md-selected-item="selectedDoctor"
+                                md-search-text="searchDoctorText"
+                                md-selected-item-change="selectedDoctorChange(selectedDoctor)"
+                                md-items="item in queryDoctors(searchDoctorText)"
+                                md-item-text="item.value"
+                                md-min-length="0"
+                                placeholder="Doctor"
+                                md-floating-label="Doctor"
+                                md-menu-class="autocomplete-custom-template">
+                            <md-item-template>
+                            <span class="item-title">
+                                <span> {{item.value}}</span>
+                            </span>
+                            <span class="item-metadata">
+                                <span class="item-metastat">
+                                    <strong>{{item.enrolment}}</strong>
+                                </span>
+                            </span>
+                            </md-item-template>
+                        </md-autocomplete>
+                        <md-button class="md-icon-button" flex  aria-label="Nuevo" ng-click="createNewDoctor($event)">
+                            <i class="fa fa-plus"></i>
+                        </md-button>
+                      </div>
+                  </div>
               </div>
-                      <!--End patient-->
+              <div layout="row">
+                <md-select placeholder="Atencion" ng-model="selectedAttention" flex ng-change="changeAttention()" required>
+                    <md-option ng-repeat="attention in attentions" value="{{attention}}">{{attention.name}}</md-option>
+                </md-select>
+                <md-select placeholder="Servicio" ng-model="selectedService" flex required>
+                    <md-option ng-repeat="service in services" value="{{service}}">{{service.name}}</md-option>
+                </md-select>
+              </div>
+
               <div layout="row">
                 <md-input-container flex>
                   <label>Diagnostico</label>
                   <input ng-model="study.diagnostic"  name="diagnostic" required>
                 </md-input-container>
-                <div  layout="row">
+                <div  layout="row" ng-show="internData">
                     <md-input-container flex>
                       <label>Cama</label>
                       <input ng-model="study.internData.bed"  name="bed">
@@ -87,39 +112,6 @@
                       <input ng-model="study.internData.room"  name="room">
                     </md-input-container>
                 </div>
-              </div>
-              <!--Doctor-->
-              <div flex layout="row">
-                <div ng-show="existingDoctor ||isExistingStudy || isDoctor">
-                    Doctor: {{selectedDoctor.lastName}} {{selectedDoctor.name}}
-                </div>
-                <div layout="row" ng-if="isBioquimic" >
-                    <md-autocomplete
-                          md-selected-item-change="null"
-                            md-search-text-change="null"
-                            md-selected-item="selectedDoctor"
-                            md-search-text="searchDoctorText"
-                            md-items="item in queryDoctors(searchDoctorText)"
-                            md-item-text="item.value"
-                            md-min-length="0"
-                            placeholder="Doctor"
-                            md-floating-label="Doctor"
-                            md-menu-class="autocomplete-custom-template">
-                        <md-item-template>
-                        <span class="item-title">
-                            <span> {{item.value}}</span>
-                        </span>
-                        <span class="item-metadata">
-                            <span class="item-metastat">
-                                <strong>{{item.enrolment}}</strong>
-                            </span>
-                        </span>
-                        </md-item-template>
-                    </md-autocomplete>
-                    <md-button class="md-icon-button" flex  aria-label="Nuevo" ng-click="createNewDoctor($event)">
-                        <i class="fa fa-plus"></i>
-                    </md-button>
-                  </div>
               </div>
               <div layout="row">
                 <md-input-container flex ng-if="isBioquimic">
@@ -133,8 +125,6 @@
               </div>
 
         </md-content>
-      </md-tab>
-      <md-tab label="Analisis">
         <md-content class="md-padding" id="analisis">
           <ul>
             <li ng-repeat="analisys in analisysList">
@@ -160,7 +150,16 @@
               </li>
           </ul>
         </md-content>
-      </md-tab>
-    </md-tabs>
+        <div layout="row">
+          <md-button class="md-primary" ng-click="save()" ng-disabled="newStudyForm.$invalid" layout-align="end center">
+              Guardar
+            </md-button>
+          <span flex></span>
+          <md-button ng-click="cancel()">
+            Cancelar
+          </md-button>
+
+
+        </div>
 </md-whiteframe>
 </form>

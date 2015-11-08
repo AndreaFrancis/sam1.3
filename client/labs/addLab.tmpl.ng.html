@@ -7,6 +7,7 @@
             </div>
         </md-toolbar>
         <md-dialog-content class="sticky-container">
+          <div layout="column">
             <md-input-container flex>
                 <label>Nombre</label>
                 <input ng-model="lab.name" required name="name" input-text lab>
@@ -22,17 +23,29 @@
                     <div ng-message="required">*Campo obligatorio</div>
                 </div>
             </md-input-container>
-            <md-input-container flex>
-                <label>Color</label>
-                <input ng-model="lab.color" required name="color">
-                <div ng-messages="newLabForm.color.$error" ng-if="newLabForm.color.$dirty">
+            <div layout="row">
+              <md-input-container flex>
+                <label>Ancho hojas (cm)</label>
+                <input ng-model="lab.width" required name="width" input-numeric>
+                <div ng-messages="newLabForm.width.$error" ng-if="newLabForm.width.$dirty">
                     <div ng-message="required">*Campo obligatorio</div>
-                </div>
-            </md-input-container>
+                    <div ng-message="inputNumeric">*Ingrese solo numeros</div>
+                  </div>
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Alto hojas (cm)</label>
+                  <input ng-model="lab.heigth" required name="heigth" input-numeric>
+                  <div ng-messages="newLabForm.heigth.$error" ng-if="newLabForm.heigth.$dirty">
+                      <div ng-message="required">*Campo obligatorio</div>
+                      <div ng-message="inputNumeric">*Ingrese solo numeros</div>
+                    </div>
+                  </md-input-container>
+              </div>
+            </div>
         </md-dialog-content>
             <div class="md-actions" layout="row">
                 <span flex></span>
-                <md-button class="md-primary" ng-click="save()" ng-disabled="newMeasureForm.$invalid" type="submit">
+                <md-button class="md-primary" ng-click="save()" ng-disabled="newLabForm.$invalid" type="submit">
                     Guardar
                 </md-button>
                 <md-button ng-click="cancel()">

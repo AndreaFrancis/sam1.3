@@ -4,10 +4,17 @@
 
 angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notificationService','ModalService','PrintService',
     function($scope, $meteor,notificationService, ModalService,PrintService) {
+
         $scope.roles = $meteor.collection(RolesData, false);
+
+
         $scope.headers = ['Nombre', 'Acciones'];
 
         $scope.showTextSearch = true;
+
+        $scope.pageChanged = function(newPage) {
+          $scope.page = newPage;
+        };
 
         $scope.print = function(){
           PrintService.printRoles($scope.roles);
@@ -19,17 +26,25 @@ angular.module("sam-1").controller("RolesListCtrl",['$scope','$meteor','notifica
             $scope.showTextSearch = !$scope.showTextSearch;
         }
 
-        $scope.delete = function(rol) {
-          $scope.roles.remove(rol).then(function(number) {
-              notificationService.showSuccess("Se ha eliminado correctamente el rol");
-          }, function(error){
-              notificationService.showError("Error en la eliminacino del rol");
-              console.log(error);
-          });
+        $scope.delete = function(rol,$event) {
+          $scope.onRemoveCancel = function() {
+              console.log("Se cancelo la eliminacion del usuario");
+          }
+          $scope.onRemoveConfirm = function() {
+            $scope.roles.remove(rol).then(function(number) {
+                notificationService.showSuccess("Se ha eliminado correctamente el rol");
+            }, function(error){
+                notificationService.showError("Error en la eliminacino del rol");
+                console.log(error);
+            });
+          }
+          ModalService.showConfirmDialog('Eliminar rol', '¿Estas seguro de eliminar el rol?', 'Eliminar', 'Cancelar', $event, $scope.onRemoveCancel, $scope.onRemoveConfirm);
+          $event.stopPropagation();
         }
 
         $scope.show = function(selectedRol, ev) {
             ModalService.showModalWithParams(AddRolController, 'client/roles/addRol.tmpl.ng.html',ev, {rol:selectedRol});
+            ev.stopPropagation();
         }
 
         $scope.search = function(){

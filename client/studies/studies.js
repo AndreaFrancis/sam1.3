@@ -1,3 +1,10 @@
+function verifyText(textToVerify){
+  var text = "";
+  if(!!textToVerify){
+    text = textToVerify;
+  }
+  return text;
+}
 /**
  * Created by Andrea on 26/07/2015.
  */
@@ -11,7 +18,7 @@ angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notifi
             { "dailyCode": { $exists: false } },
             { "dailyCode": null }
           ]};
-        $scope.headers = ["Codigo", "Paciente", "Fecha"];
+        $scope.headers = ["Codigo", "Paciente", "Fecha","Acciones"];
         var userRol = localStorage.getItem("rolName");
         $scope.isBioquimic = userRol=="Bioquimico";
         $scope.isDoctor = userRol=="Doctor";
@@ -65,8 +72,44 @@ angular.module("sam-1").controller("StudiesListCtrl",['$scope','$meteor','notifi
         $scope.showAddNew = function($event) {
             $state.go('newstudy',{patientId:null});
         }
-    }]);
 
+        $scope.delete = function(study, event){
+          event.stopPropagation();
+          ModalService.showModalWithParams('AddReasonController',  'client/studies/addReason.tmpl.ng.html',event, {study:study});
+        }
+}]);
+
+angular.module("sam-1").controller("AddReasonController",AddReasonController);
+function AddReasonController($scope, $meteor, study, $mdDialog, notificationService){
+  $scope.reasons = $meteor.collection(Reasons);
+  $scope.studies = $meteor.collection(Studies);
+  $scope.cancel = function() {
+      $mdDialog.cancel();
+  }
+
+  $scope.delete = function(){
+      var patientName = verifyText(study.patientObj.lastName)+" "+verifyText(study.patientObj.lastNameMother)+" "+verifyText(study.patientObj.name);
+      var doctorName = verifyText(study.doctorObj.lastName)+" "+ verifyText(study.doctorObj.lastNameMother)+" "+verifyText(study.doctorObj.name);
+      var dailyCode = verifyText(study.dailyCode);
+      var reasonObj = {
+         reason: $scope.reason,
+         study: study._id,
+         patient: patientName,
+         doctor: doctorName,
+         creator: study.creatorName,
+         date: new Date(),
+         dailyCode: dailyCode}
+      $scope.reasons.save(reasonObj).then(function(number) {
+        $scope.studies.remove(study);
+        notificationService.showSuccess("Se ha eliminado el estudio");
+      }, function(error){
+          notificationService.showError("Error al eliminar el estudio");
+          console.log(error);
+      });
+
+      $mdDialog.hide();
+  }
+}
 
 angular.module("sam-1").controller("AddStudyController",AddStudyController);
 function AddStudyController($scope, $meteor, notificationService, $stateParams, ModalService,$state, CONDITIONS) {
@@ -82,10 +125,6 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
     angular.forEach($scope.labs, function(lab){
       $scope.labsCounter.push({lab:lab._id, counter:0});
     });
-
-
-
-
 
     $scope.newDoctor = {};
     $scope.study.creationDate = new Date();
@@ -178,6 +217,7 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
     }
 
     $scope.save = function() {
+
         $scope.study.analisys = [];
         var attentionJson = JSON.parse($scope.selectedAttention);
         $scope.study.attention = attentionJson._id;
@@ -222,6 +262,7 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
             $scope.study.doctorUser = localStorage.getItem("user");
         }
         $scope.study.doctor = $scope.selectedDoctor._id;
+
         $scope.study.creatorId = localStorage.getItem("user");
         if($scope.patient) {
             $scope.study.patient = $scope.patient._id;
@@ -248,6 +289,12 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
       }
     }
 
+    $scope.selectedItemChange = function(patient){
+      $scope.selectedItem = patient;
+    }
+    $scope.selectedDoctorChange = function(doctor){
+      $scope.selectedDoctor = doctor;
+    }
     $scope.cancel = function() {
         $state.go("studies");
     }
@@ -278,7 +325,7 @@ function AddStudyController($scope, $meteor, notificationService, $stateParams, 
     }
 
     $scope.queryDoctors = function(query) {
-        return query ? $scope.doctors.filter( createFilterForDoctor(query) ) : $scope.doctors;
+        return query ? $scope.doctors.filter( createFilterForDoctor(query) ) : [];
     }
 
     function createFilterForDoctor(query) {

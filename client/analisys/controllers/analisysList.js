@@ -3,6 +3,9 @@
  */
 angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','ModalService','PrintService',
     function($scope, $meteor, ModalService, PrintService) {
+        var userRol = localStorage.getItem("rolName");
+        $scope.isAdmin = userRol=="Admin";
+
         $scope.analisysList = $meteor.collection(function(){
           return Analisys.find({active:true},{
             transform: function(doc){
@@ -54,42 +57,47 @@ angular.module("sam-1").controller("AnalisysListCtrl",['$scope','$meteor','Modal
           },false);
         }
 
-        $scope.printCatalog = function(){
-          var catalog = $meteor.collection(function(){
-            return Analisys.find({},{
-            transform: function(doc){
-                doc.titles = $meteor.collection(function(){
-                  return Titles.find({analisys:doc._id},{
-                    transform: function(tit){
-                      tit.exams = $meteor.collection(function(){
-                        return Exams.find({title:tit._id},{
-                          transform: function(exam){
-                            if(exam.measure){
-                              var measure = $meteor.object(Measures,exam.measure);
-                              exam.symbol = function(){
-                                return measure.symbol;
-                              }
+        $scope.catalog = $meteor.collection(function(){
+          return Analisys.find({},{
+          transform: function(doc){
+              doc.titles = $meteor.collection(function(){
+                return Titles.find({analisys:doc._id},{
+                  transform: function(tit){
+                    tit.exams = $meteor.collection(function(){
+                      return Exams.find({title:tit._id},{
+                        transform: function(exam){
+                          if(exam.measure){
+                            var measure = $meteor.object(Measures,exam.measure);
+                            exam.symbol = function(){
+                              return measure.symbol;
                             }
-                            if(exam.ranges){
-                              angular.forEach(exam.ranges, function(range){
-                                range.typeName = function(){
-                                    return $meteor.object(TypeEvaluation, range.type,false).name;
-                                }
-                              });
-                            }
-                            return exam;
                           }
-                        });
-                      })
-                      return tit;
-                    }
-                  });
-                },false);
-              return doc;
-            }
-          });
-          },false);
-          PrintService.printCatalog(catalog);
+                          if(exam.ranges){
+                            angular.forEach(exam.ranges, function(range){
+                              range.typeName = function(){
+                                  return $meteor.object(TypeEvaluation, range.type,false).name;
+                              }
+                            });
+                          }
+                          return exam;
+                        }
+                      });
+                    })
+                    return tit;
+                  }
+                });
+              },false);
+            return doc;
+          }
+        });
+        },false);
+
+        $scope.printCatalog = function(){
+          PrintService.printCatalog($scope.catalog);
+        }
+
+        $scope.print = function(){
+          PrintService.printAnalisys($scope.analisysList);
         }
 
     }]);
