@@ -17,6 +17,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
         var userRol = localStorage.getItem("rolName");
         $scope.isBioquimic = userRol=="Bioquimico";
         $scope.isDoctor = userRol=="Doctor";
+        $scope.studies = $meteor.collection(Studies,false);
         if($stateParams.studyId){
           $scope.isExistingStudy = true;
           //$scope.study = $meteor.object(Studies, $stateParams.studyId, false);
@@ -26,10 +27,11 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           $scope.study.doctorObj = function(){
             return doctor.lastName + " "+ doctor.name;
           }*/
+          var doc = $meteor.object(Studies, $stateParams.studyId);
 
-          $scope.studies = $meteor.collection(function() {
-              return Studies.find({_id:$stateParams.studyId}, {
-                  transform: function(doc) {
+          //$scope.studies = $meteor.collection(function() {
+            //  return Studies.find({_id:$stateParams.studyId}, {
+              //    transform: function(doc) {
                       doc.patientObj = {};
                       if(doc.patient) {
                           var patientObj = $meteor.collection(function(){
@@ -75,11 +77,12 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
                               doc.attentionName = attention.name;
                           }
                       }
-                      return doc;
-                  }
-              });
-          }, false);
-          $scope.study = $scope.studies[0];
+                      //return doc;
+                  //}
+              //});
+          //}, false);
+          $scope.study = doc;
+          //$scope.study = $scope.studies[0];
 
           $scope.selectedAttention = $meteor.object(Attentions, $scope.study.attention);
           $scope.selectedService = $meteor.object(Services, $scope.study.service);
@@ -161,7 +164,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           delete $scope.study.creatorName;
           delete $scope.study.serviceName;
           delete $scope.study.attentionName;
-          
+
           $scope.studies.save($scope.study).then(function(number) {
               notificationService.showSuccess("Se ha guardado correctamente el estudio");
           }, function(error){
@@ -276,19 +279,31 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           var width = localStorage.getItem("width");
           var heigth = localStorage.getItem("heigth");
           var style = "<style type='text/css'>table {width:100%} table, th, td {border: 1px solid black;}"+
-                      "body {font-family: 'Verdana', Geneva, sans-serif;font-size:6pt}"+
+                      "body {font-family: 'Verdana', Geneva, sans-serif;font-size:4pt}"+
                       "header nav, footer {display: none;}"+
-                      "table {font-size:6pt; border-collapse:collapse}"+
+                      "table {font-size:4pt; border-collapse:collapse}"+
                       "h1 {text-align: center}"+
                       ".header {text-align: right;}"+
-                      "@page {size:"+width+"cm "+heigth+"cm;}"+
+                      "@page {size:"+width+"cm "+heigth+"cm;margin: 3mm;}"+
+                      " .break { page-break-after: always; }"+
                       " body {  }"+
+                      " tr {page-break-inside: avoid !important;} "+
                       "</style>";
                       //"@page {size: auto;margin: 1.6cm 1.6cm 10cm 1.6cm;}"+
-          newWin.document.write("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"+style+"</head><body>");
-          newWin.document.write("<b class='header'>Instituto de Gastroenterología Boliviano Japonés</b>");
-          newWin.document.write("<h1>Resultado de examenes</h1>");
+          newWin.document.write("<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"+style+"</head><body>")
+          newWin.document.write("<tr>");
+          newWin.document.write("<table>");
+          newWin.document.write("<td>");
+          newWin.document.write("<b class='header'>COMPLEJO HOSPITALARIO VIEDMA</b><br/>");
+          newWin.document.write("<b class='header'>Instituto de Gastroenterología Boliviano Japonés</b><br/>");
+          newWin.document.write("<b class='header'>Cochabamba - Bolivia</b><br/>");
+          newWin.document.write("</td>");
+          newWin.document.write("<td>");
           newWin.document.write("<h1>"+verifyText($scope.study.dailyCode)+"</h1>");
+          newWin.document.write("</td>");
+          newWin.document.write("</tr>");
+          newWin.document.write("</table>");
+          newWin.document.write("<h1>Resultado de examenes</h1>");
           newWin.document.write("<hr>");
           newWin.document.write("<b>Paciente: </b>"+$scope.study.patientObj.lastName+" "+
           $scope.study.patientObj.lastNameMother+" "+$scope.study.patientObj.name+"<br>");
@@ -309,9 +324,9 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           }
           newWin.document.write("<hr>");
           angular.forEach($scope.study.analisys, function(analisys){
-              newWin.document.write("<h2>"+analisys.name()+"</h2>");
+              newWin.document.write("<h3>"+analisys.name()+"</h3>");
               angular.forEach(analisys.titles, function(title){
-                newWin.document.write("<h3>"+title.name()+"<h3>");
+                newWin.document.write("<b>"+title.name()+"<b><br/>");
                 newWin.document.write("<table>");
                 newWin.document.write("<tr><th>Examen</th><th>Resultado</th><th>Referencia</th><th>Detalle</th></tr>");
                   angular.forEach(title.exams, function(exam){
@@ -339,6 +354,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
                     newWin.document.write("</tr>");
                   });
                 newWin.document.write("</table>");
+                newWin.document.write("<br class=”break”/>");
               });
           });
           newWin.document.write("</body></html>");

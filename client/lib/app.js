@@ -110,12 +110,10 @@ function AppCtrl($scope,$mdSidenav,$rootScope, $state, $meteor) {
                 });
                 if(ifIsPersonalLab.length>0){
                   var personal = ifIsPersonalLab[0];
-                  alert(personal.lab);
                   localStorage.setItem("lab",personal.lab);
                   var lab = $meteor.object(Labs, personal.lab);
                   localStorage.setItem("width",lab.width);
                   localStorage.setItem("heigth",lab.heigth);
-                  alert("Saving: "+lab.width+" - "+lab.heigth);
                 }
                 $scope.checkRoles();
                 $state.go("start");

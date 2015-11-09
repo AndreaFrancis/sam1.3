@@ -13,12 +13,9 @@ if(Meteor.isServer){
             return Meteor.users.remove(id);
         },
         findPatient: function(parameter){
-          var patients = [];
-          var response = {};
-
-          function getFromSQL(text){
-            console.log("SAM-INFO: A");
-            Sql.q("select * from SE_HC where HCL_NOMBRE LIKE '%"+text+"%'", function (err, res) {
+            function delayedMessge() {
+            console.log("SAM-INFO: "+parameter);
+            Sql.q("select * from SE_HC where HCL_NOMBRE LIKE '%"+parameter+"%'", function (err, res) {
                       console.log("SAM-INFO: B");
                       if(err){
                         console.log("ERRROR:"+ err);
@@ -32,10 +29,12 @@ if(Meteor.isServer){
                       }
             });
           }
-          var wrappedGetProfile = Meteor._wrapAsync(getFromSQL);
-
-          //return response;
-          return wrappedGetProfile(parameter);
+          console.log("SAM-INFO: a");
+          var wrappedDelayedMessage = Async.wrap(delayedMessge);
+          console.log("SAM-INFO: b");
+          var response = wrappedDelayedMessage();
+          console.log("SAM-INFO: c");
+          return response;
         }
     });
 }
