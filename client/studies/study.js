@@ -27,7 +27,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           $scope.study.doctorObj = function(){
             return doctor.lastName + " "+ doctor.name;
           }*/
-          var doc = $meteor.object(Studies, $stateParams.studyId);
+          var doc = $meteor.object(Studies, $stateParams.studyId, false);
 
           //$scope.studies = $meteor.collection(function() {
             //  return Studies.find({_id:$stateParams.studyId}, {
@@ -164,6 +164,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           delete $scope.study.creatorName;
           delete $scope.study.serviceName;
           delete $scope.study.attentionName;
+          delete $scope.study._serverBackup;
 
           $scope.studies.save($scope.study).then(function(number) {
               notificationService.showSuccess("Se ha guardado correctamente el estudio");
@@ -184,6 +185,14 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
         }
 
         $scope.save = function(exam) {
+
+          delete $scope.study.patientObj;
+          delete $scope.study.doctorObj;
+          delete $scope.study.creatorName;
+          delete $scope.study.serviceName;
+          delete $scope.study.attentionName;
+          delete $scope.study._serverBackup;
+
 
           var detail = "";
           var ranges = exam.ranges();
@@ -206,7 +215,7 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
           partialRecord.date = new Date();
           exam.historial.push(partialRecord);
           $scope.studies.save($scope.study);
-
+          notificationService.showSuccess("Se ha guardado correctamente el resultado");
         }
 
 
@@ -328,13 +337,19 @@ angular.module("sam-1").controller("StudyCtrl", ['$scope', '$stateParams','$mete
               angular.forEach(analisys.titles, function(title){
                 newWin.document.write("<b>"+title.name()+"<b><br/>");
                 newWin.document.write("<table>");
-                newWin.document.write("<tr><th>Examen</th><th>Resultado</th><th>Referencia</th><th>Detalle</th></tr>");
+                newWin.document.write("<tr><th>Examen</th><th>Resultado</th><th>U. Med</th><th>Referencia</th><th>Detalle</th></tr>");
                   angular.forEach(title.exams, function(exam){
                     newWin.document.write("<tr>");
                     //Exam name
                     newWin.document.write("<td>"+exam.name()+"</td>");
                     //Result
                     newWin.document.write("<td>"+TextEvaluatorService.getTextEvenIfNullOrUndef(exam.result)+"</td>");
+                    if(exam.symbol){
+                      newWin.document.write("<td>"+exam.symbol()+"</td>");
+                    }else{
+                      newWin.document.write("<td></td>");
+                    }
+
                     //Reference
                     if(exam.ranges()){
                       newWin.document.write("<td>");

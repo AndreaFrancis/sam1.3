@@ -170,21 +170,22 @@
                                  <thead>
                                    <tr>
                                      <th class="md-table-header" ng-if="isBioquimic">Responsable</th>
-                                     <th class="md-table-header" ng-if="isBioquimic">Act</th>
+                                     <th class="md-table-header" ng-if="isBioquimic">Historial</th>
                                      <th class="md-table-header">Examen</th>
                                      <th class="md-table-header">Resultado</th>
+                                     <th class="md-table-header">U. Med</th>
                                      <th class="md-table-header">Referencia</th>
                                      <th class="md-table-header">Detalle</th></tr>
                                  </thead>
                                  <tbody>
                                   <tr class="md-table-content-row" ng-repeat="exam in title.exams" ng-init="edit=false">
                                       <td data-title="Responsable" ng-if="isBioquimic">{{exam.responsible}} </td>
-                                      <td data-title="Act" ng-if="isBioquimic">
+                                      <td data-title="Historial" ng-if="isBioquimic">
                                         <div layout="row">
                                           <md-button class="md-icon-button" flex  aria-label="Historial" ng-click="showHistorial(exam,$event)">
                                             <i class="fa fa-file-text-o"></i>
                                           </md-button>
-                                          <md-button class="md-icon-button" flex  aria-label="Editar" ng-click="edit=true" ng-hide="edit">
+                                          <!--md-button class="md-icon-button" flex  aria-label="Editar" ng-click="edit=true" ng-hide="edit">
                                             <i class="fa fa-pencil-square-o"></i>
                                           </md-button>
                                           <md-button class="md-icon-button" flex  aria-label="Cancelar" ng-click="edit=false" ng-show="edit">
@@ -192,15 +193,18 @@
                                           </md-button>
                                           <md-button class="md-icon-button" flex  aria-label="Guardar" ng-click="edit=false;save(exam)" ng-show="edit">
                                             <i class="fa fa-floppy-o"></i>
-                                          </md-button>
+                                          </md-button-->
                                         </div>
                                       </td>
                                       <td data-title="Examen">{{exam.name()}}</td>
                                       <td data-title="Resultado">
                                         <md-input-container>
                                           <label></label>
-                                          <input ng-model="exam.result"  name="result" ng-change="evaluateRange(exam)">
+                                          <input ng-model="exam.result"  name="result" ng-keyup="$event.keyCode == 13 && save(exam)">
                                         </md-input-container>
+                                      </td>
+                                      <td data-title="U. Med">
+                                        {{exam.symbol()}}
                                       </td>
                                       <td data-title="Examen">
                                         <ul>
